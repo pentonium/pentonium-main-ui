@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import {
   BrowserRouter as Router,
-  Switch,
+  Switch
 } from "react-router-dom";
 import { routes } from "./routes";
 import { RouteWithSubRoutes } from "./helpers";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Header from "./components/header/Header";
 
 class App extends Component {
   state = {
@@ -17,11 +18,14 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Switch>
-            {routes.map((route, i) => (
-              <RouteWithSubRoutes key={i} {...route} />
-            ))}
-        </Switch>
+        <Header></Header>
+        <div className="container">
+          <Switch>
+              {routes.map((route, i) => (
+                <RouteWithSubRoutes key={i} {...route} />
+              ))}
+          </Switch>
+        </div>
       </div>
     );
   }
