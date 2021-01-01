@@ -1,0 +1,60 @@
+{
+    "Graphics & Design":{
+        "id":"graphics-design",
+        "text":"A single place millions of talents",
+        "name":"Graphics & Design",
+        "categories":[{
+            "id":"logo-design",
+            "name":"Logo Design",
+            "image":"https://fiverr-res.cloudinary.com/w_iw_div_3.0,q_auto,f_auto/general_assets/categories/assets/f3/desktop_graphic_and_design_creative_logo_design_high_quality.jpg",
+            "text":"Stand out from the crowd with a logo that fits your brand personality."
+        },
+        {
+            "id":"brand-guides",
+            "name":"Brand Style Guides",
+            "image":"https://fiverr-res.cloudinary.com/w_iw_div_3.0,q_auto,f_auto/general_assets/categories/assets/f3/desktop_graphic_and_design_brand_style_guides.jpg",
+            "text":"Stand out from the crowd with a logo that fits your brand personality."
+        },
+        {
+            "id":"game-art",
+            "name":"Game Art",
+            "image":"https://fiverr-res.cloudinary.com/w_iw_div_3.0,q_auto,f_auto/general_assets/categories/assets/f3/desktop_graphic_and_design_game_design.jpg",
+            "text":"Stand out from the crowd with a logo that fits your brand personality."
+        },
+        {
+            "id":"graphics",
+            "name":"Graphics",
+            "image":"https://fiverr-res.cloudinary.com/w_iw_div_3.0,q_auto,f_auto/general_assets/categories/assets/f3/desktop_graphic_and_design_game_design.jpg",
+            "text":"Stand out from the crowd with a logo that fits your brand personality."
+        }]
+    },
+    "Digital Marketing":{
+        "id":"online-marketing",
+        "text":"Update and upgrade",
+        "name":"Digital Marketing",
+        "categories":[{
+            "id":"social-marketing",
+            "name":"Social Media Marketing",
+            "image":"https://fiverr-res.cloudinary.com/w_iw_div_3.0,q_auto,f_auto/general_assets/categories/assets/f3/desktop_digital_marketing_smm2.jpg",
+            "text":"Stand out from the crowd with a logo that fits your brand personality."
+        },
+        {
+            "id":"seo",
+            "name":"SEO",
+            "image":"https://fiverr-res.cloudinary.com/w_iw_div_3.0,q_auto,f_auto/general_assets/categories/assets/f3/desktop_public_relations.jpg",
+            "text":"Stand out from the crowd with a logo that fits your brand personality."
+        },
+        {
+            "id":"public-relations",
+            "name":"Public Relations",
+            "image":"https://fiverr-res.cloudinary.com/w_iw_div_3.0,q_auto,f_auto/general_assets/categories/assets/f3/desktop_graphic_and_design_game_design.jpg",
+            "text":"Stand out from the crowd with a logo that fits your brand personality."
+        },
+        {
+            "id":"graphics",
+            "name":"video-marketing",
+            "image":"https://fiverr-res.cloudinary.com/f_auto,q_auto/v1/attachments/generic_asset/asset/171d48fe89cf95cd7f7102907d455db3-1607529393467/Email%20Marketing.png",
+            "text":"Stand out from the crowd with a logo that fits your brand personality."
+        }]
+    }
+}
