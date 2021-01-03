@@ -7,6 +7,8 @@ import { routes } from "./routes";
 import { RouteWithSubRoutes } from "./helpers";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from "./components/header/Header";
+import './styles/global.scss';
+import { Container, Row } from "react-bootstrap";
 
 class App extends Component {
   state = {
@@ -19,13 +21,13 @@ class App extends Component {
     return (
       <div className="App">
         <Header></Header>
-        <div className="container">
+        <Container className="body-padding">
           <Switch>
               {routes.map((route, i) => (
                 <RouteWithSubRoutes key={i} {...route} />
               ))}
           </Switch>
-        </div>
+         </Container> 
       </div>
     );
   }

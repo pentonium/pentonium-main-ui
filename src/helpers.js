@@ -74,3 +74,14 @@ export const getUrlVars = () => {
   });
   return vars;
 };
+
+export function sortJSONData(prop){   
+    return function(a, b) {    
+        if (a[prop] < b[prop]) {    
+            return 1;    
+        } else if (a[prop] > b[prop]) {    
+            return -1;    
+        }    
+        return 0;    
+    }    
+}
