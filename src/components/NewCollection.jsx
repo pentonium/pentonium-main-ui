@@ -11,11 +11,8 @@ class NewCollection extends Component {
     }
 
     componentDidMount(){
-        console.log('In mount')
         this.props.fetchNewJobs();
     }
-
-
 
     render() { 
         
@@ -30,7 +27,6 @@ class NewCollection extends Component {
 }
 
 function mapStateToProps(state){
-    console.log(state);
     return {
         newData: state.fetchJobs.newData
       };
