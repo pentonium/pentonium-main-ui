@@ -1,0 +1,51 @@
+[{
+    "id":1,
+    "jobTitle":"Crazy TikTok Commercial",
+    "customerName":"Tim Zinin",
+    "budget":100,
+    "categoryId":"social-marketing",
+    "skills":["Audio & Video"],
+    "description":"For TimeX.io promo we want you to come out with 5 crazt tiktok videos",
+    "isFeatured":false,
+    "isNew":true
+},{
+    "id":2,
+    "jobTitle":"Full Stack Enginner",
+    "categoryId":"public-relations",
+    "customerName":"Laure Sassus-Bourda",
+    "budget":10000,
+    "skills":["Web,Mobile & software Dev","Blockchain & crypto"],
+    "description":"At request,our mission is to interconnect isolated financial systems to create more efficient and inclusive economies.",
+    "isFeatured":false,
+    "isNew":true
+},{
+    "id":3,
+    "jobTitle":"Erc20 token generator",
+    "categoryId":"public-relations",
+    "customerName":"Thomas Minner",
+    "budget":300,
+    "skills":["Administrative Support","Blockchain & crypto"],
+    "description":"Need token generator.Only erc20 tokens",
+    "isFeatured":true,
+    "isNew":false
+},{
+    "id":4,
+    "jobTitle":"Python Developer for AI project with frontend framework",
+    "categoryId":"logo-design",
+    "customerName":"inite",
+    "budget":1500,
+    "skills":["Javascript","Python","Front End","Databases"],
+    "description":"Inite-Virtual bussiness partner and artifical intelligence assistant.An interesting and promising project on AI , the latest technologies GPT-3",
+    "isFeatured":true,
+    "isNew":true
+},{
+    "id":5,
+    "jobTitle":"Python Developer for AI project with frontend framework",
+    "customerName":"inite",
+    "categoryId":"logo-design",
+    "budget":500,
+    "skills":["Javascript","Python","Front End","Databases"],
+    "description":"Inite-Virtual bussiness partner and artifical intelligence assistant.An interesting and promising project on AI , the latest technologies GPT-3",
+    "isFeatured":true,
+    "isNew":true
+}]
