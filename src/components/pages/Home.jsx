@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Row } from "react-bootstrap";
+import {  Row } from "react-bootstrap";
 import FeaturedCollection from "../FeaturedCollection";
 import RatedCollection from "../RatedCollection";
 import '../../styles/Collections.scss';

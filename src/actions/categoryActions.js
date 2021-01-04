@@ -1,4 +1,4 @@
-import {FETCH_CATEGORIES, FETCH_FEATURED_JOBS , FETCH_HIGHRATED_JOBS , FETCH_NEW_JOBS} from '../constants';
+import {FETCH_CATEGORIES, FETCH_FEATURED_JOBS , FETCH_HIGHRATED_JOBS , FETCH_NEW_JOBS , FETCH_JOB_DATA} from '../constants';
 import jobsData from '../data/jobsData.json';
 import jsonData from '../data/category.json';
 
@@ -7,7 +7,6 @@ export const fetchCategories = (id) => ({
     categoryId:id,
     payload:JSON.parse(JSON.stringify(jsonData))
 });
-
 
 export const fetchFeaturedJobs = () => ({
     type:FETCH_FEATURED_JOBS,
@@ -21,5 +20,11 @@ export const fetchHighRatedJobs = () => ({
 
 export const fetchNewJobs = () => ({
     type:FETCH_NEW_JOBS,
+    payload:JSON.parse(JSON.stringify(jobsData))
+});
+
+export const fetchJobData = (id) => ({
+    type:FETCH_JOB_DATA,
+    jobId:id,
     payload:JSON.parse(JSON.stringify(jobsData))
 });

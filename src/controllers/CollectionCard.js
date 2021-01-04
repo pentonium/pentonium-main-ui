@@ -15,7 +15,7 @@ export const CollectionCard = (props) => {
                 <Col md={3} xs={3}> 
                     <a href={'/jobs/'+list.id}>   
                     <div className="card">
-                        <img class="card-img-top" src="https://img.cryptokitties.co/0x06012c8cf97bead5deae237070f9587f8e7a266d/1994426.png" alt="Card image" />
+                        <img class="card-img-top" src={list.image} alt="Card image" />
                         <div class="card-body">
                         <h5 class="card-title">{list.jobTitle}</h5>
                         <p class="card-text">{list.description}</p>
