@@ -1,0 +1,27 @@
+.job-desctiption-page{
+    width: 100%;
+    [class*='col-'] {
+        div{ 
+            margin-top: 1rem;
+        }
+    }
+    .customer-data{
+        .customer-image{
+            img{
+                width: 4rem;
+                height: 4rem;
+                border-radius: 50%;
+            }
+        }
+        .customer-name{
+            margin-left: 1.6rem;
+            font-weight: 700;
+        }
+    }
+    .job-details{
+        .badge.badge-pill{
+            margin-right: 1rem;
+        }
+    }
+    
+}

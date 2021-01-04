@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import {CollectionCard} from '../controllers/CollectionCard';
-import {fetchFeaturedJobs , fetchHighRatedJobs , fetchNewJobs} from '../actions/categoryActions';
+import {fetchFeaturedJobs} from '../actions/categoryActions';
 
 
 class FeaturedCollection extends Component {

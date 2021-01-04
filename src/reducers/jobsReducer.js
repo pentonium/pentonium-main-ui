@@ -1,4 +1,4 @@
-import {FETCH_FEATURED_JOBS , FETCH_HIGHRATED_JOBS , FETCH_NEW_JOBS} from '../constants';
+import {FETCH_FEATURED_JOBS , FETCH_HIGHRATED_JOBS , FETCH_NEW_JOBS , FETCH_JOB_DATA} from '../constants';
 import {sortJSONData} from '../helpers';
 
 const initialState = {
@@ -6,7 +6,8 @@ const initialState = {
   error: false,
   ratedData:[],
   featuredData:[],
-  newData:[]
+  newData:[],
+  jobDescription:[]
 
 };
 
@@ -29,6 +30,13 @@ export default function(state = initialState, action) {
         ...state,
         newData:action.payload.filter(value=>{
             return value.isNew === true
+        })
+    }
+    case FETCH_JOB_DATA:
+      return {
+        ...state,
+        jobDescription:action.payload.filter(value=>{
+            return value.id === action.jobId
         })
     }
     default:

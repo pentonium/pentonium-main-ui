@@ -8,7 +8,7 @@ import { RouteWithSubRoutes } from "./helpers";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from "./components/header/Header";
 import './styles/global.scss';
-import { Container, Row } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 
 class App extends Component {
   state = {

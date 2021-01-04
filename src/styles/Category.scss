@@ -21,6 +21,15 @@
     }
 }
 
+.collections{
+    .card{
+        .card-img-top{
+            min-height: 16rem;
+            max-height: 16rem;
+        }
+    }
+}
+
 ul {
     padding: 0px;
     li {
