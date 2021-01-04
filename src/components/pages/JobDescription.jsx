@@ -30,7 +30,9 @@ class JobDescription extends Component {
                             <a><span className="customer-name">{this.props.jobDescription.customerName}</span></a>
                         </div>
                         <div className="job-details">
+                            <div class="job-image">
                             <img src={this.props.jobDescription.image}/>
+                            </div>
                             <div>
                                 <h4>About Job:</h4>
                                 <p>{this.props.jobDescription.description}</p>
