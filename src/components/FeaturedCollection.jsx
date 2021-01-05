@@ -19,7 +19,7 @@ class FeaturedCollection extends Component {
             <div>
                 <h2 className="collection-title">Featured Jobs</h2>
                 {this.props.featuredData &&
-                    <CollectionCard items={this.props.featuredData} link='/collection/featured'></CollectionCard>
+                    <CollectionCard items={this.props.featuredData} link='/collection/featured' column="3"></CollectionCard>
                 }
             </div>
          );

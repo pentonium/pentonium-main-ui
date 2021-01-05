@@ -27,10 +27,12 @@ class JobDescription extends Component {
                         <h1>{this.props.jobDescription.jobTitle}</h1>
                         <div className="customer-data">
                             <a><span class="customer-image"><img  src="https://fiverr-res.cloudinary.com/t_profile_original,q_auto,f_auto/attachments/profile/photo/bd375846a2b53df94bc356ffa3458426-1540375416166/be56ddbf-191a-449e-83b7-fd07e3a271bf.jpeg" /></span></a>
-                            <a><span className="customer-name">{this.props.jobDescription.customerName}</span></a>
+                            <a href={"/customers/"+this.props.jobDescription.customerId}><span className="customer-name">{this.props.jobDescription.customerName}</span></a>
                         </div>
                         <div className="job-details">
+                            <div class="job-image">
                             <img src={this.props.jobDescription.image}/>
+                            </div>
                             <div>
                                 <h4>About Job:</h4>
                                 <p>{this.props.jobDescription.description}</p>

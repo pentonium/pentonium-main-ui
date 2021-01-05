@@ -14,11 +14,16 @@
             }
         }
         .customer-name{
-            margin-left: 1.6rem;
+            margin-left: 1rem;
             font-weight: 700;
         }
     }
     .job-details{
+        .job-image{
+            img{
+                width: 100%;
+            }
+        }
         .badge.badge-pill{
             margin-right: 1rem;
         }
