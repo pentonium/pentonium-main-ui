@@ -1,4 +1,4 @@
-import {FETCH_PARENT_CATEGORIES} from '../constants';
+import {FETCH_PARENT_CATEGORIES, FETCH_CUSTOMER_DATA} from '../constants';
 
 const initialState = {
   loading: false,
@@ -19,6 +19,16 @@ export default function(state = initialState, action) {
               }
           })
       }
+    case FETCH_CUSTOMER_DATA:
+      return{
+        ...state,
+        "customerData":action.customerData.filter((data) => {
+          return data.id === action.customerId
+        })[0],
+        "jobData":action.jobsData.filter((data) => {
+          return data.customerId == action.customerId
+        })
+      }  
     default:
       return state;
   }

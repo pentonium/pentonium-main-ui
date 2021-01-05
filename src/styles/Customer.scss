@@ -1,0 +1,36 @@
+
+.profile-section{
+    text-align: center;
+    p{
+        word-break: break-all;
+    }
+}
+.user-image{
+    height: 10rem;
+    img{
+        height: inherit;
+        border-radius: 50%;
+    }
+    margin-bottom: 1rem;
+}
+
+.top-profile-section , .low-profile-section{
+    border: 1px solid #cccccc;
+    padding: 2rem 0rem;
+}
+
+.low-profile-section{
+    margin-top: 3rem;
+    .description-text{
+        margin-top: 1rem;
+    }
+    .badge.badge-pill{
+        margin-right: 1rem;
+    }
+}
+
+.seller-demograph{
+    [class*='col-'] {
+        margin-top: 1rem;
+    }
+}
