@@ -7,9 +7,15 @@
     background-size: contain;
 }
 
+.parent-nav-section , .header {
+    .container{
+        display: flex;
+        align-items: center;
+    }
+}
+
 .container{
     display: flex;
-    align-items: center;
 }
 
 .header{

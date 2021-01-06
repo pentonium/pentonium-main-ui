@@ -1,0 +1,26 @@
+.Footer{
+    ul{
+        list-style: none;
+        li{
+            margin-bottom: 1rem;
+        }
+    }
+    .container{
+        align-items: flex-start;
+    }
+    .footer-top-section{
+        border-bottom: 1px solid #cccccc;
+    }
+    h6{
+        margin-bottom: 1.5rem;
+    }
+    
+}
+.footer-bottom-section{
+    padding: 0.4rem 0;
+}
+
+.footer-outer{
+    border-top: 1px solid #cccccc;
+    padding-top: 3rem;
+}
