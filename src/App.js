@@ -7,6 +7,7 @@ import { routes } from "./routes";
 import { RouteWithSubRoutes } from "./helpers";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from "./components/header/Header";
+import Footer from './components/footer/Footer';
 import './styles/global.scss';
 import { Container } from "react-bootstrap";
 
@@ -28,6 +29,7 @@ class App extends Component {
               ))}
           </Switch>
          </Container> 
+         <Footer></Footer>
       </div>
     );
   }
