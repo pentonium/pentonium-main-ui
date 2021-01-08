@@ -35,6 +35,10 @@ class Header extends Component {
         this.connectWithMetaMask();
     }
 
+    navigateToPost(){
+        window.location.href="/post-job";
+    }
+
     render() { 
         return (
             <>
@@ -49,7 +53,11 @@ class Header extends Component {
                         <ul className="nav-items">
                             <li key="catalog" className="nav-item">Catalogue</li>
                             <li key="explore" className="nav-item">Explore</li>
-                            <li key="inr" className="nav-item">INR</li>
+                            <li key="inr" className="nav-item">
+                                <button className="btn btn-secondary" onClick={this.navigateToPost.bind(this)}>
+                                    Post
+                                </button>
+                            </li>
                             <li key="connect" className="nav-item">
                                 <button className="btn btn-primary" onClick={this.onClick.bind(this)}>
                                     Connect
