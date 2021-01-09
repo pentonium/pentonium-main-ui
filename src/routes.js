@@ -2,6 +2,7 @@ import Home from "./components/pages/Home";
 import Categories from "./components/pages/Categories";
 import JobDescription from './components/pages/JobDescription';
 import Customer from "./components/pages/Customer";
+import JobPost from "./components/pages/JobPost";
 
 export const routes = [
     {
@@ -22,5 +23,9 @@ export const routes = [
         path: "/customers/:customerId",
         exact: true,
         component: Customer
+    },{
+        path: "/post-job",
+        exact: true,
+        component: JobPost
     }
   ];
