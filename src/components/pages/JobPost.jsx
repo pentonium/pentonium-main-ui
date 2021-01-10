@@ -6,6 +6,7 @@ import {fetchParentCategories} from '../../actions/commonAction';
 import {fetchCategories} from '../../actions/categoryActions';
 import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
+import ipfs from '../../ipfs';
 
 
 class JobPost extends Component {
@@ -20,8 +21,11 @@ class JobPost extends Component {
             category:"",
             description:"",
             tags:[],
-            successful:false
+            successful:false,
+            buffer:"",
+            imageHash:""
         }
+        this.captureFile = this.captureFile.bind(this);
     }
 
     componentDidMount(){
@@ -37,6 +41,13 @@ class JobPost extends Component {
             event.stopPropagation();
           } else {
             this.setState({successful:true});
+            ipfs.files.add(this.state.buffer,(error , result) => {
+                if(error){
+                  return
+                }
+                this.setState({'imageHash':result[0].hash});
+                console.log(this.state.imageHash , result);
+            })
           }
           this.setState({validated:true});
     };
@@ -57,6 +68,16 @@ class JobPost extends Component {
         }
       } else {
         this.setState({[nam]: val});
+      }
+    }
+
+    captureFile(event){
+      const file = event.target.files[0];
+      const reader = new window.FileReader();
+      reader.readAsArrayBuffer(file);
+      reader.onloadend = () => {
+        this.setState({'buffer':Buffer(reader.result)});
+        console.log(this.state.buffer);
       }
     }
 
@@ -123,7 +144,7 @@ class JobPost extends Component {
                     </Form.Control>
                 </Form.Group>
             </Form.Row>
-            <Form.Group controlId="validationCustom06">
+            <Form.Group controlId="validationCustom05">
             <Form.Label>Enter your keywords</Form.Label>  
             <ReactTagInput 
                 tags={this.state.tags} 
@@ -136,6 +157,9 @@ class JobPost extends Component {
               />
             </Form.Group>
             <Form.Group controlId="validationCustom06">
+                    <input type="file" onChange={this.captureFile} />
+            </Form.Group>
+            <Form.Group controlId="validationCustom07">
                 <Form.Label>Description</Form.Label>
                 <Form.Control as="textarea" name="description" rows={3} onChange={this.myChangeHandler} required />
                 <Form.Control.Feedback type="invalid">
@@ -146,6 +170,7 @@ class JobPost extends Component {
           </Form>:
           <div>
             <p className="text-center">You're job has been posted successfully</p>
+            {this.state.imageHash && <img src={`https://ipfs.io/ipfs/${this.state.imageHash}`} alt="" />}
           </div>
               }
             </div>
