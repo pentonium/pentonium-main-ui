@@ -23,14 +23,46 @@ class JobPost extends Component {
             tags:[],
             successful:false,
             buffer:"",
-            imageHash:""
+            imageHash:"",
+            dataHash:""
         }
         this.captureFile = this.captureFile.bind(this);
+        this.uploadFormData = this.uploadFormData.bind(this);
+        this.getFileData = this.getFileData.bind(this);
     }
 
     componentDidMount(){
       this.props.fetchParentCategories();
     }
+
+    uploadFormData(imageHashV){
+        const uploadData = {
+          title:this.state.title,
+          duration:this.state.duration,
+          parentCategory:this.state.parentCategory,
+          category:this.state.category,
+          description:this.state.description,
+          tags:this.state.tags,
+          imageHash:imageHashV
+        }
+        // const buffer = Buffer(uploadData);
+        ipfs.files.add(Buffer.from(JSON.stringify(uploadData)) , (error , result)=>{
+          console.log('Errror' , error , result)
+          if(error){
+            return
+          }
+          this.setState({dataHash:result[0].hash});
+          this.getFileData();
+        });
+      } 
+
+
+      getFileData(){
+        ipfs.files.get(this.state.dataHash , (error , result) => {
+          console.log('Data hash' , JSON.parse(result[0].content.toString()));
+        })
+      }
+
         
       
     handleSubmit(event){
@@ -47,7 +79,8 @@ class JobPost extends Component {
                 }
                 this.setState({'imageHash':result[0].hash});
                 console.log(this.state.imageHash , result);
-            })
+                this.uploadFormData(result[0].hash);
+            });
           }
           this.setState({validated:true});
     };
