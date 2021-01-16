@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import {CollectionCard} from '../controllers/CollectionCard';
 import {fetchNewJobs} from '../actions/categoryActions';
+import CollectionItem from "./CollectionItem";
+import { Row, Col , Badge } from 'react-bootstrap';
 
 
 
@@ -15,12 +17,22 @@ class NewCollection extends Component {
     }
 
     render() { 
-        
         return (
             <div>
-                {this.props.newData &&
-                    <CollectionCard items={this.props.newData} link='/collection/featured'></CollectionCard>
-                }
+            <h2 className="collection-title">Featured Jobs</h2>
+            <Row className="collections">
+            {this.props.newData && this.props.newData.map((hash , i) => {
+                return ( i <=3 &&
+                    <CollectionItem index={i} hash={hash.id} column="4"></CollectionItem>
+                )
+            }) 
+            }
+            </Row>
+            {/* <div className="button-center-container"> 
+            {this.props.newData && this.props.newData.length > 4 &&
+                <button className="btn btn-outline-primary" onClick={() => viewAllItems()}>View All</button>
+            }
+            </div> */}
             </div>
          );
     }

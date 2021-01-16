@@ -1,6 +1,7 @@
-import {FETCH_CATEGORIES, FETCH_FEATURED_JOBS , FETCH_HIGHRATED_JOBS , FETCH_NEW_JOBS , FETCH_JOB_DATA} from '../constants';
+import {FETCH_CATEGORIES, FETCH_FEATURED_JOBS , FETCH_HIGHRATED_JOBS , FETCH_NEW_JOBS , FETCH_JOB_DATA, FETCH_HASH_JOB_DATA} from '../constants';
 import jobsData from '../data/jobsData.json';
 import jsonData from '../data/category.json';
+import ipfs from '../ipfs';
 
 export const fetchCategories = (id) => ({
     type:FETCH_CATEGORIES,
@@ -28,3 +29,16 @@ export const fetchJobData = (id) => ({
     jobId:id,
     payload:JSON.parse(JSON.stringify(jobsData))
 });
+
+export function fetchData(id){
+    console.log('In fetch data');
+    return  function (dispatch) {
+      return ipfs.files.get(id , (error , result) => {
+        dispatch({
+            type:FETCH_HASH_JOB_DATA,
+            payload:JSON.parse(result[0].content.toString())
+        });
+      });
+    };
+}
+
