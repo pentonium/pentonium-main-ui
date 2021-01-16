@@ -25,7 +25,7 @@ class CollectionItem extends Component {
                         <h5 class="card-title">{this.props.hashedData.title}</h5>
                         <p class="card-text">{this.props.hashedData.description}</p>
                         <p class="card-text"><small class="text-muted">{this.props.hashedData.duration}</small>
-                        <button class="btn btn-primary"><a href={'/editData'}>Edit</a></button></p>
+                        <button class="btn btn-primary"><a href={`/editData/${this.props.hash}`}>Edit</a></button></p>
                         </div>
                     </div>
                     </a>
