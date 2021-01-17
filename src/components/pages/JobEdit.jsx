@@ -7,9 +7,11 @@ import {fetchCategories} from '../../actions/categoryActions';
 import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
 import ipfs from '../../ipfs';
+import { withRouter } from 'react-router-dom';
+import {fetchData} from '../../actions/categoryActions';
 
 
-class JobPost extends Component {
+class JobEdit extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -32,7 +34,17 @@ class JobPost extends Component {
     }
 
     componentDidMount(){
-      this.props.fetchParentCategories();
+        const hashId = this.props.match.params.hashId;
+        this.props.fetchHashJobData(hashId);
+    }
+
+    componentDidUpdate(prevProps){
+        if(prevProps !== this.props){
+            if(this.props.hashedData){
+                this.setState({title:this.props.hashedData.title , description:this.props.hashedData.description , duration:this.props.hashedData.duration,
+                parentCategory:this.props.hashedData.parentCategory , category:this.props.hashedData.category , tags:this.props.hashedData.tags , isParentSelected:true})
+            }
+        }
     }
 
     uploadFormData(imageHashV){
@@ -119,10 +131,11 @@ class JobPost extends Component {
     }
 
     render() {
+        console.log('Props' , this.props);
         return (
             <div style = {{'width':'100%'}}>
               {
-                !this.state.successful ? 
+                !this.state.successful && this.props.hashedData ? 
                 <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit.bind(this)}>
             <Form.Row>
               <Form.Group as={Col} md="6" controlId="validationCustom01">
@@ -132,6 +145,7 @@ class JobPost extends Component {
                   type="text"
                   name="title"
                   placeholder="Enter title for your gig"
+                  value={this.state.title ? this.state.title : this.props.title}
                   onChange={this.myChangeHandler}
                 />
                 <Form.Control.Feedback type="invalid">
@@ -156,7 +170,7 @@ class JobPost extends Component {
             <Form.Row>
                 <Form.Group as={Col} md="6" controlId="validationCustom03">
                     <Form.Label>Select Parent Category</Form.Label>
-                    <Form.Control required as="select" size="sm" name="parentCategory" defaultValue="{''}" custom onChange={this.onSelectedOptionsChange.bind(this)} >
+                    <Form.Control required as="select" size="sm" name="parentCategory" value={this.state.parentCategory}  custom onChange={this.onSelectedOptionsChange.bind(this)} >
                     <option value={''}>Choose...</option>   
                     {this.props.parentCategories &&
                       this.props.parentCategories.map((parent) => {
@@ -167,7 +181,7 @@ class JobPost extends Component {
                 </Form.Group>
                 <Form.Group as={Col} md="6" controlId="validationCustom04">
                     <Form.Label>Select Category</Form.Label>
-                    <Form.Control required as="select" size="sm" name="category" defaultValue="{''}" onChange={this.myChangeHandler} custom disabled={!this.state.isParentSelected}>
+                    <Form.Control required as="select" size="sm" name="category"  custom  onChange={this.myChangeHandler} >
                     <option value={''}>Choose...</option>   
                     {this.props.categories &&
                       this.props.categories.categories.map((category) => {
@@ -180,7 +194,7 @@ class JobPost extends Component {
             <Form.Group controlId="validationCustom05">
             <Form.Label>Enter your keywords</Form.Label>  
             <ReactTagInput 
-                tags={this.state.tags} 
+                tags={this.state.tags.length > 0 ? this.state.tags : this.props.hashedData.tags} 
                 placeholder="Type and press enter"
                 maxTags={10}
                 editable={true}
@@ -194,7 +208,7 @@ class JobPost extends Component {
             </Form.Group>
             <Form.Group controlId="validationCustom07">
                 <Form.Label>Description</Form.Label>
-                <Form.Control as="textarea" name="description" rows={3} onChange={this.myChangeHandler} required />
+                <Form.Control as="textarea" name="description" value={this.state.description} rows={3} onChange={this.myChangeHandler} required />
                 <Form.Control.Feedback type="invalid">
                   Description field is required.
                 </Form.Control.Feedback>
@@ -215,15 +229,17 @@ class JobPost extends Component {
 function mapStateToProps(state){
     return {
       parentCategories: state.common.parentCategories,
-      categories: state.category.categoryItems
+      categories: state.category.categoryItems,
+      hashedData: state.fetchJobs.hashedData
       };
   }
   
 function mapDispatchToProps(dispatch){
     return{
       fetchParentCategories: () => dispatch(fetchParentCategories()),
-      fetchCategories: (id) => dispatch(fetchCategories(id))
+      fetchCategories: (id) => dispatch(fetchCategories(id)),
+      fetchHashJobData: (id) => dispatch(fetchData(id))
     }
 }
  
-export default connect(mapStateToProps , mapDispatchToProps)(JobPost);
+export default withRouter(connect(mapStateToProps , mapDispatchToProps)(JobEdit));
