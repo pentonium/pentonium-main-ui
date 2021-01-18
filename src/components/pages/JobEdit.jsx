@@ -39,11 +39,17 @@ class JobEdit extends Component {
     }
 
     componentDidUpdate(prevProps){
-        if(prevProps !== this.props){
+        if(prevProps.hashedData !== this.props.hashedData){
             if(this.props.hashedData){
+                this.props.fetchCategories(this.props.hashedData.parentCategory);
                 this.setState({title:this.props.hashedData.title , description:this.props.hashedData.description , duration:this.props.hashedData.duration,
-                parentCategory:this.props.hashedData.parentCategory , category:this.props.hashedData.category , tags:this.props.hashedData.tags , isParentSelected:true})
+                parentCategory:this.props.hashedData.parentCategory ,imageHash:this.props.hashedData.imageHash , tags:this.props.hashedData.tags , isParentSelected:true})
             }
+        }
+        if(prevProps.categories !== this.props.categories){
+          if(this.props.categories){
+            this.setState({category:this.props.hashedData.category});
+          }
         }
     }
 
@@ -55,11 +61,9 @@ class JobEdit extends Component {
           category:this.state.category,
           description:this.state.description,
           tags:this.state.tags,
-          imageHash:imageHashV
+          imageHash:this.state.imageHash
         }
-        // const buffer = Buffer(uploadData);
         ipfs.files.add(Buffer.from(JSON.stringify(uploadData)) , (error , result)=>{
-          console.log('Errror' , error , result)
           if(error){
             return
           }
@@ -85,14 +89,7 @@ class JobEdit extends Component {
             event.stopPropagation();
           } else {
             this.setState({successful:true});
-            ipfs.files.add(this.state.buffer,(error , result) => {
-                if(error){
-                  return
-                }
-                this.setState({'imageHash':result[0].hash});
-                console.log(this.state.imageHash , result);
-                this.uploadFormData(result[0].hash);
-            });
+            this.uploadFormData();
           }
           this.setState({validated:true});
     };
@@ -105,6 +102,7 @@ class JobEdit extends Component {
     }
 
     myChangeHandler = (event) => {
+      debugger;
       let nam = event.target.name;
       let val = event.target.value;
       if(nam == 'duration'){
@@ -122,7 +120,12 @@ class JobEdit extends Component {
       reader.readAsArrayBuffer(file);
       reader.onloadend = () => {
         this.setState({'buffer':Buffer(reader.result)});
-        console.log(this.state.buffer);
+        ipfs.files.add(this.state.buffer,(error , result) => {
+          if(error){
+            return
+          }
+          this.setState({'imageHash':result[0].hash});
+      });
       }
     }
 
@@ -131,7 +134,6 @@ class JobEdit extends Component {
     }
 
     render() {
-        console.log('Props' , this.props);
         return (
             <div style = {{'width':'100%'}}>
               {
@@ -181,7 +183,7 @@ class JobEdit extends Component {
                 </Form.Group>
                 <Form.Group as={Col} md="6" controlId="validationCustom04">
                     <Form.Label>Select Category</Form.Label>
-                    <Form.Control required as="select" size="sm" name="category"  custom  onChange={this.myChangeHandler} >
+                    <Form.Control required as="select" size="sm" name="category" value={this.state.category}  custom  onChange={this.myChangeHandler} >
                     <option value={''}>Choose...</option>   
                     {this.props.categories &&
                       this.props.categories.categories.map((category) => {
@@ -203,7 +205,12 @@ class JobEdit extends Component {
                 onChange={(newTags) => this.handleTags(newTags)}
               />
             </Form.Group>
+            <Form.Group controlId="validationCustom08">
+                <h6>Selected Image:</h6>  
+                {this.state.imageHash && <img className="edit-image" style={{'width':'300px'}} src={`https://ipfs.io/ipfs/${this.state.imageHash}`} alt="" />}   
+            </Form.Group>
             <Form.Group controlId="validationCustom06">
+                    <h6>Upload New Image</h6>  
                     <input type="file" onChange={this.captureFile} />
             </Form.Group>
             <Form.Group controlId="validationCustom07">

@@ -31,7 +31,6 @@ export const fetchJobData = (id) => ({
 });
 
 export function fetchData(id){
-    console.log('In fetch data');
     return  function (dispatch) {
       return ipfs.files.get(id , (error , result) => {
         dispatch({
