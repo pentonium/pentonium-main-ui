@@ -4,6 +4,8 @@ import JobDescription from './components/pages/JobDescription';
 import Customer from "./components/pages/Customer";
 import JobPost from "./components/pages/JobPost";
 import JobEdit from "./components/pages/JobEdit";
+import IPFSChat from "./controllers/IPFSChat";
+import ChatPage from "./components/pages/ChatPage";
 
 export const routes = [
     {
@@ -32,5 +34,9 @@ export const routes = [
         path: "/editdata/:hashId",
         exact: true,
         component: JobEdit
+    },{
+        path: "/chatpage",
+        exact: true,
+        component: ChatPage
     }
   ];
