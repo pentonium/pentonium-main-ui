@@ -60,9 +60,4 @@ const LazyImage = ({ src, alt }) => {
   );
 };
 
-LazyImage.propTypes = {
-  src: PropTypes.string.isRequired,
-  alt: PropTypes.string.isRequired
-};
-
 export default LazyImage;
