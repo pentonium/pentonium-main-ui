@@ -20,7 +20,7 @@ class CollectionItem extends Component {
                     <Col key={this.props.index} md={this.props.column ? parseInt(this.props.column , 10) : 3} xs={12}> 
                     <a>   
                     <div className="card">
-                        <img class="card-img-top" src={`https://ipfs.io/ipfs/${this.props.hashedData.imageHash}`} alt="Card image" />
+                        <img class="card-img-top" src={`https://ipfs.io/ipfs/${this.props.hashedData.imageHash[0]}`} alt="Card image" />
                         <div class="card-body">
                         <h5 class="card-title">{this.props.hashedData.title}</h5>
                         <p class="card-text">{this.props.hashedData.description}</p>

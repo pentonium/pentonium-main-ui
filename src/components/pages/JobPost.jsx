@@ -22,9 +22,11 @@ class JobPost extends Component {
             description:"",
             tags:[],
             successful:false,
+            imageArray:[],
             buffer:"",
-            imageHash:"",
-            dataHash:""
+            imageHash:[],
+            dataHash:"",
+            previewImage:[]
         }
         this.captureFile = this.captureFile.bind(this);
         this.uploadFormData = this.uploadFormData.bind(this);
@@ -35,7 +37,7 @@ class JobPost extends Component {
       this.props.fetchParentCategories();
     }
 
-    uploadFormData(imageHashV){
+    uploadFormData(){
         const uploadData = {
           title:this.state.title,
           duration:this.state.duration,
@@ -43,7 +45,7 @@ class JobPost extends Component {
           category:this.state.category,
           description:this.state.description,
           tags:this.state.tags,
-          imageHash:imageHashV
+          imageHash:this.state.imageHash
         }
         // const buffer = Buffer(uploadData);
         ipfs.files.add(Buffer.from(JSON.stringify(uploadData)) , (error , result)=>{
@@ -73,14 +75,17 @@ class JobPost extends Component {
             event.stopPropagation();
           } else {
             this.setState({successful:true});
-            ipfs.files.add(this.state.buffer,(error , result) => {
-                if(error){
-                  return
-                }
-                this.setState({'imageHash':result[0].hash});
-                console.log(this.state.imageHash , result);
-                this.uploadFormData(result[0].hash);
+            this.state.imageArray.map((hash) => {
+              ipfs.files.add(hash,(error , result) => {
+                  if(error){
+                    return
+                  }
+                  this.setState({'imageHash':[...this.state.imageHash , result[0].hash]});
+                  console.log(this.state.imageHash , result);
+                  this.uploadFormData();
+              });
             });
+            
           }
           this.setState({validated:true});
     };
@@ -105,12 +110,15 @@ class JobPost extends Component {
     }
 
     captureFile(event){
-      const file = event.target.files[0];
-      const reader = new window.FileReader();
-      reader.readAsArrayBuffer(file);
-      reader.onloadend = () => {
-        this.setState({'buffer':Buffer(reader.result)});
-        console.log(this.state.buffer);
+      
+      for(let i = 0;i < event.target.files.length ; i++){
+        const file = event.target.files[i];
+        const reader = new window.FileReader();
+        reader.readAsArrayBuffer(file);
+        reader.onloadend = () => {
+          this.setState({imageArray: [...this.state.imageArray, Buffer(reader.result)] })
+          this.setState({previewImage:[...this.state.previewImage, URL.createObjectURL(file)]})
+        }
       }
     }
 
@@ -189,8 +197,14 @@ class JobPost extends Component {
                 onChange={(newTags) => this.handleTags(newTags)}
               />
             </Form.Group>
+            <Form.Group controlId="validationCustom08">
+                <h6>Selected Image:</h6>  
+                {this.state.previewImage && this.state.previewImage.map((preview) => {
+                  return <img className="edit-image" style={{'width':'200px','marginRight':'10px','marginBottom':'10px'}} src={preview} alt="" />
+                })}   
+            </Form.Group>
             <Form.Group controlId="validationCustom06">
-                    <input type="file" onChange={this.captureFile} />
+                    <input type="file" multiple onChange={this.captureFile} />
             </Form.Group>
             <Form.Group controlId="validationCustom07">
                 <Form.Label>Description</Form.Label>
@@ -203,7 +217,9 @@ class JobPost extends Component {
           </Form>:
           <div>
             <p className="text-center">You're job has been posted successfully</p>
-            {this.state.imageHash && <img src={`https://ipfs.io/ipfs/${this.state.imageHash}`} alt="" />}
+            {this.state.imageHash && this.state.imageHash.map((preview) => {
+                  return <img src={`https://ipfs.io/ipfs/${preview}`} alt="" />
+                })}
           </div>
               }
             </div>
