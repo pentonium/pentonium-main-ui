@@ -115,18 +115,23 @@ class JobEdit extends Component {
     }
 
     captureFile(event){
-      const file = event.target.files[0];
-      const reader = new window.FileReader();
-      reader.readAsArrayBuffer(file);
-      reader.onloadend = () => {
-        this.setState({'buffer':Buffer(reader.result)});
-        ipfs.files.add(this.state.buffer,(error , result) => {
-          if(error){
-            return
-          }
-          this.setState({'imageHash':result[0].hash});
-      });
+
+      for(let i = 0;i < event.target.files.length ; i++){
+        const file = event.target.files[0];
+        const reader = new window.FileReader();
+        reader.readAsArrayBuffer(file);
+        reader.onloadend = () => {
+          const buffer = Buffer(reader.result);
+          ipfs.files.add(buffer,(error , result) => {
+            if(error){
+              return
+            }
+            this.setState({'imageHash':[...this.state.imageHash , result[0].hash]});
+        });
       }
+    }
+
+
     }
 
     handleTags = (newTags) => {
@@ -207,11 +212,13 @@ class JobEdit extends Component {
             </Form.Group>
             <Form.Group controlId="validationCustom08">
                 <h6>Selected Image:</h6>  
-                {this.state.imageHash && <img className="edit-image" style={{'width':'300px'}} src={`https://ipfs.io/ipfs/${this.state.imageHash}`} alt="" />}   
+                {this.state.imageHash && this.state.imageHash.map((preview) => {
+                  return <img className="edit-image" style={{'width':'200px','marginRight':'10px','marginBottom':'10px'}} src={`https://ipfs.io/ipfs/${preview}`} alt="" />
+                })}   
             </Form.Group>
             <Form.Group controlId="validationCustom06">
                     <h6>Upload New Image</h6>  
-                    <input type="file" onChange={this.captureFile} />
+                    <input type="file" multiple onChange={this.captureFile} />
             </Form.Group>
             <Form.Group controlId="validationCustom07">
                 <Form.Label>Description</Form.Label>
