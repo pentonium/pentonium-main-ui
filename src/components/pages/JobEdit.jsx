@@ -9,6 +9,7 @@ import "@pathofdev/react-tag-input/build/index.css";
 import ipfs from '../../ipfs';
 import { withRouter } from 'react-router-dom';
 import {fetchData} from '../../actions/categoryActions';
+import LazyImage from '../../controllers/LazyImage';
 
 
 class JobEdit extends Component {
@@ -212,8 +213,13 @@ class JobEdit extends Component {
             </Form.Group>
             <Form.Group controlId="validationCustom08">
                 <h6>Selected Image:</h6>  
-                {this.state.imageHash && this.state.imageHash.map((preview) => {
-                  return <img className="edit-image" style={{'width':'200px','marginRight':'10px','marginBottom':'10px'}} src={`https://ipfs.io/ipfs/${preview}`} alt="" />
+                {this.state.imageHash && this.state.imageHash.map((preview , i) => {
+                  return <LazyImage
+                  key={i}
+                  src={`https://ipfs.io/ipfs/${preview}`}
+                  alt="EDdit image"
+                  />
+                  // <img className="edit-image" style={{'width':'200px','marginRight':'10px','marginBottom':'10px'}} src={`https://ipfs.io/ipfs/${preview}`} alt="" />
                 })}   
             </Form.Group>
             <Form.Group controlId="validationCustom06">
