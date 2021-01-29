@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import {fetchData} from '../actions/categoryActions';
 import { Row, Col , Badge } from 'react-bootstrap';
-import Carousel from 'react-bootstrap/Carousel'
+import Carousel from 'react-bootstrap/Carousel';
+import LazyImage from '../controllers/LazyImage';
 
 
 class CollectionItem extends Component {
@@ -25,8 +26,13 @@ class CollectionItem extends Component {
                             {this.props.hashedData.imageHash && this.props.hashedData.imageHash.map((image , i) => {
                                 
                                 return(
-                                    <Carousel.Item>
-                                    <img class="card-img-top" key={i} src={`https://ipfs.io/ipfs/${image}`} alt="Card image" />
+                                    <Carousel.Item class="card-img-top">
+                                        <LazyImage
+                                            key={i}
+                                            src={`https://ipfs.io/ipfs/${image}`}
+                                            alt="Card image"
+                                        />
+                                    {/* <img class="card-img-top" key={i} src={`https://ipfs.io/ipfs/${image}`} alt="Card image" /> */}
                                     </Carousel.Item>
                                 )  
                             })}

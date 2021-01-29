@@ -18,7 +18,7 @@ class NewCollection extends Component {
 
     render() { 
         return (
-            <div>
+            <div style={{width:'100%'}}>
             <h2 className="collection-title">Featured Jobs</h2>
             <Row className="collections">
             {this.props.newData && this.props.newData.map((hash , i) => {
