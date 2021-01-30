@@ -7,6 +7,7 @@ import '../../styles/JobDescription.scss';
 import {fetchData} from '../../actions/categoryActions';
 import LazyImage from '../../controllers/LazyImage';
 import Carousel from 'react-bootstrap/Carousel';
+import { UserPriceDetail } from "../../controllers/UserPriceDetail";
 
 
 class JobDescription extends Component {
@@ -55,7 +56,7 @@ class JobDescription extends Component {
                         </div>
                     </Col>
                     <Col md={4} xs={12}>
-                        <h4>About Coustomer</h4>
+                        <UserPriceDetail></UserPriceDetail>
                     </Col>
                     </>
             }
