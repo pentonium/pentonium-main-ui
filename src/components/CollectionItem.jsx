@@ -20,7 +20,7 @@ class CollectionItem extends Component {
             <>
                 {this.props.hashedData &&
                     <Col key={this.props.index} md={this.props.column ? parseInt(this.props.column , 10) : 3} xs={12}> 
-                    <a>   
+                    <>   
                     <div className="card">
                         <Carousel>
                             {this.props.hashedData.imageHash && this.props.hashedData.imageHash.map((image , i) => {
@@ -37,15 +37,16 @@ class CollectionItem extends Component {
                                 )  
                             })}
                         </Carousel>
-                        
+                        <a href={'/jobs/'+this.props.hash}>
                         <div class="card-body">
                         <h5 class="card-title">{this.props.hashedData.title}</h5>
                         <p class="card-text">{this.props.hashedData.description}</p>
                         <p class="card-text"><small class="text-muted">{this.props.hashedData.duration}</small>
                         <button class="btn btn-primary"><a href={`/editData/${this.props.hash}`}>Edit</a></button></p>
                         </div>
+                        </a>
                     </div>
-                    </a>
+                    </>
                 </Col>
                 }
             </>
