@@ -16,8 +16,10 @@ class JobDescription extends Component {
 
     componentDidMount(){
         const jobId = this.props.match.params.jobId;
-        if(jobId){    
-            // this.props.fetchJobData(parseInt(jobId , 10));
+        if(jobId == 1 || jobId == 2 || jobId == 3 || jobId == 4 || jobId == 5){    
+            this.props.fetchJobData(parseInt(jobId , 10));
+        } else{
+            
             this.props.fetchHashJobData(jobId);
         }
     }
