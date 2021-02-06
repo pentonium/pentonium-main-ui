@@ -11,7 +11,6 @@
     "ipfs": "^0.53.2",
     "font-awesome": "^4.7.0",
     "ipfs-api": "^26.1.2",
-    "node-sass": "^4.0.0",
     "react": "^17.0.1",
     "react-bootstrap": "^1.4.3",
     "react-dom": "^17.0.1",
@@ -49,5 +48,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "node-sass": "^4.14.1",
+    "sass": "^1.32.6"
   }
 }
