@@ -11,6 +11,7 @@ import Header from "./components/header/Header";
 import Footer from './components/footer/Footer';
 import './styles/global.scss';
 import { Container } from "react-bootstrap";
+import BreadCrumb from "./controllers/SiteBreadCrumb";
 
 class App extends Component {
   state = {
@@ -23,6 +24,7 @@ class App extends Component {
     return (
       <div className="App">
         <Header></Header>
+        <BreadCrumb></BreadCrumb>
         <Container className="body-padding">
           <Switch>
               {routes.map((route, i) => (

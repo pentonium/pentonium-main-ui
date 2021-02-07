@@ -1,6 +1,7 @@
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import '../styles/UserPriceDetail.scss';
+import Button from 'react-bootstrap/Button'
 
 export const UserPriceDetail = (props) => {
     return (
@@ -32,6 +33,9 @@ export const UserPriceDetail = (props) => {
                         <li>E-Commerce Functionality</li>
                         <li>15 Products</li>
                     </ul>
+                    <Button variant="primary" size="md" block>
+                        Place Order
+                    </Button>
                 </div>
             </Tab>
             <Tab eventKey="standard" title="Standard">
@@ -41,6 +45,9 @@ export const UserPriceDetail = (props) => {
                 {/* <Sonnet /> */}
             </Tab>
         </Tabs>
+        <Button variant="outline-secondary" size="sm" block>
+            Contact seller
+        </Button>
         </>
     )
 }
