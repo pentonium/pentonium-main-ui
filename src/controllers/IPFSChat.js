@@ -1,8 +1,10 @@
 import IPFS from 'ipfs';
 import BufferPackage from 'buffer';
+import Room from 'ipfs-pubsub-room'
+
 const Buffer = BufferPackage.Buffer;
 
-
+let room = null;
 export default class IPFSChat{
 
     constructor(){
@@ -14,8 +16,10 @@ export default class IPFSChat{
         if(!this.node){
             this.node = await IPFS.create(
                 {
-                    EXPERIMENTAL: { pubsub: true }
-                });
+                    EXPERIMENTAL: { pubsub: true },
+                    repo: (() => `repo-${Math.random()}`)()
+                });   
+            this.ready = true;    
         }
     }
     
@@ -59,6 +63,8 @@ export default class IPFSChat{
             }
             console.log(`subscribed to ${topic}`)
         })
+        // room = new Room(this.node , 'pubsub-demo');
+        // room.on('peer joined' , (peer) => console.log('peer joined' , peer));
 
     }
 
@@ -83,15 +89,16 @@ export default class IPFSChat{
 
     sendNewMsg(topic, newMsg) {
     	console.log('sendNewMsg received: ', newMsg)
-        const msg = Buffer.from(newMsg)
+        // const msg = Buffer.from(newMsg)
 
-        this.node.pubsub.publish(topic, msg, (err) => {
+        this.node.pubsub.publish(topic, newMsg, (err) => {
             if (err) {
                 return console.error(`failed to publish to ${topic}`, err)
             }
             // msg was broadcasted
             console.log(`published to ${topic}`)
         })
+        // room.on('message' , (message) => console.log('got message from' , message.from));
     }
 
     // return {
