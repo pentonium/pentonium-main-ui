@@ -1,95 +1,107 @@
-import React, {Component} from 'react';
-import IPFSChat from '../../controllers/IPFSChat';
-import IPFS from 'ipfs-api';
+import React, { Component } from "react";
+import IPFSChat from "../../controllers/IPFSChat";
+import IPFS from 'ipfs';
+import Room from 'ipfs-pubsub-room'
+import {Modal} from 'react-bootstrap';
+import Button from 'react-bootstrap/Button'
+let IPFSChatInstance = null;
+class ChatPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      visibleDrawer: false,
+      makeDrawer: false,
+      myName: "",
+      myID: "",
+      currentMsg: "",
+      peers: [],
+      selectedPeer: "global",
+      allMessages: {
+        global: [],
+      },
+      show:false
+    };
+    this.connectPeers = this.connectPeers.bind(this);
+    this.messageReceived = this.messageReceived.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.subscribeB = this.subscribeB.bind(this);
+    this.subscribeA = this.subscribeA.bind(this);
+    this.sendMessage  = this.sendMessage.bind(this);
+    this.msgHandler = this.msgHandler.bind(this);
+  }
 
-let IPFSChatInstance = null
-let node = null
-class ChatPage extends Component{
-	constructor(props){
-		super(props);
-		this.state = {
-			visibleDrawer: false,
-			makeDrawer: false,
-			myName: '',
-			myID: '',
-			currentMsg: '',
-			peers: [],
-			selectedPeer: 'global',
-			allMessages: {
-				'global': []
-			}
-		}
-		IPFSChatInstance = new IPFSChat();
-		IPFSChatInstance.getID()
-			.then(myID => {
-				this.setState({ myID });
-			})
-			.then(() => {
-				IPFSChatInstance.newSubscribe('global', this.globalMsgHandler)
-				IPFSChatInstance.newSubscribe('name-service', this.nameServiceHandler)
-				IPFSChatInstance.newSubscribe('private-chat', this.privateChatHandler)
-			});
-		// try 
-		// {
-		// 	this.initializeNode().then(function(chat){
-		// 		chat.on('ready', async () => {
-		// 			let nodeID = await node.id();
-		// 			// this.ready = true;
-		// 			console.log(nodeID);
-		// 		})
-		// 		console.log('In new');
-		// 	});
-		// }catch(err){
-		// 	console.log(err);
-		// }
-		// try{
-		// 	node.on('ready', async () => {
-        //         let nodeID = await node.id();
-		// 		// this.ready = true;
-		// 		console.log(nodeID);
-        //     })
-			
-		// }catch(error){
-		// 	console.log(error);
-		// }
-		
-	}
+  async componentDidMount() {
+    IPFSChatInstance = new IPFSChat();
+    await IPFSChatInstance.connect();
+    const id = await IPFSChatInstance.getID();
+    console.log(id);
+    this.setState({myID:id});
+  }
 
-	initializeNode = () => {
-		return new Promise((resolve, reject) => {
-		try 
-		{
-			node = new IPFS({
-				EXPERIMENTAL: { pubsub: true },
-				repo: (() => `repo-${Math.random()}`)(),
-				config: {
-					Addresses: {
-						Swarm: [
-							'/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star'
-						]
-					}
-				}
-			});
-			resolve(node);
-			}catch(err){
-				console.log(err);
-			}
-		})
-	}
+  messageReceived(msg){
+    console.log('Message' , msg);
+  }
 
-	componentDidMount(){
-		
-	}
-	
-	render(){
-		return(
-			<div>
-				<div id="main">
-				<div class="controls">
-				<input id="name" type="text" value={this.state.myName}
-						placeholder="Pick a name (or remain anonymous)"/>
-				</div>
-				{/* <div class="output"
+  connectPeers(){
+      this.setState({show:true});
+      // IPFSChatInstance.sendNewMsg('demo','hello');
+  }
+
+  async subscribeB(){
+
+    IPFSChatInstance.newSubscribe('B' , this.msgHandler);
+    this.setState({myID:'A' , myName:'B'})
+    // IPFSChatInstance.sendNewMsg('B','Hi from A');
+  }
+
+  async subscribeA(){
+    IPFSChatInstance.newSubscribe('A' , this.msgHandler);
+    this.setState({myID:'B' , myName:'A'});
+    // IPFSChatInstance.sendNewMsg('A','Hi from B');
+  }
+
+  msgHandler(msg){
+    console.log('Message received from' , msg);
+  }
+
+  handleClose(){
+    this.setState({show:false});
+  }
+
+  sendMessage(){
+    IPFSChatInstance.sendNewMsg(this.state.myName,`${this.state.myID}` );
+  }
+
+  render() {
+    return (
+      <div>
+        <div id="main">
+          <div class="controls">
+            <input
+              id="name"
+              type="text"
+              value={this.state.myName}
+              placeholder="Pick a name (or remain anonymous)"
+            />
+          </div>
+
+          <button onClick={this.connectPeers}>Send</button>
+          <button onClick={this.sendMessage}>Send Message</button>
+          <Modal show={this.state.show} onHide={this.handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Modal heading</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={this.subscribeB}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={this.subscribeA}>
+                Save Changes
+              </Button>
+            </Modal.Footer>
+          </Modal>
+          {/* <div class="output"
 					data-bind="foreach: { data: messages, as: 'msg' }">
 				<div>
 					<a data-bind="text: msg.name,
@@ -103,10 +115,10 @@ class ChatPage extends Component{
 				<input id="text" type="text" placeholder="Type a message"
 						data-bind="value: message, enable: subscribed" />
 				</div> */}
-			</div>
-			</div>
-		)
-	}
+        </div>
+      </div>
+    );
+  }
 }
 
-export default ChatPage
+export default ChatPage;
