@@ -1,14 +1,22 @@
-import React, { Component } from "react";
+import React, { Component , createRef } from "react";
 import { connect } from 'react-redux';
 import '../../styles/Header.scss';
 import Web3 from 'web3';
 import {fetchParentCategories} from '../../actions/commonAction';
+import {fetchCategories} from '../../actions/categoryActions';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropDownMenuItem from '../../components/DropDownMenuItem';
 
 
 
 class Header extends Component {
     constructor(props){
         super(props)
+        this.state = {
+            'menuOpen':[]
+        }
+        this.toggleMenuOpen = this.toggleMenuOpen.bind(this);
+
     }
 
     componentWillMount(){
@@ -31,6 +39,7 @@ class Header extends Component {
         }
     }
 
+
     onClick(){
         this.connectWithMetaMask();
     }
@@ -39,7 +48,16 @@ class Header extends Component {
         window.location.href="/post-job";
     }
 
+    toggleMenuOpen(index , value , id){
+            this.state.menuOpen[index] = value;
+            if(value == true){
+                this.props.fetchCategories(id);
+            }
+            this.setState({ menuOpen: this.state.menuOpen })
+    }
+
     render() { 
+        console.log('Render' , this.props);
         return (
             <>
             <header className="header">
@@ -72,7 +90,22 @@ class Header extends Component {
                 <div className="container">
                 <ul className="nav-items">
                 {this.props.parentCategories.map((value, index) => {
-                    return <li key={index} className="category-nav"><a href={'/categories/'+value.id}>{value.name}</a></li>
+                    return (
+                        <li> 
+                        <Dropdown onMouseEnter={() => this.toggleMenuOpen(index , true , value.id)}
+                        onMouseLeave={() => this.toggleMenuOpen(index , false , value.id)}
+                        show={this.state.menuOpen[index]}>       
+                            <Dropdown.Toggle variant="success" id="dropdown-basic{index}">
+                                <span href={'/categories/'+value.id}>{value.name}</span>
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                {this.props.categories ? this.props.categories.categories.map((value , index) => {
+                                    return(<p>{value.name}</p>)
+                                }): ''}
+                            </Dropdown.Menu>
+                        </Dropdown>
+                        </li>
+                    )
                 })}
                 </ul> 
                 </div>        
@@ -84,13 +117,15 @@ class Header extends Component {
 
 function mapStateToProps(state){
     return {
-        parentCategories: state.common.parentCategories
+        parentCategories: state.common.parentCategories,
+        categories: state.category.categoryItems
       };
   }
   
 function mapDispatchToProps(dispatch){
     return{
-        fetchParentCategories: () => dispatch(fetchParentCategories())
+        fetchParentCategories: () => dispatch(fetchParentCategories()),
+        fetchCategories: (id) => dispatch(fetchCategories(id))
     }
 }
  

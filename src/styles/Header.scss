@@ -46,6 +46,30 @@
     list-style: none;
     margin: 0;
     padding: 0;
+    .btn-success{
+        color: black;
+        background-color: white;
+        border-color: white;
+        border-radius: 0px;
+        padding-left: 0px;
+        border-bottom: 3px solid transparent;
+        &:focus{
+            box-shadow: none;
+        }
+    }
+    .btn-success:not(:disabled):not(.disabled).active:focus, .btn-success:not(:disabled):not(.disabled):active:focus, .show>.btn-success.dropdown-toggle:focus{
+        box-shadow: none;
+    }
+    .dropdown-toggle::after{
+        border: none;
+    }
+    .btn-success:not(:disabled):not(.disabled).active, .btn-success:not(:disabled):not(.disabled):active, .show>.btn-success.dropdown-toggle{
+        color: black;
+        background-color: white;
+        border-color: white;
+        border-bottom: 3px solid green;
+    }
+
     .nav-item{
         margin-left: 2.4rem;
         cursor: pointer;
