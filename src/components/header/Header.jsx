@@ -96,11 +96,11 @@ class Header extends Component {
                         onMouseLeave={() => this.toggleMenuOpen(index , false , value.id)}
                         show={this.state.menuOpen[index]}>       
                             <Dropdown.Toggle variant="success" id="dropdown-basic{index}">
-                                <span href={'/categories/'+value.id}>{value.name}</span>
+                                <span >{value.name}</span>
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
-                                {this.props.categories ? this.props.categories.categories.map((value , index) => {
-                                    return(<p>{value.name}</p>)
+                                {this.props.categories ? this.props.categories.categories.map((value1 , index) => {
+                                return(<Dropdown.Item href={'/categories/'+value.id + '/' + value1.id}>{value1.name}</Dropdown.Item>)
                                 }): ''}
                             </Dropdown.Menu>
                         </Dropdown>
