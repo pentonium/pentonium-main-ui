@@ -1,6 +1,5 @@
 import IPFS from 'ipfs';
 import BufferPackage from 'buffer';
-import Room from 'ipfs-pubsub-room'
 
 const Buffer = BufferPackage.Buffer;
 
