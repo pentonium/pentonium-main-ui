@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import IPFSChat from "../../controllers/IPFSChat";
 import IPFS from 'ipfs';
-import Room from 'ipfs-pubsub-room'
 import {Modal} from 'react-bootstrap';
 import Button from 'react-bootstrap/Button'
 let IPFSChatInstance = null;
