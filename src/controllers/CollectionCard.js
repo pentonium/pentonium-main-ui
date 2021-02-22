@@ -30,7 +30,7 @@ export const CollectionCard = (props) => {
         </Row>
         <div className="button-center-container"> 
          {props.items.length > 4 &&
-            <button className="btn btn-outline-primary" onClick={() => viewAllItems()}>View All</button>
+            <button className="btn btn-secondary" onClick={() => viewAllItems()}>View All</button>
         }
         </div>
         </>

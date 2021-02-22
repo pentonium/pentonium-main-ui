@@ -43,7 +43,7 @@ class Category extends Component {
         const { currentPage } = this.state;
         return (
             <div className="row">
-                { this.props.jobCategory &&
+                { this.props.jobCategory && this.props.jobCategory.length > 0 ?
                 <>
                     <CollectionCard items={this.props.jobCategory}></CollectionCard>
                     <Pagination aria-label="Page navigation example">
@@ -63,8 +63,10 @@ class Category extends Component {
                                 </Pagination.Item> 
                                 
                     </Pagination>
-                </>
-
+                </>:
+                <div>
+                    No Items found
+                </div>
                 }
             </div>
          );

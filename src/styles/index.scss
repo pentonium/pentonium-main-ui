@@ -1,0 +1,20 @@
+@import './base/variables.scss';  //Vairable file 
+
+@import './base/mixins.scss';  //Mixins file
+
+
+
+
+//Header and Footer scss
+@import './Header.scss';
+@import './Footer.scss';
+
+
+//Particular pages scss
+@import './Collections.scss';
+@import './Category.scss';
+@import './Customer.scss';
+@import './JobDescription.scss';
+@import './UserPriceDetail.scss';
+
+@import './global.scss';

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import {  Row } from "react-bootstrap";
 import FeaturedCollection from "../FeaturedCollection";
 import RatedCollection from "../RatedCollection";
-import '../../styles/Collections.scss';
 import NewCollection from "../NewCollection";
 
 class Home extends Component {
@@ -12,7 +11,7 @@ class Home extends Component {
                 <Row className="collections-list">
                 <FeaturedCollection></FeaturedCollection>
                 <RatedCollection></RatedCollection>
-                <NewCollection></NewCollection>
+                {/* <NewCollection></NewCollection> */}
                 </Row>
          );
     }

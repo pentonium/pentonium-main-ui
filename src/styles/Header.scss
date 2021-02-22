@@ -27,6 +27,7 @@
     margin-left: auto;
     margin-right: auto;
     height: 60px;
+    background-color: $headerBgColor;
     border-bottom: 1px solid #e4e5e7;
 }
 
@@ -38,6 +39,30 @@
 
 .nav-section{
     width: 80%;
+    .connect-btn{
+        border-radius: 4rem;
+        padding: 0.625rem 1.875rem;
+    }
+    .post-btn{
+        border-radius: 4rem;
+        padding: 0.5rem 1.875rem;
+    }
+}
+.dropdown{
+    
+    .dropdown-menu{
+        top: -2px!important;
+        left: -15px!important;
+    }
+    .dropdown-item{
+        color: $primaryColor;
+        padding-left: 1rem;
+        &:hover{
+            background-color: $faceColor;
+            color: $whiteColor;
+        }
+    }
+
 }
 .nav-items{
     display: flex;
@@ -47,9 +72,9 @@
     margin: 0;
     padding: 0;
     .btn-success{
-        color: black;
-        background-color: white;
-        border-color: white;
+        color:$secondaryColor;
+        background-color: transparent;
+        border-color: transparent;
         border-radius: 0px;
         padding-left: 0px;
         border-bottom: 3px solid transparent;
@@ -64,15 +89,15 @@
         border: none;
     }
     .btn-success:not(:disabled):not(.disabled).active, .btn-success:not(:disabled):not(.disabled):active, .show>.btn-success.dropdown-toggle{
-        color: black;
-        background-color: white;
-        border-color: white;
-        border-bottom: 3px solid green;
+        color: $faceColor;
+        background-color: transparent;
+        border-color: transparent;
+        border-bottom: 3px solid $faceColor;
     }
-
     .nav-item{
-        margin-left: 2.4rem;
+        margin-left: 1.4rem;
         cursor: pointer;
+        color: $primaryColor;
     }
     .category-nav{
         margin-right: 2.4rem;

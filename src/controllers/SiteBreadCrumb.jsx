@@ -13,7 +13,8 @@ const Breadcrumbs = props => {
     {pathnames.length > 0 ? (
         <Breadcrumb.Item onClick={() => history.push("/")}>Home</Breadcrumb.Item>
       ) : (
-        <Breadcrumb.Item active>Home</Breadcrumb.Item>
+        // <Breadcrumb.Item active>Home</Breadcrumb.Item>
+        ''
       )}
       {pathnames.map((name, index) => {
         const routeTo = `/${pathnames.slice(0, index + 1).join("/")}`;
