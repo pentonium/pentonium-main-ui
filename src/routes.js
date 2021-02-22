@@ -6,6 +6,7 @@ import JobPost from "./components/pages/JobPost";
 import JobEdit from "./components/pages/JobEdit";
 import IPFSChat from "./controllers/IPFSChat";
 import ChatPage from "./components/pages/ChatPage";
+import Category from "./components/pages/Category";
 
 export const routes = [
     {
@@ -17,6 +18,11 @@ export const routes = [
         path: "/categories/:id",
         exact: true,
         component: Categories
+    },
+    {
+        path: "/categories/:parentId/:categoryId",
+        exact: true,
+        component: Category
     },
     {
         path: "/jobs/:jobId",

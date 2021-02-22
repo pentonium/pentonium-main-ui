@@ -1,11 +1,9 @@
 import React, { Component , createRef } from "react";
 import { connect } from 'react-redux';
-import '../../styles/Header.scss';
 import Web3 from 'web3';
 import {fetchParentCategories} from '../../actions/commonAction';
 import {fetchCategories} from '../../actions/categoryActions';
 import Dropdown from 'react-bootstrap/Dropdown';
-import DropDownMenuItem from '../../components/DropDownMenuItem';
 
 
 
@@ -72,12 +70,12 @@ class Header extends Component {
                             <li key="catalog" className="nav-item">Catalogue</li>
                             <li key="explore" className="nav-item">Explore</li>
                             <li key="inr" className="nav-item">
-                                <button className="btn btn-secondary" onClick={this.navigateToPost.bind(this)}>
+                                <button className="btn btn-secondary post-btn" onClick={this.navigateToPost.bind(this)}>
                                     Post
                                 </button>
                             </li>
                             <li key="connect" className="nav-item">
-                                <button className="btn btn-primary" onClick={this.onClick.bind(this)}>
+                                <button className="btn btn-primary connect-btn" onClick={this.onClick.bind(this)}>
                                     Connect
                                 </button>
                             </li>
@@ -96,11 +94,11 @@ class Header extends Component {
                         onMouseLeave={() => this.toggleMenuOpen(index , false , value.id)}
                         show={this.state.menuOpen[index]}>       
                             <Dropdown.Toggle variant="success" id="dropdown-basic{index}">
-                                <span href={'/categories/'+value.id}>{value.name}</span>
+                                <span >{value.name}</span>
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
-                                {this.props.categories ? this.props.categories.categories.map((value , index) => {
-                                    return(<p>{value.name}</p>)
+                                {this.props.categories ? this.props.categories.categories.map((value1 , index) => {
+                                return(<Dropdown.Item href={'/categories/'+value.id + '/' + value1.id}>{value1.name}</Dropdown.Item>)
                                 }): ''}
                             </Dropdown.Menu>
                         </Dropdown>

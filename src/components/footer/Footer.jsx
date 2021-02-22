@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import '../../styles/Footer.scss';
 import Web3 from 'web3';
 import {fetchParentCategories} from '../../actions/commonAction';
 import { Row, Col , Badge } from 'react-bootstrap';

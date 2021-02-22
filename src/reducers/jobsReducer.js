@@ -1,4 +1,4 @@
-import {FETCH_FEATURED_JOBS , FETCH_HIGHRATED_JOBS , FETCH_NEW_JOBS , FETCH_JOB_DATA, FETCH_HASH_JOB_DATA} from '../constants';
+import {FETCH_FEATURED_JOBS , FETCH_HIGHRATED_JOBS , FETCH_NEW_JOBS , FETCH_JOB_DATA, FETCH_HASH_JOB_DATA, FETCH_JOBS_BY_CATEGORY} from '../constants';
 import {sortJSONData} from '../helpers';
 import ipfs from '../ipfs';
 
@@ -19,6 +19,14 @@ export default function(state = initialState, action) {
         ...state,
         featuredData:action.payload.filter(value=>{
             return value.isFeatured === true
+        })
+    }
+    case FETCH_JOBS_BY_CATEGORY:
+      console.log('In h=jobs' , action.categoryId);
+      return {
+        ...state,
+        categoryJob:action.payload.filter(value=>{
+            return value.categoryId === action.categoryId
         })
     }
     case FETCH_HIGHRATED_JOBS:

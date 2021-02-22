@@ -1,5 +1,9 @@
+body{
+    font-family: $fontFamily;
+}
+
 .body-padding{
-    margin-top: 2rem;
+    margin-top: 1rem;
     margin-bottom: 2rem;
 }
 
@@ -16,5 +20,41 @@ a{
     &:hover{
         text-decoration: none;
         color: black;
+    }
+}
+
+.btn-primary{
+    @include primaryButton;
+}
+.btn-primary:not(:disabled):not(.disabled):active{
+    @include primaryButton;
+}
+
+.btn-secondary:not(:disabled):not(.disabled):active:focus{
+    @include secondaryButton;
+}
+
+.btn-secondary{
+    @include secondaryButton;
+}
+
+.text-muted{
+    color: $primaryColorLighter!important;
+}
+
+.breadcrumb-container{
+    padding-left: 0px;
+}
+
+.breadcrumb{
+    background-color: transparent;
+    padding: .75rem 1rem 0rem 1rem;
+    .breadcrumb-item{
+        a{
+            color: $faceColor;
+        }
+    }
+    .breadcrumb-item.active{
+        color: $primaryColor;
     }
 }

@@ -1,0 +1,36 @@
+@mixin primaryButton {
+    background-color: $primaryColor;
+    color: $whiteColor;
+    border-color: transparent;
+    &:hover,&:active{
+        background-color:$faceColorlighter;
+        transform: scale(1.05);
+    }
+    &:focus{
+        background-color:$faceColorlighter;
+        transform: scale(1.05);
+        box-shadow: none;
+    }
+}
+
+
+@mixin secondaryButton {
+    border-color: transparent;
+    color:$primaryColorLighter;
+    border: 0.125rem solid $primaryColorLighter1;
+    background: transparent;
+    &:hover,&:active{
+        transform: scale(1.05);
+        border-color: $faceColor;
+        background: transparent;
+        color:$faceColor;
+    }
+    &:focus{
+        transform: scale(1.05);
+        border-color: $faceColor;
+        background: transparent;
+        background: transparent;
+        color:$faceColor;
+        box-shadow: none;
+    }
+  }

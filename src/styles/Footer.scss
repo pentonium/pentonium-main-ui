@@ -3,7 +3,17 @@
         list-style: none;
         li{
             margin-bottom: 1rem;
+            a{
+                color: $footerFontColor;
+                &:hover{
+                    color:$footerLinkHover;
+                    text-decoration: none;
+                }
+            }
         }
+    }
+    h6{
+        font-weight: $fontWeight700;
     }
     .container{
         align-items: flex-start;
@@ -21,6 +31,7 @@
 }
 
 .footer-outer{
-    border-top: 1px solid #cccccc;
+    background-color: $footerBgColor;
+    color: $footerFontColor;
     padding-top: 3rem;
 }
