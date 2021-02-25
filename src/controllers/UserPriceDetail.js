@@ -1,6 +1,5 @@
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
-import '../styles/UserPriceDetail.scss';
 import Button from 'react-bootstrap/Button'
 
 export const UserPriceDetail = (props) => {
