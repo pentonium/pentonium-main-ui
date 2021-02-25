@@ -4,6 +4,10 @@
         min-height: 450px;
         max-height: 450px;
         overflow: hidden;
+        &:hover , &:active{
+            box-shadow: #1c1c2840 0px 0.5rem 1rem, #1c1c2833 0px 0px 0.125rem;
+            transform: scale(1.03);
+        }
     }
     .card-title{
         display: block;
@@ -29,7 +33,7 @@
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
-        color: $primaryColor;
+        color: $secondaryColor;
     }
 }
 

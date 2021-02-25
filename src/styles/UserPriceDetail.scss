@@ -1,21 +1,21 @@
 .nav-tabs{
     .nav-link{
         font-weight: 700;
-        background-color: #fafafa;
-        color: #7a7d85;
-        border: 1px solid #dadbdd!important;      
+        background-color: $footerFontColor;
+        color: rgb(102, 102, 115);    
         border-top-left-radius: 0px!important;
         border-top-right-radius: 0px!important;
-        padding: 0.5rem 1.65rem;
+        padding: 0.5rem 1.595rem;
     }
     .nav-link.active{
-        color: #1dbf73!important;
-        border-bottom: 3px solid #1dbf73!important;
+        color: $whiteColor!important;
+        background-color: $faceColor!important;
     }
 }
 
 .tab-content{
     margin-top: 0px!important;
+    margin-bottom: 1rem;
     border: 1px solid #dadbdd;
     padding: 0px 20px;
     .tab-content-header{

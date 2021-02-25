@@ -1,6 +1,5 @@
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
-import '../styles/UserPriceDetail.scss';
 import Button from 'react-bootstrap/Button'
 
 export const UserPriceDetail = (props) => {
@@ -45,7 +44,7 @@ export const UserPriceDetail = (props) => {
                 {/* <Sonnet /> */}
             </Tab>
         </Tabs>
-        <Button variant="outline-secondary" size="sm" block>
+        <Button variant="secondary" size="sm" block>
             Contact seller
         </Button>
         </>

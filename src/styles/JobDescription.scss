@@ -5,17 +5,32 @@
             margin-top: 1rem;
         }
     }
+    .job-title{
+        color: $primaryColor;
+        font-weight: $fontWeight700;
+    }
+    h4 , h5{
+        color: $primaryColor;
+        font-weight: $fontWeight700;
+    }
+    p{
+        color: $secondaryColor;
+    }
     .customer-data{
         .customer-image{
             img{
                 width: 4rem;
                 height: 4rem;
-                border-radius: 50%;
+                border-radius: 15%;
             }
         }
         .customer-name{
             margin-left: 1rem;
             font-weight: 700;
+            color: $primaryColor;
+            &:hover{
+                color: $faceColor;
+            }
         }
     }
     .job-details{
@@ -26,6 +41,9 @@
         }
         .badge.badge-pill{
             margin-right: 1rem;
+            background-color: $faceColor1;
+            color: $whiteColor;
+            padding: 10px 20px;
         }
     }
     

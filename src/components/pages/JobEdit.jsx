@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { Row, Col , Badge , InputGroup , Form , Button} from 'react-bootstrap'
-import '../../styles/JobDescription.scss';
+import { Row, Col , Badge , InputGroup , Form , Button} from 'react-bootstrap';
 import {fetchParentCategories} from '../../actions/commonAction';
 import {fetchCategories} from '../../actions/categoryActions';
 import ReactTagInput from "@pathofdev/react-tag-input";
