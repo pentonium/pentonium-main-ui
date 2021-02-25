@@ -1,8 +1,13 @@
 
 .profile-section{
     text-align: center;
+    h5{
+        color: $primaryColor;
+        font-weight: $fontWeight700;
+    }
     p{
         word-break: break-all;
+        color: $secondaryColor;
     }
 }
 .user-image{
@@ -21,11 +26,28 @@
 
 .low-profile-section{
     margin-top: 3rem;
+    h5{
+        color: $primaryColor;
+        font-weight: $fontWeight700;
+    }
     .description-text{
+        color: $secondaryColor;
         margin-top: 1rem;
     }
     .badge.badge-pill{
-        margin-right: 1rem;
+        margin-right: 0.3rem;
+        background-color: $faceColor1;
+        color: $whiteColor;
+        padding: 10px 20px;
+        margin-bottom: 0.5rem;
+    }
+}
+
+.collections-seller{
+    h1{
+        color: $primaryColor;
+        font-weight: $fontWeight700;
+        text-transform: capitalize;
     }
 }
 
