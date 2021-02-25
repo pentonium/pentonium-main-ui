@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import '../../styles/Customer.scss';
 import {fetchCustomerData} from '../../actions/commonAction';
 import { withRouter } from 'react-router-dom';
 import { Row, Col , Badge } from 'react-bootstrap'
@@ -63,7 +62,7 @@ class Customer extends Component {
                     </Row>
                 </Col>
                 <Col md={8} className="collections-seller">
-                        <h1 style={{textTransform: 'capitalize'}}>{this.props.customerData.name} Gigs</h1>
+                        <h1>{this.props.customerData.name} Gigs</h1>
                         {this.props.jobData && <CollectionCard items={this.props.jobData} column="6"></CollectionCard>}
                 </Col>
                 </>

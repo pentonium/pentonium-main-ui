@@ -197,9 +197,9 @@ class JobPost extends Component {
               />
             </Form.Group>
             <Form.Group controlId="validationCustom08">
-                <h6>Selected Image:</h6>  
+                <h6>Selected Images:</h6>  
                 {this.state.previewImage && this.state.previewImage.map((preview) => {
-                  return <img className="edit-image" style={{'width':'200px','marginRight':'10px','marginBottom':'10px'}} src={preview} alt="" />
+                  return <img className="edit-image" style={{'width':'200px','height':'100px','marginRight':'10px','marginBottom':'10px'}} src={preview} alt="" />
                 })}   
             </Form.Group>
             <Form.Group controlId="validationCustom06">

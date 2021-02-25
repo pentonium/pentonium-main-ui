@@ -211,7 +211,8 @@ class JobEdit extends Component {
               />
             </Form.Group>
             <Form.Group controlId="validationCustom08">
-                <h6>Selected Image:</h6>  
+                <h6>Selected Images:</h6>  
+                <div className="lazy-loaded-images">
                 {this.state.imageHash && this.state.imageHash.map((preview , i) => {
                   return <LazyImage
                   key={i}
@@ -219,7 +220,8 @@ class JobEdit extends Component {
                   alt="EDdit image"
                   />
                   // <img className="edit-image" style={{'width':'200px','marginRight':'10px','marginBottom':'10px'}} src={`https://ipfs.io/ipfs/${preview}`} alt="" />
-                })}   
+                })}  
+                </div> 
             </Form.Group>
             <Form.Group controlId="validationCustom06">
                     <h6>Upload New Image</h6>  

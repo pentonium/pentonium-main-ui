@@ -23,9 +23,14 @@
 
 .collections{
     .card{
+        border-radius: 20px;
+        border: 0px;
         .card-img-top{
             min-height: 16rem;
             max-height: 16rem;
+            padding: 20px;
+            height: 160px;
+            object-fit: cover;
         }
     }
 }
