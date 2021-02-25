@@ -44,7 +44,7 @@ export const UserPriceDetail = (props) => {
                 {/* <Sonnet /> */}
             </Tab>
         </Tabs>
-        <Button variant="outline-secondary" size="sm" block>
+        <Button variant="secondary" size="sm" block>
             Contact seller
         </Button>
         </>
