@@ -76,3 +76,45 @@ a{
         color: $primaryColor;
     }
 }
+
+.hide-elements{
+    display: none;
+}
+
+.pagination{
+    margin: 32px 0px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    li.page-item{
+        margin: 5px;
+        border: 1px solid #ccc;
+        .page-link{
+            color: #0e0e0f;
+            margin-left: 0px;
+        }
+    }
+    .hide-arrow{
+        visibility: hidden;
+    }
+    .page-item:first-child .page-link{
+        border-radius: 0px;
+    }
+    .page-link:focus{
+        box-shadow: 0 0 0 0.1rem $primaryColor;
+    }
+    .page-item:last-child .page-link{
+        border-radius: 0px;
+    }
+    li.page-item.active{  
+        color: $whiteColor;
+        background-color: $primaryColor;
+        font-weight: $fontWeight700;
+        pointer-events: none;
+        .page-link{
+            background-color: $primaryColor;
+            border-color: $primaryColor;
+            color: $whiteColor;
+        }
+    }
+}
