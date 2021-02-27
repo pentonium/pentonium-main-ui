@@ -1,13 +1,11 @@
 .collections{
-    margin:3rem 0rem;
+    margin-bottom: 3rem;
     .card{
         min-height: 450px;
         max-height: 450px;
         overflow: hidden;
-        &:hover , &:active{
-            box-shadow: #1c1c2840 0px 0.5rem 1rem, #1c1c2833 0px 0px 0.125rem;
-            transform: scale(1.03);
-        }
+        box-shadow: #1c1c2840 0px 0.5rem 1rem, #1c1c2833 0px 0px 0.125rem;
+            // transform: scale(1.03)
     }
     .card-title{
         display: block;
@@ -42,6 +40,7 @@
     .collection-title{
         color:$primaryColor;
         font-weight: $fontWeight700;
+        margin-bottom: 2rem;
     }
 }
 

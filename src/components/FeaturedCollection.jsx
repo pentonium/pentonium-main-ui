@@ -16,7 +16,7 @@ class FeaturedCollection extends Component {
     render() { 
         
         return (
-            <div>
+            <div className="collections-content">
                 <h2 className="collection-title">Featured Jobs</h2>
                 {this.props.featuredData &&
                     <CollectionCard items={this.props.featuredData} link='/collection/featured' column="3"></CollectionCard>

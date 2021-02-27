@@ -9,7 +9,7 @@ const Breadcrumbs = props => {
   } = props;
   const pathnames = pathname.split("/").filter(x => x);
   return (
-    <Breadcrumb>
+    <Breadcrumb className={pathnames.length == 0 ? 'hide-elements':''}>
     {pathnames.length > 0 ? (
         <Breadcrumb.Item onClick={() => history.push("/")}>Home</Breadcrumb.Item>
       ) : (

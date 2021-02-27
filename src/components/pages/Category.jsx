@@ -48,9 +48,9 @@ class Category extends Component {
                     <CollectionCard items={this.props.jobCategory}></CollectionCard>
                     <Pagination aria-label="Page navigation example">
             
-                                <Pagination.Item disabled={currentPage <= 0} onClick={e => this.handleClick(e, currentPage - 1)} href="#">
+                                <Pagination.Prev className={currentPage <=0 ? 'hide-arrow':''} disabled={currentPage <= 0} onClick={e => this.handleClick(e, currentPage - 1)} href="#">
                                 
-                                </Pagination.Item>
+                                </Pagination.Prev>
 
                                 {[...Array(this.pagesCount)].map((page, i) => 
                                 <Pagination.Item active={i === currentPage} key={i} onClick={e => this.handleClick(e, i)} href="#">
@@ -58,9 +58,9 @@ class Category extends Component {
                                 </Pagination.Item>
                                 )}
 
-                                <Pagination.Item disabled={currentPage >= this.pagesCount - 1} onClick={e => this.handleClick(e, currentPage + 1)} href="#"> 
+                                <Pagination.Next className = {currentPage >= this.pagesCount - 1 ? 'hide-arrow':''} disabled={currentPage >= this.pagesCount - 1} onClick={e => this.handleClick(e, currentPage + 1)} href="#"> 
                                 
-                                </Pagination.Item> 
+                                </Pagination.Next> 
                                 
                     </Pagination>
                 </>:
