@@ -75,7 +75,7 @@ class ChatPage extends Component {
     return (
       <div>
         <div id="main">
-          <div class="controls">
+          <div className="controls">
             <input
               id="name"
               type="text"

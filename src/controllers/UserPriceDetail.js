@@ -20,10 +20,10 @@ export const UserPriceDetail = (props) => {
                         <span><i className="fa fa-hand-o-right"></i>3 Page Site</span>
                     </p>
                 </div>
-                <div class="tab-content-body">
+                <div className="tab-content-body">
                     <span style={{'marginRight':'10px'}}><b><i className="fa fa-clock-o"></i>1 Day Delivery</b></span>
                     <span><b><i className="fa fa-refresh"></i>Unlimited Revision</b></span>
-                    <ul class="user-feature">
+                    <ul className="user-feature">
                         <li>3 Pages</li>
                         <li>Design Customization</li>
                         <li>Content Upload</li>

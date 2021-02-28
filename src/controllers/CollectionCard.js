@@ -19,7 +19,7 @@ export const CollectionCard = (props) => {
                         <div className="card-body">
                         <h5 className="card-title">{list.jobTitle}</h5>
                         <p className="card-text">{list.description}</p>
-                            <p className="card-text"><small class="text-muted">{list.budget}</small></p>
+                            <p className="card-text"><small className="text-muted">{list.budget}</small></p>
                         </div>
                     </div>
                     </a>
