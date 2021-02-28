@@ -26,7 +26,7 @@ class CollectionItem extends Component {
                             {this.props.hashedData.imageHash && this.props.hashedData.imageHash.map((image , i) => {
                                 
                                 return(
-                                    <Carousel.Item class="card-img-top">
+                                    <Carousel.Item className="card-img-top">
                                         <LazyImage
                                             key={i}
                                             src={`https://ipfs.io/ipfs/${image}`}
@@ -38,11 +38,11 @@ class CollectionItem extends Component {
                             })}
                         </Carousel>
                         <a href={'/jobs/'+this.props.hash}>
-                        <div class="card-body">
-                        <h5 class="card-title">{this.props.hashedData.title}</h5>
-                        <p class="card-text">{this.props.hashedData.description}</p>
-                        <p class="card-text"><small class="text-muted">{this.props.hashedData.duration}</small>
-                        <button class="btn btn-primary"><a href={`/editData/${this.props.hash}`}>Edit</a></button></p>
+                        <div className="card-body">
+                        <h5 className="card-title">{this.props.hashedData.title}</h5>
+                        <p className="card-text">{this.props.hashedData.description}</p>
+                        <p className="card-text"><small className="text-muted">{this.props.hashedData.duration}</small>
+                        <button className="btn btn-primary"><a href={`/editData/${this.props.hash}`}>Edit</a></button></p>
                         </div>
                         </a>
                     </div>

@@ -18,7 +18,7 @@ class RatedCollection extends Component {
         
         return (
             <div className="collections-content">
-                <h2 class="collection-title">High Budgeted Jobs</h2>
+                <h2 className="collection-title">High Budgeted Jobs</h2>
                 {this.props.ratedData &&
                     <CollectionCard items={this.props.ratedData} link='/collection/highrated'></CollectionCard>
                 }

@@ -27,7 +27,7 @@ class Customer extends Component {
                     <Row className="top-profile-section">
                         <Col md={12}>
                             <div className="profile-section">
-                            <div class="user-image">
+                            <div className="user-image">
                                 <img src={this.props.customerData.image} alt="user-image"/>
                             </div>
                             <h5>{this.props.customerData.name}</h5>

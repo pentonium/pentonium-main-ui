@@ -27,6 +27,8 @@
     margin-left: auto;
     margin-right: auto;
     height: 60px;
+    position: fixed;
+    width: 100%;
     background-color: $headerBgColor;
     border-bottom: 1px solid #e4e5e7;
 }
@@ -37,8 +39,12 @@
     width: 20%;
 }
 
+.nav-mid-section{
+    width: 58%;
+}
+
 .nav-section{
-    width: 80%;
+    width: 22%;
     .connect-btn{
         border-radius: 4rem;
         padding: 0.625rem 1.875rem;
@@ -69,8 +75,33 @@
     justify-content: flex-end;
     align-items: center;
     list-style: none;
+    float: left;
     margin: 0;
     padding: 0;
+    &.mid{
+        li {
+            margin-right: 1rem;
+        }
+    }
+    .fa{
+        font-size: 0.8rem;
+        margin-left: 0.3rem;    
+    }
+    a{
+        color:$secondaryColor;
+        cursor: pointer;
+        &.active-nav{
+            span{color: $faceColor};
+        }
+        &:hover,&:active{
+            color: $faceColor;
+            text-decoration: none;
+        }
+        &:focus{
+            color: $faceColor;
+            text-decoration: none;
+        }
+    }
     .btn-success{
         color:$secondaryColor;
         background-color: transparent;
@@ -106,6 +137,69 @@
         a:hover{
             text-decoration: none;
         }
+    }
+}
+
+.rotate{
+    -moz-transition: all 0.4s linear;
+    -webkit-transition: all 0.4s linear;
+    transition: all 0.4s linear;
+}
+
+.rotate.down{
+    -moz-transform:rotate(180deg);
+    -webkit-transform:rotate(180deg);
+    transform:rotate(180deg);
+}
+
+.collapse , .collapsing{
+    div.nav-submenu{
+        // transition: visibility 0s, opacity 0.5s linear;
+        // visibility: hidden;
+        opacity: 0;
+    }
+}
+
+.collapse-content{
+    &::before{
+        display: block;
+        content: "";
+        bottom: 0px;
+        height: 20rem;
+        width: 100%;
+        position: absolute;
+        z-index: -1;
+        pointer-events: none;
+        box-shadow: #1c1c2861 0px 0px 1rem 0.25rem, #1c1c2861 0px 0px 0.125rem 0px;
+    }
+}
+
+.collapse , .collapsing , .collapse.show{
+    height: 0rem;
+    width: 100%;
+    left: 0px;
+    top: 60px;
+    display: flex;
+    transition: height 1s ease;
+    bottom: 0px;
+    align-items: center;
+    div.nav-submenu{
+        margin-right: 2rem;
+    }
+    z-index: -1;
+    position: absolute;
+    background: rgb(255, 255, 255);
+}
+
+.collapse.show{
+    height: 5rem;
+    display: flex;
+    div.nav-submenu{
+        // visibility: visible;
+        transition-delay: 90ms;
+        opacity: 1;
+        transition-duration: 600ms;
+        transform: translateY(0px);
     }
 }
 

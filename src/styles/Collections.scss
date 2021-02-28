@@ -37,6 +37,9 @@
 
 .collections-list{
     padding: 0px 15px;
+    .collections-content{
+        margin-top: 1rem;
+    }
     .collection-title{
         color:$primaryColor;
         font-weight: $fontWeight700;

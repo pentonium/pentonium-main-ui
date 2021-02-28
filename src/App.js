@@ -23,11 +23,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Header></Header>
-        <Container className="breadcrumb-container">
-          <BreadCrumb></BreadCrumb>
-        </Container>
+      <Header></Header>
         <Container className="body-padding">
+        <BreadCrumb></BreadCrumb>
           <Switch>
               {routes.map((route, i) => (
                 <RouteWithSubRoutes key={i} {...route} />

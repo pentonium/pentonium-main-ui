@@ -33,11 +33,11 @@ class JobDescription extends Component {
                     <Col md={8} xs={12}>
                         <h1 className="job-title">{this.props.jobDescription.jobTitle}</h1>
                         <div className="customer-data">
-                            <a><span class="customer-image"><img  src="https://fiverr-res.cloudinary.com/t_profile_original,q_auto,f_auto/attachments/profile/photo/bd375846a2b53df94bc356ffa3458426-1540375416166/be56ddbf-191a-449e-83b7-fd07e3a271bf.jpeg" /></span></a>
+                            <a><span className="customer-image"><img  src="https://fiverr-res.cloudinary.com/t_profile_original,q_auto,f_auto/attachments/profile/photo/bd375846a2b53df94bc356ffa3458426-1540375416166/be56ddbf-191a-449e-83b7-fd07e3a271bf.jpeg" /></span></a>
                             <a href={"/customers/"+this.props.jobDescription.customerId}><span className="customer-name">{this.props.jobDescription.customerName}</span></a>
                         </div>
                         <div className="job-details">
-                            <div class="job-image">
+                            <div className="job-image">
                             <img src={this.props.jobDescription.image}/>
                             </div>
                             <div>
@@ -64,11 +64,11 @@ class JobDescription extends Component {
                     <Col md={8} xs={12}>
                         <h1>{this.props.hashedData.title}</h1>
                         <div className="customer-data">
-                            <a><span class="customer-image"><img  src='https://fiverr-res.cloudinary.com/t_profile_original,q_auto,f_auto/attachments/profile/photo/bd375846a2b53df94bc356ffa3458426-1540375416166/be56ddbf-191a-449e-83b7-fd07e3a271bf.jpeg' /></span></a>
+                            <a><span className="customer-image"><img  src='https://fiverr-res.cloudinary.com/t_profile_original,q_auto,f_auto/attachments/profile/photo/bd375846a2b53df94bc356ffa3458426-1540375416166/be56ddbf-191a-449e-83b7-fd07e3a271bf.jpeg' /></span></a>
                             <a href={"/customers/"+this.props.hashedData.customerId}><span className="customer-name">{this.props.hashedData.title}</span></a>
                         </div>
                         <div className="job-details">
-                            <div class="job-image">
+                            <div className="job-image">
                             <Carousel>    
                             {this.props.hashedData.imageHash && this.props.hashedData.imageHash.map((preview , i) => {
                                 return (
