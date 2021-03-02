@@ -16,6 +16,9 @@ class Header extends Component {
         }
         this.toggleMenuOpen = this.toggleMenuOpen.bind(this);
         this.toggleCollapse = this.toggleCollapse.bind(this); 
+        this.toggleSubMenu = this.toggleSubMenu.bind(this);
+        this.toggleMenuClose = this.toggleMenuClose.bind(this);
+        this.toggleSubMenuOt = this.toggleSubMenuOt.bind(this);
 
     }
 
@@ -58,6 +61,58 @@ class Header extends Component {
                 this.props.fetchCategories(id);
             }
             this.setState({ menuOpen: this.state.menuOpen })
+            var element = document.getElementById("collapse-id"+index);
+            var collapse = document.getElementById("chevron"+index);
+            var anchor = document.getElementById("anchor-nav"+index);
+            if(value){
+                element.classList.add("show");
+                collapse.classList.add("down");
+                anchor.classList.add("active-anchor");
+            }      
+    }
+
+    toggleMenuClose(index , value , id){
+            setTimeout(() => {
+                this.state.menuOpen[index] = value;
+                var element = document.getElementById("collapse-id"+index);
+                var collapse = document.getElementById("chevron"+index);
+                var anchor = document.getElementById("anchor-nav"+index);
+                anchor.classList.remove("active-anchor");
+                if(!element.classList.contains("sub-hovered")){
+                    element.classList.remove("show");
+                    collapse.classList.remove("down");
+                    this.setState({ menuOpen: this.state.menuOpen })
+                }  
+            },400);
+
+    }
+
+
+
+    toggleSubMenu(index , value){
+            var element = document.getElementById("collapse-id"+index);
+            var collapse = document.getElementById("chevron"+index);
+            var anchor = document.getElementById("anchor-nav"+index);
+            if(value){
+                element.classList.add("show");
+                element.classList.add("sub-hovered");
+                collapse.classList.add("down");
+            }
+          
+    }
+
+    toggleSubMenuOt(index,value){
+        var element = document.getElementById("collapse-id"+index);
+            var collapse = document.getElementById("chevron"+index);
+            var anchor = document.getElementById("anchor-nav"+index);
+        setTimeout(() => {
+            element.classList.remove("sub-hovered");
+            if(!anchor.classList.contains("active-anchor")){
+                element.classList.remove("show");
+                anchor.classList.remove("active-nav");
+                collapse.classList.remove("down");
+            }
+        },300); 
     }
 
     toggleCollapse(val){
@@ -93,16 +148,17 @@ class Header extends Component {
                                 </Dropdown.Menu>
                             </Dropdown> */}
                             <a
-                                onClick={() => this.toggleMenuOpen(index , !this.state.menuOpen[index] , value.id)}
-                                // onMouseLeave={() => this.toggleMenuOpen(index , false , value.id)}
+                                id={'anchor-nav'+index}
+                                onMouseEnter={() => this.toggleMenuOpen(index , true , value.id)}
+                                onMouseLeave={() => this.toggleMenuClose(index , false , value.id)}
                                 aria-controls={value.id}
                                 className={this.state.menuOpen[index] ? 'active-nav':''}
                                 aria-expanded={this.state.menuOpen[index]}
                             >
                                 <span>{value.name}</span>
-                                <i className={"fa fa-chevron-up rotate " + (this.state.menuOpen[index] ? "down" : "") }></i>
+                                <i id={'chevron'+index}className={"fa fa-chevron-up rotate "}></i>
                             </a>
-                            <Collapse  in={this.state.menuOpen[index]}>
+                            <Collapse id={'collapse-id'+index} onMouseEnter={() => this.toggleSubMenu(index , true)} onMouseLeave={() => this.toggleSubMenuOt(index , false)}>
                                 <div className="collapse-content" id={value.id}>
                                     <div className="container">
                                 {this.props.categories ? this.props.categories.categories.map((value1 , index) => {
