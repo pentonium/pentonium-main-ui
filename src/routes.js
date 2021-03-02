@@ -7,6 +7,8 @@ import JobEdit from "./components/pages/JobEdit";
 import IPFSChat from "./controllers/IPFSChat";
 import ChatPage from "./components/pages/ChatPage";
 import Category from "./components/pages/Category";
+import Dashboard from "./components/pages/Dashboard";
+import OrderList from "./components/pages/OrderList";
 
 export const routes = [
     {
@@ -44,5 +46,13 @@ export const routes = [
         path: "/chatpage",
         exact: true,
         component: ChatPage
+    },{
+        path:'/dashboard',
+        exact:true,
+        component:Dashboard
+    },{
+        path:'/buyer/orderlist',
+        exact:true,
+        component:OrderList
     }
   ];

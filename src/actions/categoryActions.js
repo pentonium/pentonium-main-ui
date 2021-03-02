@@ -1,4 +1,4 @@
-import {FETCH_CATEGORIES, FETCH_FEATURED_JOBS , FETCH_HIGHRATED_JOBS , FETCH_NEW_JOBS , FETCH_JOB_DATA, FETCH_HASH_JOB_DATA, FETCH_JOBS_BY_CATEGORY} from '../constants';
+import {FETCH_CATEGORIES, FETCH_FEATURED_JOBS , FETCH_HIGHRATED_JOBS , FETCH_NEW_JOBS , FETCH_JOB_DATA, FETCH_HASH_JOB_DATA, FETCH_JOBS_BY_CATEGORY , FETCH_ACTIVE_BUYER_JOBS} from '../constants';
 import jobsData from '../data/jobsData.json';
 import jsonData from '../data/category.json';
 import ipfs from '../ipfs';
@@ -46,4 +46,12 @@ export function fetchData(id){
       });
     };
 }
+
+
+export const fetchActiveJobs = (id , flag) => ({
+    type:FETCH_ACTIVE_BUYER_JOBS,
+    userId:id,
+    flag:flag,
+    payload:JSON.parse(JSON.stringify(jobsData))
+})
 
