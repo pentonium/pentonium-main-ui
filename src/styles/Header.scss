@@ -54,6 +54,14 @@
         padding: 0.5rem 1.875rem;
     }
 }
+.logged-in-user{
+    display: block;
+    width: 3rem;
+    height: 3rem;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-image: url(../../src/assets/768px-MetaMask_Fox.svg.png);
+}
 .dropdown{
     
     .dropdown-menu{

@@ -5,6 +5,7 @@ import {fetchParentCategories} from '../../actions/commonAction';
 import {fetchCategories} from '../../actions/categoryActions';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Collapse from 'react-bootstrap/Collapse';
+import { findSourceMap } from "module";
 
 
 
@@ -12,7 +13,8 @@ class Header extends Component {
     constructor(props){
         super(props)
         this.state = {
-            'menuOpen':[]
+            'menuOpen':[],
+            'active':false
         }
         this.toggleMenuOpen = this.toggleMenuOpen.bind(this);
         this.toggleCollapse = this.toggleCollapse.bind(this); 
@@ -26,6 +28,27 @@ class Header extends Component {
         this.props.fetchParentCategories();
     }
 
+    componentDidMount(){
+        this.checkLoggedIn();
+    }
+
+    async checkLoggedIn(){
+        if(window.web3 !== undefined){
+            if(window.ethereum){
+            const web3 = new Web3(window.ethereum);
+            try{
+                var loggedIn = await web3.eth.getAccounts();
+                if(loggedIn.length > 0){
+                    console.log('LoggedIn' , loggedIn);
+                    this.setState({active:true});
+                } 
+            } catch(e){
+                console.error(e)
+            }
+            }
+        }
+    }
+
     async connectWithMetaMask() {
         if(window.web3 !== undefined){
             if(window.ethereum){
@@ -34,6 +57,7 @@ class Header extends Component {
                 await window.ethereum.enable();
                 var accounts = await web3.eth.getAccounts();
                 var firstAcc = accounts[0];
+                console.log(firstAcc);
                 this.setState({active:true});       
             } catch(e){
                 console.error(e)
@@ -180,9 +204,14 @@ class Header extends Component {
                                 </button>
                             </li>
                             <li key="connect" className="nav-item">
-                                <button className="btn btn-primary connect-btn" onClick={this.onClick.bind(this)}>
+                                {this.state.active ? (<div className="logo-section">
+                                <a href="/dashboard">
+                                    <span className="logged-in-user"></span>
+                                </a>    
+                            </div>
+                    ): (<button className="btn btn-primary connect-btn" onClick={this.onClick.bind(this)}>
                                     Connect
-                                </button>
+                                </button>)}
                             </li>
                         </ul>
                     </div>

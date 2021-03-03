@@ -1,0 +1,8 @@
+.order-list-page{
+    p{
+        cursor: pointer;
+    }
+    p.active{
+        color: $primaryColorLighter;
+    }
+}
