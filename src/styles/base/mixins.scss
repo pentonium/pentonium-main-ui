@@ -11,6 +11,10 @@
         transform: scale(1.05);
         box-shadow: none;
     }
+    &.active{
+        background-color:$faceColorlighter;
+        transform: scale(1.05);
+    }
 }
 
 

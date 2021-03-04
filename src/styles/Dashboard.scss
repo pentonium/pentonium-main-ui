@@ -1,0 +1,28 @@
+.buyer , .seller{
+    padding-top: 30px;
+
+    .buyer-stats , .seller-stats{
+        padding: 1.88rem 1.81rem;
+        margin-bottom: 1rem;
+        box-shadow: #5a71d01c 0px 0px 1rem 0.25rem, #5a71d01c 0px 0px 0.125rem 0px;;
+        border: solid 1px #dde4eb;
+        border-radius: 0px;
+        margin-right: 0px;
+        margin-left: 0px;
+        margin-top: 1rem;
+        h3{
+            font-weight: $fontWeight700;
+            font-size: 1.6875rem;
+        }
+        h5{
+            margin-bottom: 0rem;
+            color: $faceColor;
+            font-size: 1.0625rem;
+            font-weight: $fontWeight500;
+        }
+        p{
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+    }
+}
