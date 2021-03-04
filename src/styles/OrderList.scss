@@ -5,4 +5,60 @@
     p.active{
         color: $primaryColorLighter;
     }
+    .order-list-items{
+        padding: 0.5rem;
+        border-left: 1px solid #dadce0;
+        border-right: 1px solid #dadce0;
+        border-top: 1px solid #dadce0;
+        &:first-child{
+            border-radius: 8px 8px 0 0;
+        }
+        &:last-child{
+            border-bottom: 1px solid #dadce0;
+            border-radius: 0 0 8px 8px;
+        }
+        .img-col{
+            text-align: center;
+            padding-top: 4px;
+            .list-image{
+                height: 50px;
+                width: 50px;
+            }
+        }
+        .order-item-title{
+            font-size: 1rem;
+            color: $primaryColor;
+            margin-bottom: 5px;
+            max-height: 21px;
+            min-height: 21px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+        .order-item-text{
+            font-size: 0.75rem;
+            color: $secondaryColor;
+            margin-bottom: 0rem;
+            max-height: 20px;
+            min-height: 20px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            font-weight: 400;
+        }
+        .order-item-price{
+            color: #188038;
+            max-height: 20px;
+            min-height: 20px;
+            font-size: 1rem;
+            font-weight: $fontWeight500;
+            margin-bottom: 5px;
+        }
+        .order-subtext{
+            color: $secondaryColor;
+            font-size: 0.75rem;
+        }
+
+    }
 }

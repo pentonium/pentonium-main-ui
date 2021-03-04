@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import {fetchActiveJobs} from '../../actions/categoryActions';
 import { withRouter } from 'react-router-dom';
 import { Row, Col , Badge } from 'react-bootstrap';
-import { CollectionCard } from "../../controllers/CollectionCard";
+import { OrderItemList } from "../../controllers/OrderItemList";
 
 
 
@@ -31,13 +31,9 @@ class OrderList extends Component {
         return (
             <>
                 <Row className="order-list-page">
-                <Col md={2}>
-                    <p className={this.state.activeTab=='currentJobs'?'active':''} onClick={() => this.getJobData('currentJobs' , true)}>Current Jobs</p>
-                    <p className={this.state.activeTab=='completedJobs'?'active':''} onClick={() => this.getJobData('completedJobs' , false)}>Completed Jobs</p>
-                </Col>
-                <Col md={10}>
+                <Col md={12}>
                     {this.props.activeJobs &&
-                        <CollectionCard items={this.props.activeJobs} link='/collection/featured' column="3"></CollectionCard>
+                        <OrderItemList items={this.props.activeJobs} link='/collection/featured' column="3"></OrderItemList>
                     }
                 </Col>
                 </Row>
