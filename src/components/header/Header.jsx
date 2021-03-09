@@ -148,17 +148,84 @@ class Header extends Component {
         return (
             <>
             <header className="header">
-                <div className="container">
+                <div className="header-core">
+                     <div className="container">
                     <div className="logo-section">
                         <a href="/">
                             <span className="header-logo"></span>
                         </a>    
                     </div>
-                    <div className="nav-mid-section">
-                    <ul className="nav-items mid">
-                    {this.props.parentCategories && this.props.parentCategories.map((value, index) => {
-                        return (
-                            <li> 
+                    {/* <div className="nav-mid-section">
+                        <ul className="nav-items mid">
+                        {this.props.parentCategories && this.props.parentCategories.map((value, index) => {
+                            return (
+                                <li> 
+                                <Dropdown onMouseEnter={() => this.toggleMenuOpen(index , true , value.id)}
+                                onMouseLeave={() => this.toggleMenuOpen(index , false , value.id)}
+                                show={this.state.menuOpen[index]}>       
+                                    <Dropdown.Toggle variant="success" id="dropdown-basic{index}">
+                                        <span >{value.name}</span>
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu>
+                                        {this.props.categories ? this.props.categories.categories.map((value1 , index) => {
+                                        return(<Dropdown.Item href={'/categories/'+value.id + '/' + value1.id}>{value1.name}</Dropdown.Item>)
+                                        }): ''}
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                                <a
+                                    id={'anchor-nav'+index}
+                                    onMouseEnter={() => this.toggleMenuOpen(index , true , value.id)}
+                                    onMouseLeave={() => this.toggleMenuClose(index , false , value.id)}
+                                    aria-controls={value.id}
+                                    className={this.state.menuOpen[index] ? 'active-nav':''}
+                                    aria-expanded={this.state.menuOpen[index]}
+                                >
+                                    <span>{value.name}</span>
+                                    <i id={'chevron'+index}className={"fa fa-chevron-up rotate "}></i>
+                                </a>
+                                <Collapse id={'collapse-id'+index} onMouseEnter={() => this.toggleSubMenu(index , true)} onMouseLeave={() => this.toggleSubMenuOt(index , false)}>
+                                    <div className="collapse-content" id={value.id}>
+                                        <div className="container">
+                                    {this.props.categories ? this.props.categories.categories.map((value1 , index) => {
+                                        return(<div className="nav-submenu"><a  href={'/categories/'+value.id + '/' + value1.id}>{value1.name}</a></div>)
+                                    }): ''}
+                                    </div>
+                                    </div>
+                                </Collapse>
+                                </li>
+                            )
+                        })}
+                        </ul> 
+                    </div> */}
+                    <div className="nav-section">
+                            <ul className="nav-items">
+                                <li key="inr" className="nav-item">
+                                    <button className="btn btn-secondary post-btn" onClick={this.navigateToPost.bind(this)}>
+                                        Post
+                                    </button>
+                                </li>
+                                <li key="connect" className="nav-item">
+                                    {this.state.active ? (<div className="logo-section">
+                                    <a href="/dashboard">
+                                        <span className="logged-in-user"></span>
+                                    </a>    
+                                </div>
+                        ): (<button className="btn btn-primary connect-btn" onClick={this.onClick.bind(this)}>
+                                        Connect
+                                    </button>)}
+                                </li>
+                            </ul>
+                    </div>
+                    
+                </div>
+                </div>
+                {this.props.parentCategories ? 
+            <div className="parent-nav-section">
+                <div className="container">
+                <ul className="nav-items">
+                {this.props.parentCategories.map((value, index) => {
+                    return (
+                        <li> 
                             {/* <Dropdown onMouseEnter={() => this.toggleMenuOpen(index , true , value.id)}
                             onMouseLeave={() => this.toggleMenuOpen(index , false , value.id)}
                             show={this.state.menuOpen[index]}>       
@@ -195,53 +262,11 @@ class Header extends Component {
                         )
                     })}
                     </ul> 
-                    </div>
-                    <div className="nav-section">
-                        <ul className="nav-items">
-                            <li key="inr" className="nav-item">
-                                <button className="btn btn-secondary post-btn" onClick={this.navigateToPost.bind(this)}>
-                                    Post
-                                </button>
-                            </li>
-                            <li key="connect" className="nav-item">
-                                {this.state.active ? (<div className="logo-section">
-                                <a href="/dashboard">
-                                    <span className="logged-in-user"></span>
-                                </a>    
-                            </div>
-                    ): (<button className="btn btn-primary connect-btn" onClick={this.onClick.bind(this)}>
-                                    Connect
-                                </button>)}
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </header>
-            {/* {this.props.parentCategories ? 
-            <div className="parent-nav-section">
-                <div className="container">
-                <ul className="nav-items">
-                {this.props.parentCategories.map((value, index) => {
-                    return (
-                        <li> 
-                        <Dropdown onMouseEnter={() => this.toggleMenuOpen(index , true , value.id)}
-                        onMouseLeave={() => this.toggleMenuOpen(index , false , value.id)}
-                        show={this.state.menuOpen[index]}>       
-                            <Dropdown.Toggle variant="success" id="dropdown-basic{index}">
-                                <span >{value.name}</span>
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu>
-                                {this.props.categories ? this.props.categories.categories.map((value1 , index) => {
-                                return(<Dropdown.Item href={'/categories/'+value.id + '/' + value1.id}>{value1.name}</Dropdown.Item>)
-                                }): ''}
-                            </Dropdown.Menu>
-                        </Dropdown>
-                        </li>
-                    )
-                })}
-                </ul> 
                 </div>        
-            </div> :''} */}
+            </div> :''}
+            </header>
+           
+            
             </> 
          );
     }
