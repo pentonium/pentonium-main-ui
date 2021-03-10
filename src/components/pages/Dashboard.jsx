@@ -49,7 +49,7 @@ class DashBoard extends Component {
                 </Row>
                 {this.state.currentTab == 'buyer' &&<Row>
                 <Col md={12} className="buyer">
-                    <h1>Buyer DashBorad</h1>
+                    <h3>Buyer DashBorad</h3>
                     <Row className="buyer-stats">
                         <Col md={3}>
                             <h3>100</h3>
@@ -77,7 +77,7 @@ class DashBoard extends Component {
                 </Row>}
                 {this.state.currentTab == 'seller' && <Row>
                     <Col md={12} className="seller">
-                        <h1>Seller DashBorad</h1>
+                        <h3>Seller DashBorad</h3>
                         <Row className="seller-stats">
                             <Col md={3}>
                                 <h3>100</h3>
