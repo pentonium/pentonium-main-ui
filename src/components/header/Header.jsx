@@ -206,9 +206,17 @@ class Header extends Component {
                                 </li>
                                 <li key="connect" className="nav-item">
                                     {this.state.active ? (<div className="logo-section">
-                                    <a href="/dashboard">
+                                    {/* <a href="/dashboard">
                                         <span className="logged-in-user"></span>
-                                    </a>    
+                                    </a>     */}
+                                    <Dropdown className="logged-in-user-menus">
+                                        <Dropdown.Toggle menuAlign="left"><span className="logged-in-user"></span></Dropdown.Toggle>
+                                        <Dropdown.Menu>
+                                        <Dropdown.Item href="/buyer">Buyer</Dropdown.Item>
+                                        <Dropdown.Item href="/seller">Seller</Dropdown.Item>
+                                        <Dropdown.Item eventKey="2">Logout</Dropdown.Item>
+                                        </Dropdown.Menu>
+                                    </Dropdown>
                                 </div>
                         ): (<button className="btn btn-primary connect-btn" onClick={this.onClick.bind(this)}>
                                         Connect

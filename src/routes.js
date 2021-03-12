@@ -51,8 +51,12 @@ export const routes = [
         exact:true,
         component:Dashboard
     },{
-        path:'/buyer/orderlist',
+        path:'/buyer',
         exact:true,
         component:OrderList
+    },{
+            path:'/seller',
+            exact:true,
+            component:OrderList
     }
   ];
