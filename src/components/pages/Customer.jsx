@@ -23,6 +23,7 @@ class Customer extends Component {
             <>
             {this.props.customerData &&
                 <>
+                <Row style={{'padding-left':'15px' , 'padding-right':'15px'}}>
                 <Col md={4}>
                     <Row className="top-profile-section">
                         <Col md={12}>
@@ -65,6 +66,7 @@ class Customer extends Component {
                         <h1>{this.props.customerData.name} Gigs</h1>
                         {this.props.jobData && <CollectionCard items={this.props.jobData} column="6"></CollectionCard>}
                 </Col>
+                </Row>
                 </>
             }
             </>
