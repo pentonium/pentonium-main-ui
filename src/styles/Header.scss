@@ -2,7 +2,7 @@
     display: block;
     width: 4rem;
     height: 3rem;
-    background-image: url(./logo512.png);
+    background-image: url(../assets/BLACK-04.png);
     background-repeat: no-repeat;
     background-size: contain;
 }
@@ -57,6 +57,43 @@
         border-radius: 4rem;
         padding: 0.5rem 1.875rem;
     }
+    .logged-in-user-menus{
+        // .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle{
+        //     background: transparent;
+        //     border-color:transparent;
+        // }
+        
+        // .btn-primary:not(:disabled):not(.disabled).active:focus, .btn-primary:not(:disabled):not(.disabled):active:focus, .show>.btn-primary.dropdown-toggle:focus{
+        //     box-shadow: 0 0 0 0.2rem transparent;
+        // }
+        .btn-primary:not(:disabled):not(.disabled):active:hover, .btn-primary:not(:disabled):not(.disabled):active:active{
+            background-color: transparent;
+            transform: scale(1);
+
+        }
+        .btn-primary{
+            background: transparent;
+            line-height: 0px;
+            padding: 0px;
+            border-color: none;
+            &:hover,&:active{
+                border-color: transparent;
+            }
+            &:active{
+                background-color:transparent;
+                transform: scale(1);
+                border-color: transparent;
+            }
+            &:focus{
+                background-color:transparent;
+                transform: scale(1);
+                border-color: transparent;
+                box-shadow: none;
+            }
+            
+
+        }
+    }
 }
 .logged-in-user{
     display: block;
@@ -70,7 +107,7 @@
     
     .dropdown-menu{
         top: -2px!important;
-        left: -15px!important;
+        left: 0px!important;
     }
     .dropdown-item{
         color: $primaryColor;

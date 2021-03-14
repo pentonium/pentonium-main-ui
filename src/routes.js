@@ -9,6 +9,7 @@ import ChatPage from "./components/pages/ChatPage";
 import Category from "./components/pages/Category";
 import Dashboard from "./components/pages/Dashboard";
 import OrderList from "./components/pages/OrderList";
+import NotFound from "./components/pages/NotFound";
 
 export const routes = [
     {
@@ -51,8 +52,15 @@ export const routes = [
         exact:true,
         component:Dashboard
     },{
-        path:'/buyer/orderlist',
+        path:'/buyer',
         exact:true,
         component:OrderList
+    },{
+            path:'/seller',
+            exact:true,
+            component:OrderList
+    },{
+        path:'**',
+        component:NotFound
     }
   ];
