@@ -8,8 +8,8 @@
     "@testing-library/react": "^11.2.3",
     "@testing-library/user-event": "^12.6.2",
     "bootstrap": "^4.6.0",
-    "ipfs": "^0.53.2",
     "font-awesome": "^4.7.0",
+    "ipfs": "^0.53.2",
     "ipfs-api": "^26.1.2",
     "react": "^17.0.1",
     "react-bootstrap": "^1.4.3",
@@ -21,6 +21,7 @@
     "react-scripts": "4.0.1",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
+    "skynet-js": "^3.0.0",
     "styled-components": "^5.2.1",
     "web-vitals": "^0.2.4",
     "web3": "^1.3.3"

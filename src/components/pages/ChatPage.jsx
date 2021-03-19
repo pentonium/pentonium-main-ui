@@ -1,121 +1,125 @@
-import React, { Component } from "react";
-import IPFSChat from "../../controllers/IPFSChat";
-import IPFS from 'ipfs';
-import {Modal} from 'react-bootstrap';
-import Button from 'react-bootstrap/Button'
-let IPFSChatInstance = null;
+import { Component } from "react";
+import { SkynetClient, genKeyPairFromSeed } from "skynet-js";
+import {Chat} from '../../controllers/Chat';
+import { Row, Col , Badge } from 'react-bootstrap';
+import {BsToggles , BsFileArrowUp} from "react-icons/bs";
+import {FiUploadCloud} from 'react-icons/fi';
+ 
 class ChatPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      visibleDrawer: false,
-      makeDrawer: false,
-      myName: "",
-      myID: "",
-      currentMsg: "",
-      peers: [],
-      selectedPeer: "global",
-      allMessages: {
-        global: [],
-      },
-      show:false
+  state = {
+    msg: "",
+    ipfs: null,
+    chat: null,
+    messages: [],
+    usera: "user-1",
+    userb: "user-2",
+  };
+
+  async componentDidMount(){
+    // await this.chatPage("user1", "user2");
+    // await this.setData();
+  }
+
+  connectToSkyNet = async() => {
+    let keys = {
+      "user-1" :  "some private text of user 1 test 1",
+      "user-2" :  "some private text of user 2 test 2",
     };
-    this.connectPeers = this.connectPeers.bind(this);
-    this.messageReceived = this.messageReceived.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-    this.subscribeB = this.subscribeB.bind(this);
-    this.subscribeA = this.subscribeA.bind(this);
-    this.sendMessage  = this.sendMessage.bind(this);
-    this.msgHandler = this.msgHandler.bind(this);
+
+    const chat = new Chat(keys[this.state.usera], keys[this.state.userb], this.state.usera, this.state.userb);
+
+    this.setState({
+      chat: chat,
+    });
+
+    await this.keepLoadingData();
   }
 
-  async componentDidMount() {
-    IPFSChatInstance = new IPFSChat();
-    await IPFSChatInstance.connect();
-    const id = await IPFSChatInstance.getID();
-    console.log(id);
-    this.setState({myID:id});
+  componentDidUpdate(){
+    this.scrollToBottom();
   }
 
-  messageReceived(msg){
-    console.log('Message' , msg);
+  keepLoadingData = async() => {
+    const that = this;
+    setInterval(async() => {
+      const msg = await that.state.chat.loadMessages();
+      console.log("mrcv", msg.chat);
+      if(msg.chat != that.state.messages){
+        that.setState({
+          messages: msg.chat
+        })
+      }
+    }, 5000);
   }
 
-  connectPeers(){
-      this.setState({show:true});
-      // IPFSChatInstance.sendNewMsg('demo','hello');
+  handleInput = (e) =>{
+    this.setState({
+      msg: e.target.value
+    });
   }
 
-  async subscribeB(){
-
-    IPFSChatInstance.newSubscribe('B' , this.msgHandler);
-    this.setState({myID:'A' , myName:'B'})
-    // IPFSChatInstance.sendNewMsg('B','Hi from A');
+  sendMessage = async() => {
+    const that = this;
+    await this.state.chat.sendMessage(this.state.msg);
   }
 
-  async subscribeA(){
-    IPFSChatInstance.newSubscribe('A' , this.msgHandler);
-    this.setState({myID:'B' , myName:'A'});
-    // IPFSChatInstance.sendNewMsg('A','Hi from B');
+  scrollToBottom() {
+    const objDiv = document.getElementById('chat-body-div');
+    objDiv.scrollTop = objDiv.scrollHeight;
   }
 
-  msgHandler(msg){
-    console.log('Message received from' , msg);
-  }
-
-  handleClose(){
-    this.setState({show:false});
-  }
-
-  sendMessage(){
-    IPFSChatInstance.sendNewMsg(this.state.myName,`${this.state.myID}` );
+  toggleUser = () => {
+    this.setState({
+      usera: "user-2",
+      userb: "user-1",
+    })
   }
 
   render() {
-    return (
-      <div>
-        <div id="main">
-          <div className="controls">
-            <input
-              id="name"
-              type="text"
-              value={this.state.myName}
-              placeholder="Pick a name (or remain anonymous)"
-            />
-          </div>
 
-          <button onClick={this.connectPeers}>Send</button>
-          <button onClick={this.sendMessage}>Send Message</button>
-          <Modal show={this.state.show} onHide={this.handleClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>Modal heading</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={this.subscribeB}>
-                Close
-              </Button>
-              <Button variant="primary" onClick={this.subscribeA}>
-                Save Changes
-              </Button>
-            </Modal.Footer>
-          </Modal>
-          {/* <div class="output"
-					data-bind="foreach: { data: messages, as: 'msg' }">
-				<div>
-					<a data-bind="text: msg.name,
-								css: { local: msg.from === $root.id() },
-								attr: { href: `ipfs.io/ipns/${msg.from}` }">
-					</a>
-					<div data-bind="text: msg.text"></div>
-				</div>
-				</div>
-				<div class="input">
-				<input id="text" type="text" placeholder="Type a message"
-						data-bind="value: message, enable: subscribed" />
-				</div> */}
+    return (
+      <>
+        <div className="chat-feed">
+          <div className="chat-title-container">
+              <div className="chat-title">
+                {this.state.usera}
+              </div>
+              <div className="chat-subtitle">
+                {this.state.userb}
+              </div>
+          </div>
+          <div className="chat-body" id="chat-body-div">
+          {this.state.messages.map((msg, inex) => (
+            <div className="message-block">
+              <div className="message-row">
+                <div className={(msg.from == this.state.usera)? "chat-right message" : "chat-left message" }>
+                  {/* <div className="messge"> */}
+                  {msg.msg}
+                  {/* </div> */}
+                </div>
+              </div>
+            </div>
+          ))}
+          </div>
+          <div className="message-form-container">
+            <div className="message-form">
+              <input class="message-input" onChange={this.handleInput} placeholder="Send a message ..." value={this.state.msg}  />
+              <span className="image-button"></span>
+              {/* <button type="submit" className="send-button">
+              </button> */}
+              <button type="submit" className="connect" title="Connect"  onClick={this.connectToSkyNet}>
+                <FiUploadCloud></FiUploadCloud>
+              </button>
+              <button type="submit" className="toggle" title="Toggle User"  onClick={this.toggleUser}>
+                <BsToggles></BsToggles>
+              </button>
+              <button type="submit" className="send-msg-button" title="Send Message" onClick={this.sendMessage}>
+                <BsFileArrowUp></BsFileArrowUp>
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 }
