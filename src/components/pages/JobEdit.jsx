@@ -9,6 +9,7 @@ import ipfs from '../../ipfs';
 import { withRouter } from 'react-router-dom';
 import {fetchData} from '../../actions/categoryActions';
 import LazyImage from '../../controllers/LazyImage';
+import {updateJob} from '../../actions/jobActions';
 
 
 class JobEdit extends Component {
@@ -41,6 +42,7 @@ class JobEdit extends Component {
     componentDidUpdate(prevProps){
         if(prevProps.hashedData !== this.props.hashedData){
             if(this.props.hashedData){
+                console.log('HashedData' , this.props.hashedData);
                 this.props.fetchCategories(this.props.hashedData.parentCategory);
                 this.setState({title:this.props.hashedData.title , description:this.props.hashedData.description , duration:this.props.hashedData.duration,
                 parentCategory:this.props.hashedData.parentCategory ,imageHash:this.props.hashedData.imageHash , tags:this.props.hashedData.tags , isParentSelected:true})
@@ -61,13 +63,14 @@ class JobEdit extends Component {
           category:this.state.category,
           description:this.state.description,
           tags:this.state.tags,
-          imageHash:this.state.imageHash
+          imageHash:this.state.imageHash[0]
         }
         ipfs.files.add(Buffer.from(JSON.stringify(uploadData)) , (error , result)=>{
           if(error){
             return
           }
           this.setState({dataHash:result[0].hash});
+          this.props.updateJob(this.props.contract , this.state.dataHash , this.state.imageHash[0] , this.props.account , 1);
           this.getFileData();
         });
       } 
@@ -102,7 +105,6 @@ class JobEdit extends Component {
     }
 
     myChangeHandler = (event) => {
-      debugger;
       let nam = event.target.name;
       let val = event.target.value;
       if(nam == 'duration'){
@@ -248,10 +250,12 @@ class JobEdit extends Component {
 }
 
 function mapStateToProps(state){
+  const { contract, account } = state.common;
     return {
       parentCategories: state.common.parentCategories,
       categories: state.category.categoryItems,
-      hashedData: state.fetchJobs.hashedData
+      hashedData: state.fetchJobs.hashedData,
+      contract, account
       };
   }
   
@@ -259,7 +263,8 @@ function mapDispatchToProps(dispatch){
     return{
       fetchParentCategories: () => dispatch(fetchParentCategories()),
       fetchCategories: (id) => dispatch(fetchCategories(id)),
-      fetchHashJobData: (id) => dispatch(fetchData(id))
+      fetchHashJobData: (id) => dispatch(fetchData(id)),
+      updateJob:(contract , hash , thumbnail , provider , id) => dispatch(updateJob(contract , hash , thumbnail , provider , id))
     }
 }
  

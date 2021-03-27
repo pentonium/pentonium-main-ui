@@ -7,6 +7,8 @@ import {fetchData} from '../../actions/categoryActions';
 import LazyImage from '../../controllers/LazyImage';
 import Carousel from 'react-bootstrap/Carousel';
 import { UserPriceDetail } from "../../controllers/UserPriceDetail";
+import Button from 'react-bootstrap/Button';
+import {deleteJob} from '../../actions/jobActions';
 
 
 class JobDescription extends Component {
@@ -22,6 +24,10 @@ class JobDescription extends Component {
             
             this.props.fetchHashJobData(jobId);
         }
+    }
+
+    deleteJob = () =>{
+        this.props.deleteJob(this.props.match.params.jobId)
     }
 
     render() { 
@@ -52,6 +58,9 @@ class JobDescription extends Component {
                                     })
                                 }
                             </div>
+                            <Button style={{'margin-top':'20px'}}variant="primary" size="md" onClick={this.deleteJob}>
+                                Delete Gig
+                            </Button>
                         </div>
                     </Col>
                     <Col md={4} xs={12}>
@@ -109,6 +118,7 @@ class JobDescription extends Component {
 }
 
 function mapStateToProps(state){
+    console.log(state);
     return {
         jobDescription: state.fetchJobs.jobDescription[0],
         hashedData: state.fetchJobs.hashedData
@@ -118,7 +128,8 @@ function mapStateToProps(state){
 function mapDispatchToProps(dispatch){
     return{
         fetchJobData: (id) => dispatch(fetchJobData(id)),
-        fetchHashJobData: (id) => dispatch(fetchData(id))
+        fetchHashJobData: (id) => dispatch(fetchData(id)),
+        deleteJob:(id) => dispatch(deleteJob(id))
     }
 }
  
