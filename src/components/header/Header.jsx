@@ -1,11 +1,11 @@
 import React, { Component , createRef } from "react";
 import { connect } from 'react-redux';
 import Web3 from 'web3';
-import {fetchParentCategories} from '../../actions/commonAction';
+import {fetchParentCategories , connectWallet} from '../../actions/commonAction';
 import {fetchCategories} from '../../actions/categoryActions';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Collapse from 'react-bootstrap/Collapse';
-import { findSourceMap } from "module";
+import {getJobsList} from '../../actions/jobListActions';
 
 
 
@@ -67,8 +67,9 @@ class Header extends Component {
     }
 
 
-    onClick(){
-        this.connectWithMetaMask();
+    async onClick(){
+        await this.props.connectWallet();
+        await this.props.getJobsList(this.props.contract , this.props.account);
     }
 
     navigateToPost(){
@@ -205,7 +206,7 @@ class Header extends Component {
                                     </button>
                                 </li>
                                 <li key="connect" className="nav-item">
-                                    {this.state.active ? (<div className="logo-section">
+                                    {this.props.account ? (<div className="logo-section">
                                     {/* <a href="/dashboard">
                                         <span className="logged-in-user"></span>
                                     </a>     */}
@@ -281,16 +282,27 @@ class Header extends Component {
 }
 
 function mapStateToProps(state){
+    console.log('State' , state);
+    const { web3, account, loading, error , contract } = state.common;
+    const {list} = state.jobList;
     return {
         parentCategories: state.common.parentCategories,
-        categories: state.category.categoryItems
+        categories: state.category.categoryItems,
+        web3,
+        account,
+        loading,
+        error,
+        contract,
+        list
       };
   }
   
 function mapDispatchToProps(dispatch){
     return{
         fetchParentCategories: () => dispatch(fetchParentCategories()),
-        fetchCategories: (id) => dispatch(fetchCategories(id))
+        fetchCategories: (id) => dispatch(fetchCategories(id)),
+        connectWallet: () => dispatch(connectWallet()),
+        getJobsList: (contract , account) => dispatch(getJobsList(contract , account))
     }
 }
  

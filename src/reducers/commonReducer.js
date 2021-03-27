@@ -1,6 +1,10 @@
-import {FETCH_PARENT_CATEGORIES, FETCH_CUSTOMER_DATA} from '../constants';
+import {FETCH_PARENT_CATEGORIES, FETCH_CUSTOMER_DATA , WALLET_CONNECT_REQUEST, WALLET_CONNECT_SUCCESS, WALLET_CONNECT_ERROR} from '../constants';
 
 const initialState = {
+  web3: null,
+  contract: null,
+  permissionManager: null,
+  account: null,
   loading: false,
   error: false
 };
@@ -28,7 +32,33 @@ export default function(state = initialState, action) {
         "jobData":action.jobsData.filter((data) => {
           return data.customerId == action.customerId
         })
-      }  
+    }
+    case WALLET_CONNECT_REQUEST:
+      return {
+        ...state,
+        web3: null,
+        contract: null,
+        account: null,
+        loading: true
+      }
+    case WALLET_CONNECT_SUCCESS:
+      return {
+        ...state,
+        web3: action.web3,
+        contract: action.contract,
+        permissionManager: action.permissionManager,
+        account: action.account,
+        loading: false
+      }
+    case WALLET_CONNECT_ERROR:
+      return {
+        ...state,
+        web3: null,
+        contract: null,
+        account: null,
+        loading: false,
+        error: true
+      } 
     default:
       return state;
   }

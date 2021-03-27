@@ -6,6 +6,8 @@ import {fetchCategories} from '../../actions/categoryActions';
 import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
 import ipfs from '../../ipfs';
+import Web3 from 'web3';
+import {postJob} from '../../actions/jobActions';
 
 
 class JobPost extends Component {
@@ -30,11 +32,20 @@ class JobPost extends Component {
         this.captureFile = this.captureFile.bind(this);
         this.uploadFormData = this.uploadFormData.bind(this);
         this.getFileData = this.getFileData.bind(this);
+        this.loadWeb3 = this.loadWeb3.bind(this);
     }
 
     componentDidMount(){
       this.props.fetchParentCategories();
     }
+
+    async loadWeb3() {
+      if (window.ethereum) {
+          window.web3 = new Web3(window.ethereum);
+          await window.ethereum.enable();
+      }
+    }
+    
 
     uploadFormData(){
         const uploadData = {
@@ -53,6 +64,9 @@ class JobPost extends Component {
             return
           }
           this.setState({dataHash:result[0].hash});
+          // const accounts = await window.web3.eth.getAccounts();
+          // storehash.methods.
+          this.props.postJob(this.props.contract , this.state.dataHash , this.state.imageHash , this.props.account , this.props.account)
           this.getFileData();
         });
       } 
@@ -228,16 +242,20 @@ class JobPost extends Component {
 }
 
 function mapStateToProps(state){
-    return {
-      parentCategories: state.common.parentCategories,
-      categories: state.category.categoryItems
-      };
+  const { contract, account } = state.common;
+  const { id, category_name, loading, error } = state.category;
+  return {
+    parentCategories: state.common.parentCategories,
+    categories: state.category.categoryItems,
+    contract, account, id, category_name, loading, error
+    };
   }
   
 function mapDispatchToProps(dispatch){
     return{
       fetchParentCategories: () => dispatch(fetchParentCategories()),
-      fetchCategories: (id) => dispatch(fetchCategories(id))
+      fetchCategories: (id) => dispatch(fetchCategories(id)),
+      postJob:(contract , hash , thumbnail , provider  , account) => dispatch(postJob(contract , hash , thumbnail , provider  , account))
     }
 }
  
