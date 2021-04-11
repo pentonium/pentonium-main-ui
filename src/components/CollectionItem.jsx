@@ -4,6 +4,7 @@ import {fetchData} from '../actions/categoryActions';
 import { Row, Col , Badge } from 'react-bootstrap';
 import Carousel from 'react-bootstrap/Carousel';
 import LazyImage from '../controllers/LazyImage';
+import { getJobDetail } from "../actions/jobActions";
 
 
 class CollectionItem extends Component {
@@ -12,7 +13,8 @@ class CollectionItem extends Component {
     }
 
     componentDidMount(){
-        this.props.fetchHashJobData(this.props.hash);
+        this.props.fetchHashJobData(this.props.hash.ipfs_hash);
+        // this.props.getJobDetail(this.props.web3 , this.props.hash.id , this.props.offerContract);
     }
 
     render() { 
@@ -37,7 +39,7 @@ class CollectionItem extends Component {
                                 )  
                             })}
                         </Carousel>
-                        <a href={'/jobs/'+this.props.hash}>
+                        <a href={'/jobs/'+this.props.offerContract}>
                         <div className="card-body">
                         <h5 className="card-title">{this.props.hashedData.title}</h5>
                         <p className="card-text">{this.props.hashedData.description}</p>
@@ -62,7 +64,8 @@ function mapStateToProps(state){
   
 function mapDispatchToProps(dispatch){
     return{
-        fetchHashJobData: (id) => dispatch(fetchData(id))
+        fetchHashJobData: (id) => dispatch(fetchData(id)),
+        getJobDetail : (web3 , id , offerContract) => dispatch(getJobDetail(web3 , id , offerContract))
     }
 }
  

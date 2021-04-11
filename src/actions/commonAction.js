@@ -3,7 +3,7 @@ import jsonData from '../data/category.json';
 import jobsData from '../data/jobsData.json';
 import customerData from '../data/customerData.json';
 import Web3 from "web3";
-import { CONTRACT_ADDRESS , CONTRACT_ABI } from "../config";
+import { CONTRACT_ADDRESS , CONTRACT_ABI , CATEGORY_CONTRACT_ADDRESS , CATEGORY_CONTRACT_ABI } from "../config";
 
 export const fetchParentCategories = () => ({
     type:FETCH_PARENT_CATEGORIES,
@@ -74,7 +74,6 @@ export const connectWallet = () => async dispatch =>  {
         dispatch({type: WALLET_CONNECT_SUCCESS, ...data});
     }else {
         dispatch({type: WALLET_CONNECT_ERROR});
-        console.log("Not connected!");
     }
 }
 
@@ -119,8 +118,7 @@ async function initialize(web3){
     if(accounts.length > 0){
         var firstAcc = accounts[0];
 
-        let contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
-        console.log("contract", contract);
+        let contract = new web3.eth.Contract(CATEGORY_CONTRACT_ABI, CATEGORY_CONTRACT_ADDRESS);
 
         return({web3: web3, contract: contract, account: firstAcc});
     }

@@ -22,7 +22,6 @@ export default function(state = initialState, action) {
         })
     }
     case FETCH_JOBS_BY_CATEGORY:
-      console.log('In h=jobs' , action.categoryId);
       return {
         ...state,
         categoryJob:action.payload.filter(value=>{

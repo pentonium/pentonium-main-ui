@@ -1,30 +1,30 @@
-import {JOB_LIST_REQUEST , JOB_LIST_SUCCESS , JOB_LIST_ERROR} from '../constants';
+import {CATEGORY_LIST_REQUEST , CATEGORY_LIST_SUCCESS , CATEGORY_LIST_ERROR} from '../constants';
 
 const initialState = {
-  list:[],  
+  categoryList:[],  
   loading: false,
   error: false
 };
 
 export default function(state = initialState, action) {
     switch (action.type) {
-        case JOB_LIST_REQUEST: 
+        case CATEGORY_LIST_REQUEST: 
         return {
             ...state,
             error: false,
             loading: true
         }
-        case JOB_LIST_SUCCESS: 
+        case CATEGORY_LIST_SUCCESS:
           return {
             ...state,
-            list: action.list,
+            categoryList: action.list,
             error: false,
             loading: false
           }
-        case JOB_LIST_ERROR:
+        case CATEGORY_LIST_ERROR:
           return {
             ...state,
-            list: [],
+            categoryList: [],
             error:true
           }
         default:

@@ -1,4 +1,4 @@
-import {FETCH_CATEGORIES, FETCH_FEATURED_JOBS , FETCH_HIGHRATED_JOBS , FETCH_NEW_JOBS , FETCH_JOB_DATA, FETCH_HASH_JOB_DATA, FETCH_JOBS_BY_CATEGORY , FETCH_ACTIVE_BUYER_JOBS} from '../constants';
+import {FETCH_CATEGORIES, FETCH_FEATURED_JOBS , FETCH_HIGHRATED_JOBS , FETCH_NEW_JOBS , FETCH_JOB_DATA, FETCH_HASH_JOB_DATA, FETCH_JOBS_BY_CATEGORY , FETCH_ACTIVE_BUYER_JOBS , CATEGORY_CU_REQUEST , CATEGORY_CU_SUCCESS , CATEGORY_CU_ERROR} from '../constants';
 import jobsData from '../data/jobsData.json';
 import jsonData from '../data/category.json';
 import ipfs from '../ipfs';
@@ -133,19 +133,16 @@ export const fetchActiveJobs = (id , flag) => ({
 //  * @param {address} addr
 //  * @param {contract object} contract
 //  */
-// export const createNewCategory = (name, addr, contract) => async dispatch => {
-//     dispatch({type: CATEGORY_CU_REQUEST});
-//     try{
-//         console.log(contract);
-//         let id = await contract.methods.addPaymentTypeCategory(name).send({from: addr});
-
-//         console.log(id);
-//         dispatch({type: CATEGORY_CU_SUCCESS, id: id, category: name});
-//     }catch(e){
-//         console.log(e);
-//         dispatch({type: CATEGORY_CU_ERROR});
-//     }
-// }
+export const createNewCategory = (name, addr, contract) => async dispatch => {
+    dispatch({type: CATEGORY_CU_REQUEST});
+    try{
+        let id = await contract.methods.create(name).send({from: addr});
+        dispatch({type: CATEGORY_CU_SUCCESS, id: id, category: name});
+    }catch(e){
+        console.log(e);
+        dispatch({type: CATEGORY_CU_ERROR});
+    }
+}
 
 
 

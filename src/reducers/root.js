@@ -4,6 +4,7 @@ import categoryReducer from "./categoryReducer";
 import jobsReducer from "./jobsReducer";
 import jobListReducer from './jobListReducer';
 import jobReducer from './JobReducers';
+import categoryListReducer from "./categoryListReducer";
 
 
 const rootReducer = combineReducers({
@@ -11,7 +12,8 @@ const rootReducer = combineReducers({
   category:categoryReducer,
   fetchJobs:jobsReducer,
   jobList:jobListReducer,
-  jobReducer:jobReducer
+  jobReducer:jobReducer,
+  categoryList:categoryListReducer
 });
 
 export default rootReducer;

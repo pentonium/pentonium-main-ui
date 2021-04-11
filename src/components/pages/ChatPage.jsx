@@ -43,7 +43,6 @@ class ChatPage extends Component {
     const that = this;
     setInterval(async() => {
       const msg = await that.state.chat.loadMessages();
-      console.log("mrcv", msg.chat);
       if(msg.chat != that.state.messages){
         that.setState({
           messages: msg.chat

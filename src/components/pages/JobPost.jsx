@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { Row, Col , Badge , InputGroup , Form , Button} from 'react-bootstrap';
-import {fetchParentCategories} from '../../actions/commonAction';
-import {fetchCategories} from '../../actions/categoryActions';
+import {fetchParentCategories , connectIfAuthorized} from '../../actions/commonAction';
+import {createNewCategory, fetchCategories} from '../../actions/categoryActions';
 import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
 import ipfs from '../../ipfs';
 import Web3 from 'web3';
 import {postJob} from '../../actions/jobActions';
+import { getCategoriesList } from "../../actions/categoryListAction";
 
 
 class JobPost extends Component {
@@ -27,7 +28,8 @@ class JobPost extends Component {
             buffer:"",
             imageHash:[],
             dataHash:"",
-            previewImage:[]
+            previewImage:[],
+            offerContract:''
         }
         this.captureFile = this.captureFile.bind(this);
         this.uploadFormData = this.uploadFormData.bind(this);
@@ -35,8 +37,10 @@ class JobPost extends Component {
         this.loadWeb3 = this.loadWeb3.bind(this);
     }
 
-    componentDidMount(){
-      this.props.fetchParentCategories();
+    async componentDidMount(){
+      // this.props.fetchParentCategories();
+        await this.props.connectIfAuthorized();
+        await this.props.getCategoriesList(this.props.contract , this.props.account);
     }
 
     async loadWeb3() {
@@ -59,14 +63,14 @@ class JobPost extends Component {
         }
         // const buffer = Buffer(uploadData);
         ipfs.files.add(Buffer.from(JSON.stringify(uploadData)) , (error , result)=>{
-          console.log('Errror' , error , result)
           if(error){
             return
           }
           this.setState({dataHash:result[0].hash});
           // const accounts = await window.web3.eth.getAccounts();
           // storehash.methods.
-          this.props.postJob(this.props.contract , this.state.dataHash , this.state.imageHash , this.props.account , this.props.account)
+          this.props.postJob(this.props.web3 , this.state.dataHash , this.state.imageHash , this.props.account , this.props.account , this.state.offerContract);
+          // this.props.createNewCategory('Graphics' , this.props.account , this.props.contract);
           this.getFileData();
         });
       } 
@@ -104,9 +108,16 @@ class JobPost extends Component {
     };
 
     onSelectedOptionsChange(event){
+        console.log('On select' , event.currentTarget);
         const value = event.currentTarget.value;
         this.myChangeHandler(event);
-        this.props.fetchCategories(value);
+        // this.props.fetchCategories(value);
+        let filteredCategory = this.props.categoryList.filter((cat) => {
+           if (cat.name === value){
+             return cat
+           }
+        });
+        this.setState({offerContract:filteredCategory[0].offer_contract});
         this.setState({isParentSelected:true});
     }
 
@@ -140,6 +151,7 @@ class JobPost extends Component {
     }
 
     render() {
+      console.log('Offer contract' , this.state.offerContract);
         return (
             <div style = {{'width':'100%'}}>
               {
@@ -179,14 +191,14 @@ class JobPost extends Component {
                     <Form.Label>Select Parent Category</Form.Label>
                     <Form.Control required as="select" size="sm" name="parentCategory" defaultValue="{''}" custom onChange={this.onSelectedOptionsChange.bind(this)} >
                     <option value={''}>Choose...</option>   
-                    {this.props.parentCategories &&
-                      this.props.parentCategories.map((parent) => {
-                      return <option key={parent.id} value={parent.id}>{parent.name}</option>
+                    {this.props.categoryList &&
+                      this.props.categoryList.map((parent) => {
+                      return <option key={parent.name} value={parent.name} contract={parent.offer}>{parent.name}</option>
                       })
                     } 
                     </Form.Control>
                 </Form.Group>
-                <Form.Group as={Col} md="6" controlId="validationCustom04">
+                {/* <Form.Group as={Col} md="6" controlId="validationCustom04">
                     <Form.Label>Select Category</Form.Label>
                     <Form.Control required as="select" size="sm" name="category" defaultValue="{''}" onChange={this.myChangeHandler} custom disabled={!this.state.isParentSelected}>
                     <option value={''}>Choose...</option>   
@@ -196,7 +208,7 @@ class JobPost extends Component {
                       })
                     } 
                     </Form.Control>
-                </Form.Group>
+                </Form.Group> */}
             </Form.Row>
             <Form.Group controlId="validationCustom05">
             <Form.Label>Enter your keywords</Form.Label>  
@@ -242,12 +254,15 @@ class JobPost extends Component {
 }
 
 function mapStateToProps(state){
-  const { contract, account } = state.common;
+  const { contract, account , web3 } = state.common;
   const { id, category_name, loading, error } = state.category;
+  const {categoryList} = state.categoryList;
   return {
     parentCategories: state.common.parentCategories,
     categories: state.category.categoryItems,
-    contract, account, id, category_name, loading, error
+    contract, account, id, category_name, loading, error,
+    categoryList,
+    web3
     };
   }
   
@@ -255,7 +270,11 @@ function mapDispatchToProps(dispatch){
     return{
       fetchParentCategories: () => dispatch(fetchParentCategories()),
       fetchCategories: (id) => dispatch(fetchCategories(id)),
-      postJob:(contract , hash , thumbnail , provider  , account) => dispatch(postJob(contract , hash , thumbnail , provider  , account))
+      postJob:(contract , hash , thumbnail , provider  , account , offerContract) => dispatch(postJob(contract , hash , thumbnail , provider  , account , offerContract)),
+      createNewCategory:(name , addr , contract) => dispatch(createNewCategory(name , addr , contract)),
+      getCategoriesList:(contract,account) => dispatch(getCategoriesList(contract,account)),
+      connectIfAuthorized:() => dispatch(connectIfAuthorized())
+      
     }
 }
  
