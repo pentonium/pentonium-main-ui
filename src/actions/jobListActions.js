@@ -1,19 +1,21 @@
 import {JOB_LIST_REQUEST , JOB_LIST_SUCCESS , JOB_LIST_ERROR} from '../constants';
+import { OFFER_CONTRACT_ABI } from "../config";
 
 
 /**
  * get list of categories
  * @param {contract object} contract
  */
-export const getJobsList = (contract , account) => async dispatch => {
+export const getJobsList = (contract , account , web3 , offerContract) => async dispatch => {
     dispatch({type: JOB_LIST_REQUEST});
     console.log('Job List' , contract , account);
     try{
-        let categories = await contract.methods.read(10 , 10 ).call();
+        let contract = new web3.eth.Contract(OFFER_CONTRACT_ABI, offerContract);
+        console.log('Contract' , contract);
+        let categories = await contract.methods.read(1 , 50 ).call();
 
         dispatch({type: JOB_LIST_SUCCESS, list: categories});
     }catch(e){
-        console.log(e);
         dispatch({type: JOB_LIST_ERROR});
     }
 }

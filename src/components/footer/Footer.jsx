@@ -43,11 +43,11 @@ class Footer extends Component {
                     <Container className="footer-top-section">
                             <Col md={3} sm={12}>
                                 <h6>Categories</h6>
-                                <ul>
+                                {/* <ul>
                                 {this.props.parentCategories.map((value, index) => {
                                     return <li key={index}><a href={'/categories/'+value.id}>{value.name}</a></li>
                                 })}
-                                </ul>
+                                </ul> */}
                             </Col>
                             <Col md={3} sm={12}>
                                 <h6>About</h6>

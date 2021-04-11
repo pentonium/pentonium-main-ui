@@ -42,7 +42,6 @@ class JobEdit extends Component {
     componentDidUpdate(prevProps){
         if(prevProps.hashedData !== this.props.hashedData){
             if(this.props.hashedData){
-                console.log('HashedData' , this.props.hashedData);
                 this.props.fetchCategories(this.props.hashedData.parentCategory);
                 this.setState({title:this.props.hashedData.title , description:this.props.hashedData.description , duration:this.props.hashedData.duration,
                 parentCategory:this.props.hashedData.parentCategory ,imageHash:this.props.hashedData.imageHash , tags:this.props.hashedData.tags , isParentSelected:true})

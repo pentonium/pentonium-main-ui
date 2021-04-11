@@ -1,11 +1,12 @@
 import React, { Component , createRef } from "react";
 import { connect } from 'react-redux';
 import Web3 from 'web3';
-import {fetchParentCategories , connectWallet} from '../../actions/commonAction';
-import {fetchCategories} from '../../actions/categoryActions';
+import {fetchParentCategories , connectWallet, connectIfAuthorized} from '../../actions/commonAction';
+import {fetchCategories , createNewCategory} from '../../actions/categoryActions';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Collapse from 'react-bootstrap/Collapse';
 import {getJobsList} from '../../actions/jobListActions';
+import { getCategoriesList } from "../../actions/categoryListAction";
 
 
 
@@ -24,12 +25,15 @@ class Header extends Component {
 
     }
 
-    componentWillMount(){
-        this.props.fetchParentCategories();
+    async componentWillMount(){
+        await this.props.connectIfAuthorized();
+        // await this.props.createNewCategory('Theme' , this.props.account , this.props.contract);
+        // await this.props.getCategoriesList(this.props.contract , this.props.account);
+        // await this.props.getJobsList(this.props.contract , this.props.account , this.props.web3 , this.props.categoryList[0].offer_contract);
     }
 
     componentDidMount(){
-        this.checkLoggedIn();
+        
     }
 
     async checkLoggedIn(){
@@ -39,7 +43,6 @@ class Header extends Component {
             try{
                 var loggedIn = await web3.eth.getAccounts();
                 if(loggedIn.length > 0){
-                    console.log('LoggedIn' , loggedIn);
                     this.setState({active:true});
                 } 
             } catch(e){
@@ -57,7 +60,6 @@ class Header extends Component {
                 await window.ethereum.enable();
                 var accounts = await web3.eth.getAccounts();
                 var firstAcc = accounts[0];
-                console.log(firstAcc);
                 this.setState({active:true});       
             } catch(e){
                 console.error(e)
@@ -69,7 +71,8 @@ class Header extends Component {
 
     async onClick(){
         await this.props.connectWallet();
-        await this.props.getJobsList(this.props.contract , this.props.account);
+        await this.props.getCategoriesList(this.props.contract , this.props.account);
+        
     }
 
     navigateToPost(){
@@ -145,7 +148,6 @@ class Header extends Component {
     }
 
     render() { 
-        console.log('Render' , this.props);
         return (
             <>
             <header className="header">
@@ -228,11 +230,11 @@ class Header extends Component {
                     
                 </div>
                 </div>
-                {this.props.parentCategories ? 
+                {this.props.categoryList ? 
             <div className="parent-nav-section">
                 <div className="container">
                 <ul className="nav-items">
-                {this.props.parentCategories.map((value, index) => {
+                {this.props.categoryList.map((value, index) => {
                     return (
                         <li> 
                             {/* <Dropdown onMouseEnter={() => this.toggleMenuOpen(index , true , value.id)}
@@ -282,9 +284,9 @@ class Header extends Component {
 }
 
 function mapStateToProps(state){
-    console.log('State' , state);
     const { web3, account, loading, error , contract } = state.common;
     const {list} = state.jobList;
+    const {categoryList} = state.categoryList;
     return {
         parentCategories: state.common.parentCategories,
         categories: state.category.categoryItems,
@@ -293,7 +295,8 @@ function mapStateToProps(state){
         loading,
         error,
         contract,
-        list
+        list,
+        categoryList
       };
   }
   
@@ -302,7 +305,10 @@ function mapDispatchToProps(dispatch){
         fetchParentCategories: () => dispatch(fetchParentCategories()),
         fetchCategories: (id) => dispatch(fetchCategories(id)),
         connectWallet: () => dispatch(connectWallet()),
-        getJobsList: (contract , account) => dispatch(getJobsList(contract , account))
+        connectIfAuthorized:() => dispatch(connectIfAuthorized()),
+        getJobsList: (contract , account , web3 , offerContract) => dispatch(getJobsList(contract , account , web3 , offerContract)),
+        getCategoriesList:(contract,account) => dispatch(getCategoriesList(contract,account)),
+        createNewCategory:(name,account,contract) => dispatch(createNewCategory(name,account,contract))
     }
 }
  

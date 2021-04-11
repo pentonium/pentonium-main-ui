@@ -11,7 +11,7 @@ class Home extends Component {
                 <Row className="collections-list">
                 <FeaturedCollection></FeaturedCollection>
                 <RatedCollection></RatedCollection>
-                {/* <NewCollection></NewCollection> */}
+                <NewCollection></NewCollection>
                 </Row>
          );
     }

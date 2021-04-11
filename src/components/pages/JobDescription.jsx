@@ -8,7 +8,9 @@ import LazyImage from '../../controllers/LazyImage';
 import Carousel from 'react-bootstrap/Carousel';
 import { UserPriceDetail } from "../../controllers/UserPriceDetail";
 import Button from 'react-bootstrap/Button';
-import {deleteJob} from '../../actions/jobActions';
+import {deleteJob, getJobDetail} from '../../actions/jobActions';
+import { getCategoriesList } from "../../actions/categoryListAction";
+import {connectIfAuthorized} from '../../actions/commonAction';
 
 
 class JobDescription extends Component {
@@ -16,13 +18,15 @@ class JobDescription extends Component {
         super(props)
     }
 
-    componentDidMount(){
+    async componentDidMount(){
+        await this.props.connectIfAuthorized();
+        await this.props.getCategoriesList(this.props.contract , this.props.account);
         const jobId = this.props.match.params.jobId;
         if(jobId == 1 || jobId == 2 || jobId == 3 || jobId == 4 || jobId == 5){    
             this.props.fetchJobData(parseInt(jobId , 10));
         } else{
-            
-            this.props.fetchHashJobData(jobId);
+            // this.props.fetchHashJobData(jobId);
+            this.props.getJobDetail(this.props.web3 , 1 , jobId);
         }
     }
 
@@ -108,7 +112,7 @@ class JobDescription extends Component {
                         </div>
                     </Col>
                     <Col md={4} xs={12}>
-                        <h4>About Coustomer</h4>
+                        <UserPriceDetail></UserPriceDetail>
                     </Col>
                     </>
             }
@@ -118,10 +122,16 @@ class JobDescription extends Component {
 }
 
 function mapStateToProps(state){
-    console.log(state);
+    const { web3, account, loading, error , contract  } = state.common;
+    const {detailData} = state.jobReducer;
     return {
         jobDescription: state.fetchJobs.jobDescription[0],
-        hashedData: state.fetchJobs.hashedData
+        hashedData: state.fetchJobs.hashedData,
+        web3,
+        account,
+        loading,
+        error,
+        contract,detailData
       };
   }
   
@@ -129,7 +139,10 @@ function mapDispatchToProps(dispatch){
     return{
         fetchJobData: (id) => dispatch(fetchJobData(id)),
         fetchHashJobData: (id) => dispatch(fetchData(id)),
-        deleteJob:(id) => dispatch(deleteJob(id))
+        deleteJob:(id) => dispatch(deleteJob(id)),
+        connectIfAuthorized:() => dispatch(connectIfAuthorized()),
+        getCategoriesList:(contract,account) => dispatch(getCategoriesList(contract,account)),
+        getJobDetail:(web3 , id , offerContract) => dispatch(getJobDetail(web3 , id , offerContract))
     }
 }
  
