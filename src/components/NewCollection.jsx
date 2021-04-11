@@ -17,8 +17,10 @@ class NewCollection extends Component {
 
     async componentDidMount(){
         await this.props.connectIfAuthorized();
-        await this.props.getCategoriesList(this.props.contract , this.props.account);
-        await this.props.getJobsList(this.props.contract , this.props.account , this.props.web3 , this.props.categoryList[0].offer_contract);
+        if(this.props.account){
+            await this.props.getCategoriesList(this.props.contract , this.props.account);
+            await this.props.getJobsList(this.props.contract , this.props.account , this.props.web3 , this.props.categoryList[0].offer_contract);
+        }
 
     }
 
