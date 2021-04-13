@@ -28,7 +28,7 @@ export const routes = [
         component: Category
     },
     {
-        path: "/jobs/:jobId",
+        path: "/jobs/:jobId/:offerContract",
         exact: true,
         component: JobDescription
     },{

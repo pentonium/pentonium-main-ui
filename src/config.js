@@ -296,6 +296,19 @@ export const OFFER_CONTRACT_ABI = [
 	},
 	{
 		"inputs": [],
+		"name": "USDT",
+		"outputs": [
+			{
+				"internalType": "contract IERC20",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
 		"name": "category",
 		"outputs": [
 			{
@@ -450,6 +463,11 @@ export const OFFER_CONTRACT_ABI = [
 			},
 			{
 				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
 				"name": "next",
 				"type": "uint256"
 			},
@@ -520,6 +538,11 @@ export const OFFER_CONTRACT_ABI = [
 					{
 						"internalType": "uint256",
 						"name": "price",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "id",
 						"type": "uint256"
 					},
 					{
