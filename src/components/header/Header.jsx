@@ -251,16 +251,16 @@ class Header extends Component {
                             </Dropdown> */}
                             <a
                                 id={'anchor-nav'+index}
-                                onMouseEnter={() => this.toggleMenuOpen(index , true , value.id)}
-                                onMouseLeave={() => this.toggleMenuClose(index , false , value.id)}
+                                // onMouseEnter={() => this.toggleMenuOpen(index , true , value.id)}
+                                // onMouseLeave={() => this.toggleMenuClose(index , false , value.id)}
                                 aria-controls={value.id}
                                 className={this.state.menuOpen[index] ? 'active-nav':''}
-                                aria-expanded={this.state.menuOpen[index]}
+                                aria-expanded={this.state.menuOpen[index]} href={'/categories/'+value.offer_contract}
                             >
                                 <span>{value.name}</span>
-                                <i id={'chevron'+index}className={"fa fa-chevron-up rotate "}></i>
+                                {/* <i id={'chevron'+index}className={"fa fa-chevron-up rotate "}></i> */}
                             </a>
-                            <Collapse id={'collapse-id'+index} onMouseEnter={() => this.toggleSubMenu(index , true)} onMouseLeave={() => this.toggleSubMenuOt(index , false)}>
+                            {/* <Collapse id={'collapse-id'+index} onMouseEnter={() => this.toggleSubMenu(index , true)} onMouseLeave={() => this.toggleSubMenuOt(index , false)}>
                                 <div className="collapse-content" id={value.id}>
                                     <div className="container">
                                 {this.props.categories ? this.props.categories.categories.map((value1 , index) => {
@@ -268,7 +268,7 @@ class Header extends Component {
                                 }): ''}
                                 </div>
                                 </div>
-                            </Collapse>
+                            </Collapse> */}
                             </li>
                         )
                     })}

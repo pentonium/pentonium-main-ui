@@ -23,6 +23,7 @@ class JobPost extends Component {
             category:"",
             description:"",
             tags:[],
+            price:0,
             successful:false,
             imageArray:[],
             buffer:"",
@@ -59,7 +60,8 @@ class JobPost extends Component {
           category:this.state.category,
           description:this.state.description,
           tags:this.state.tags,
-          imageHash:this.state.imageHash
+          imageHash:this.state.imageHash,
+          price:this.state.price
         }
         // const buffer = Buffer(uploadData);
         ipfs.files.add(Buffer.from(JSON.stringify(uploadData)) , (error , result)=>{
@@ -69,7 +71,7 @@ class JobPost extends Component {
           this.setState({dataHash:result[0].hash});
           // const accounts = await window.web3.eth.getAccounts();
           // storehash.methods.
-          this.props.postJob(this.props.web3 , this.state.dataHash , this.state.imageHash , this.props.account , this.props.account , this.state.offerContract);
+          this.props.postJob(this.props.web3 , this.state.dataHash , this.state.imageHash , this.props.account , this.props.account , this.state.offerContract , this.state.price);
           // this.props.createNewCategory('Graphics' , this.props.account , this.props.contract);
           this.getFileData();
         });
@@ -209,6 +211,20 @@ class JobPost extends Component {
                     } 
                     </Form.Control>
                 </Form.Group> */}
+                <Form.Group as={Col} md="6" controlId="validationCustom04">
+                <Form.Label>Price (in dollar):</Form.Label>
+                <Form.Control
+                  required
+                  type="number"
+                  name="price"
+                  placeholder="Price"
+                  value={this.state.price}
+                  onChange={this.myChangeHandler}
+                />
+                <Form.Control.Feedback type="invalid">
+                  Please provide a valid duration.
+                </Form.Control.Feedback>
+              </Form.Group>
             </Form.Row>
             <Form.Group controlId="validationCustom05">
             <Form.Label>Enter your keywords</Form.Label>  
@@ -270,7 +286,7 @@ function mapDispatchToProps(dispatch){
     return{
       fetchParentCategories: () => dispatch(fetchParentCategories()),
       fetchCategories: (id) => dispatch(fetchCategories(id)),
-      postJob:(contract , hash , thumbnail , provider  , account , offerContract) => dispatch(postJob(contract , hash , thumbnail , provider  , account , offerContract)),
+      postJob:(contract , hash , thumbnail , provider  , account , offerContract , price) => dispatch(postJob(contract , hash , thumbnail , provider  , account , offerContract , price)),
       createNewCategory:(name , addr , contract) => dispatch(createNewCategory(name , addr , contract)),
       getCategoriesList:(contract,account) => dispatch(getCategoriesList(contract,account)),
       connectIfAuthorized:() => dispatch(connectIfAuthorized())

@@ -12,7 +12,7 @@ class CollectionItem extends Component {
         super(props);
     }
 
-    componentDidMount(){
+    async componentDidMount(){
         this.props.fetchHashJobData(this.props.hash.ipfs_hash);
         // this.props.getJobDetail(this.props.web3 , this.props.hash.id , this.props.offerContract);
     }
@@ -39,12 +39,12 @@ class CollectionItem extends Component {
                                 )  
                             })}
                         </Carousel>
-                        <a href={'/jobs/'+this.props.offerContract}>
+                        <a href={'/jobs/'+this.props.hash.id +'/'+this.props.offerContract}>
                         <div className="card-body">
                         <h5 className="card-title">{this.props.hashedData.title}</h5>
                         <p className="card-text">{this.props.hashedData.description}</p>
-                        <p className="card-text"><small className="text-muted">'$' + {this.props.hashedData.duration}</small>
-                        <button className="btn btn-primary"><a href={`/editData/${this.props.hash}`}>Edit</a></button></p>
+                        <p className="card-text"><small className="text-muted">{`$${this.props.hashedData.price}`}</small>
+                        <button className="btn btn-primary"><a href={'/jobs/'+this.props.hash.id +'/'+this.props.offerContract}>Edit</a></button></p>
                         </div>
                         </a>
                     </div>

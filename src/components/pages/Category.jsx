@@ -5,6 +5,8 @@ import {fecthJobByCategory} from '../../actions/categoryActions';
 import { withRouter } from 'react-router-dom'
 import Pagination  from 'react-bootstrap/Pagination';
 import {CollectionCard} from '../../controllers/CollectionCard';
+import {getJobsList} from '../../actions/jobListActions';
+import {connectIfAuthorized} from '../../actions/commonAction';
 // import PaginationItem from 'react-bootstrap/PageItem'
 // import PaginationLink from 'react-bootstrap/Pagination'
 
@@ -24,9 +26,14 @@ class Category extends Component {
         };
     }
 
-    componentDidMount(){
+    async componentDidMount(){
         const categoryId = this.props.match.params.categoryId;
-        this.props.fecthJobByCategory(categoryId);
+        // this.props.fecthJobByCategory(categoryId);
+        await this.props.connectIfAuthorized();
+        if(this.props.account){
+            // await this.props.getCategoriesList(this.props.contract , this.props.account);
+            await this.props.getJobsList(this.props.contract , this.props.account , this.props.web3 , categoryId);
+        }
     }
 
     handleClick(e, index) {
@@ -40,6 +47,7 @@ class Category extends Component {
       }
 
     render() { 
+        console.log('NNNNNN' , this.props);
         const { currentPage } = this.state;
         return (
             <div className="row">
@@ -74,14 +82,20 @@ class Category extends Component {
 }
 
 function mapStateToProps(state){
+    const { web3, account, loading, error , contract } = state.common;
+    const {list} = state.jobList;
     return {
-        jobCategory: state.fetchJobs.categoryJob
+        jobCategory: state.fetchJobs.categoryJob,
+        web3, account, loading, error , contract,
+        list
       };
   }
   
 function mapDispatchToProps(dispatch){
     return{
-        fecthJobByCategory: (id) => dispatch(fecthJobByCategory(id))
+        fecthJobByCategory: (id) => dispatch(fecthJobByCategory(id)),
+        connectIfAuthorized:() => dispatch(connectIfAuthorized()),
+        getJobsList: (contract , account , web3 , offerContract) => dispatch(getJobsList(contract , account , web3 , offerContract))
     }
 }
  
