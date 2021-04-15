@@ -37,14 +37,15 @@ export const fecthJobByCategory = (id) => ({
 })
 
 export function fetchData(id){
-    return  function (dispatch) {
-      return ipfs.files.get(id , (error , result) => {
-        dispatch({
-            type:FETCH_HASH_JOB_DATA,
-            payload:JSON.parse(result[0].content.toString())
-        });
+    return new Promise((resolve, reject) => {
+      ipfs.files.get(id , (error , result) => {
+        // dispatch({
+        //     type:FETCH_HASH_JOB_DATA,
+        //     payload:JSON.parse(result[0].content.toString())
+        // });
+        resolve(JSON.parse(result[0].content.toString()));
       });
-    };
+    });
 }
 
 // export const getCategories = (contract) => async dispatch => {
