@@ -55,7 +55,6 @@ class Categories extends Component {
       }
 
     render() { 
-        console.log('NNNNN' , this.props);
         const { currentPage } = this.state;
         return (
             <div className="row">

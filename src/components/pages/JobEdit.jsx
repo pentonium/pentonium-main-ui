@@ -77,7 +77,7 @@ class JobEdit extends Component {
 
       getFileData(){
         ipfs.files.get(this.state.dataHash , (error , result) => {
-          console.log('Data hash' , JSON.parse(result[0].content.toString()));
+          // console.log('Data hash' , JSON.parse(result[0].content.toString()));
         })
       }
 

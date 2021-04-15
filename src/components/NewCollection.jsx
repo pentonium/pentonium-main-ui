@@ -25,7 +25,6 @@ class NewCollection extends Component {
     }
 
     render() { 
-        console.log('New Collection' , this.props);
         return (
             <div className="collections-content" style={{width:'100%'}}>
             <h2 className="collection-title">Featured Jobs</h2>

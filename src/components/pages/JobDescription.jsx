@@ -22,12 +22,14 @@ class JobDescription extends Component {
         await this.props.connectIfAuthorized();
         await this.props.getCategoriesList(this.props.contract , this.props.account);
         const jobId = this.props.match.params.jobId;
-        if(jobId == 1 || jobId == 2 || jobId == 3 || jobId == 4 || jobId == 5){    
-            this.props.fetchJobData(parseInt(jobId , 10));
-        } else{
-            // this.props.fetchHashJobData(jobId);
-            this.props.getJobDetail(this.props.web3 , 1 , jobId);
-        }
+        const offerContract = this.props.match.params.offerContract;
+        // if(jobId == 1 || jobId == 2 || jobId == 3 || jobId == 4 || jobId == 5){    
+        //     this.props.fetchJobData(parseInt(jobId , 10));
+        // } else{
+            //
+            await this.props.getJobDetail(this.props.web3 , jobId , offerContract);
+            this.props.fetchHashJobData(this.props.detailData.ipfs_hash);
+        // }
     }
 
     deleteJob = () =>{
@@ -35,7 +37,6 @@ class JobDescription extends Component {
     }
 
     render() { 
-        console.log('Props' , this.props);
         return (
             <Row className="job-desctiption-page">
             {this.props.jobDescription &&

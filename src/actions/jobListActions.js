@@ -8,10 +8,8 @@ import { OFFER_CONTRACT_ABI } from "../config";
  */
 export const getJobsList = (contract , account , web3 , offerContract) => async dispatch => {
     dispatch({type: JOB_LIST_REQUEST});
-    console.log('Job List' , contract , account);
     try{
         let contract = new web3.eth.Contract(OFFER_CONTRACT_ABI, offerContract);
-        console.log('Contract' , contract);
         let categories = await contract.methods.read(1 , 50 ).call();
 
         dispatch({type: JOB_LIST_SUCCESS, list: categories});
