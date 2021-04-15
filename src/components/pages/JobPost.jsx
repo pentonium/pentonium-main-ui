@@ -80,7 +80,7 @@ class JobPost extends Component {
 
       getFileData(){
         ipfs.files.get(this.state.dataHash , (error , result) => {
-          console.log('Data hash' , JSON.parse(result[0].content.toString()));
+          // console.log('Data hash' , JSON.parse(result[0].content.toString()));
         })
       }
 
@@ -100,7 +100,6 @@ class JobPost extends Component {
                     return
                   }
                   this.setState({'imageHash':[...this.state.imageHash , result[0].hash]});
-                  console.log(this.state.imageHash , result);
                   this.uploadFormData();
               });
             });
@@ -110,7 +109,6 @@ class JobPost extends Component {
     };
 
     onSelectedOptionsChange(event){
-        console.log('On select' , event.currentTarget);
         const value = event.currentTarget.value;
         this.myChangeHandler(event);
         // this.props.fetchCategories(value);
@@ -153,7 +151,6 @@ class JobPost extends Component {
     }
 
     render() {
-      console.log('Offer contract' , this.state.offerContract);
         return (
             <div style = {{'width':'100%'}}>
               {

@@ -47,7 +47,6 @@ class Category extends Component {
       }
 
     render() { 
-        console.log('NNNNNN' , this.props);
         const { currentPage } = this.state;
         return (
             <div className="row">
