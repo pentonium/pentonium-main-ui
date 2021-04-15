@@ -37,14 +37,15 @@ export const fecthJobByCategory = (id) => ({
 })
 
 export function fetchData(id){
-    return  function (dispatch) {
-      return ipfs.files.get(id , (error , result) => {
-        dispatch({
-            type:FETCH_HASH_JOB_DATA,
-            payload:JSON.parse(result[0].content.toString())
-        });
+    return new Promise((resolve, reject) => {
+      ipfs.files.get(id , (error , result) => {
+        // dispatch({
+        //     type:FETCH_HASH_JOB_DATA,
+        //     payload:JSON.parse(result[0].content.toString())
+        // });
+        resolve(JSON.parse(result[0].content.toString()));
       });
-    };
+    });
 }
 
 // export const getCategories = (contract) => async dispatch => {
@@ -145,44 +146,4 @@ export const createNewCategory = (name, addr, contract) => async dispatch => {
 }
 
 
-
-// /**
-//  * update an existing category
-//  * @param {integer} id
-//  * @param {string} name
-//  * @param {address} addr
-//  * @param {contract object} contract
-//  */
-// export const updateCategory = (id, name, account, contract) => async dispatch => {
-//     dispatch({type: CATEGORY_CU_REQUEST});
-//     try{
-//         await contract.methods.updatePaymentTypeCategory(id, name).send({from: account});
-
-//         dispatch({type: CATEGORY_CU_SUCCESS, id: id, category: name});
-//     }catch(e){
-//         console.log(e);
-//         dispatch({type: CATEGORY_CU_ERROR});
-//     }
-// }
-
-
-
-
-// /**
-//  * delete an existing category
-//  * @param {integer} id
-//  * @param {address} addr
-//  * @param {contract object} contract
-//  */
-// export const deleteCategory = (id, account, contract) => async dispatch => {
-//     dispatch({type: CATEGORY_DELETE_REQUEST});
-//     try{
-        
-//         await contract.methods.deletePaymentTypeCategory(id).send({from: account});
-
-//         dispatch({type: CATEGORY_DELETE_SUCCESS });
-//     }catch(e){
-//         dispatch({type: CATEGORY_DELETE_ERROR});
-//     }
-// }
 

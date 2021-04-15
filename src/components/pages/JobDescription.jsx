@@ -15,7 +15,10 @@ import {connectIfAuthorized} from '../../actions/commonAction';
 
 class JobDescription extends Component {
     constructor(props){
-        super(props)
+        super(props);
+        this.state={
+            hashedData:{}
+        }
     }
 
     async componentDidMount(){
@@ -28,7 +31,8 @@ class JobDescription extends Component {
         // } else{
             //
             await this.props.getJobDetail(this.props.web3 , jobId , offerContract);
-            this.props.fetchHashJobData(this.props.detailData.ipfs_hash);
+            let jobData = await fetchData(this.props.detailData.ipfs_hash);
+            this.setState({hashedData:jobData});
         // }
     }
 
@@ -73,18 +77,18 @@ class JobDescription extends Component {
                     </Col>
                     </>
             }
-            {this.props.hashedData &&
+            {this.state.hashedData &&
                     <>
                     <Col md={8} xs={12}>
-                        <h1>{this.props.hashedData.title}</h1>
+                        <h1>{this.state.hashedData.title}</h1>
                         <div className="customer-data">
                             <a><span className="customer-image"><img  src='https://fiverr-res.cloudinary.com/t_profile_original,q_auto,f_auto/attachments/profile/photo/bd375846a2b53df94bc356ffa3458426-1540375416166/be56ddbf-191a-449e-83b7-fd07e3a271bf.jpeg' /></span></a>
-                            <a href={"/customers/"+this.props.hashedData.customerId}><span className="customer-name">{this.props.hashedData.title}</span></a>
+                            <a href={"/customers/"+this.state.hashedData.customerId}><span className="customer-name">{this.state.hashedData.title}</span></a>
                         </div>
                         <div className="job-details">
                             <div className="job-image">
                             <Carousel>    
-                            {this.props.hashedData.imageHash && this.props.hashedData.imageHash.map((preview , i) => {
+                            {this.state.hashedData.imageHash && this.state.hashedData.imageHash.map((preview , i) => {
                                 return (
                                     <Carousel.Item>
                                         <LazyImage
@@ -96,16 +100,16 @@ class JobDescription extends Component {
                                 )
                             })}       
                             </Carousel>
-                            <img src={this.props.hashedData.image}/>
+                            <img src={this.state.hashedData.image}/>
                             </div>
                             <div>
                                 <h4>About Job:</h4>
-                                <p>{this.props.hashedData.description}</p>
+                                <p>{this.state.hashedData.description}</p>
                             </div>
                             <div>
                                 <h5>Skills Required:</h5>
                                 {
-                                    this.props.hashedData.tags.map((skill) => {
+                                    this.state.hashedData.tags && this.state.hashedData.tags.map((skill) => {
                                     return <Badge pill variant="secondary">{skill}</Badge>
                                     })
                                 }

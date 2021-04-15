@@ -10,22 +10,25 @@ import { getJobDetail } from "../actions/jobActions";
 class CollectionItem extends Component {
     constructor(props){
         super(props);
+        this.state={
+            'hashedData':{}
+        }
     }
 
     async componentDidMount(){
-        this.props.fetchHashJobData(this.props.hash.ipfs_hash);
-        // this.props.getJobDetail(this.props.web3 , this.props.hash.id , this.props.offerContract);
+        let jobData = await fetchData(this.props.hash.ipfs_hash);
+        this.setState({hashedData:jobData});
     }
 
     render() { 
         return (
             <>
-                {this.props.hashedData &&
+                {this.state.hashedData &&
                     <Col key={this.props.index} md={this.props.column ? parseInt(this.props.column , 10) : 3} xs={12}> 
                     <>   
                     <div className="card">
                         <Carousel>
-                            {this.props.hashedData.imageHash && this.props.hashedData.imageHash.map((image , i) => {
+                            {this.state.hashedData.imageHash && this.state.hashedData.imageHash.map((image , i) => {
                                 
                                 return(
                                     <Carousel.Item className="card-img-top">
@@ -41,9 +44,9 @@ class CollectionItem extends Component {
                         </Carousel>
                         <a href={'/jobs/'+this.props.hash.id +'/'+this.props.offerContract}>
                         <div className="card-body">
-                        <h5 className="card-title">{this.props.hashedData.title}</h5>
-                        <p className="card-text">{this.props.hashedData.description}</p>
-                        <p className="card-text"><small className="text-muted">{`$${this.props.hashedData.price}`}</small>
+                        <h5 className="card-title">{this.state.hashedData.title}</h5>
+                        <p className="card-text">{this.state.hashedData.description}</p>
+                        <p className="card-text"><small className="text-muted">{`$${this.state.hashedData.price}`}</small>
                         <button className="btn btn-primary"><a href={'/jobs/'+this.props.hash.id +'/'+this.props.offerContract}>Edit</a></button></p>
                         </div>
                         </a>
@@ -58,13 +61,12 @@ class CollectionItem extends Component {
 
 function mapStateToProps(state){
     return {
-        hashedData: state.fetchJobs.hashedData
+        // hashedData: state.fetchJobs.hashedData
       };
   }
   
 function mapDispatchToProps(dispatch){
     return{
-        fetchHashJobData: (id) => dispatch(fetchData(id)),
         getJobDetail : (web3 , id , offerContract) => dispatch(getJobDetail(web3 , id , offerContract))
     }
 }
