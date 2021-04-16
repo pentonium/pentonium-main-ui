@@ -3,6 +3,10 @@ import Tab from 'react-bootstrap/Tab';
 import Button from 'react-bootstrap/Button'
 
 export const UserPriceDetail = (props) => {
+    function navigateToUpdate(){
+        window.location.href=`/editdata/${props.hashId}/${props.offerContract}`;
+    }
+
     return (
         <>
         <Tabs defaultActiveKey="basic" id="uncontrolled-tab-example">
@@ -46,6 +50,9 @@ export const UserPriceDetail = (props) => {
         </Tabs>
         <Button variant="secondary" size="sm" block>
             Contact seller
+        </Button>
+        <Button onClick={navigateToUpdate} variant="secondary" size="sm" block>
+            Edit Job
         </Button>
         </>
     )

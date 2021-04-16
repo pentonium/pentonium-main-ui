@@ -31,7 +31,7 @@ class NewCollection extends Component {
             <Row className="collections">
             {this.props.list && this.props.list.map((hash , i) => {
                 return ( i <=3 && hash.ipfs_hash != "" && hash.ipfs_hash !='abhbi' &&
-                    <CollectionItem key={i} index={i} hash={hash}  offerContract={this.props.categoryList[0].offer_contract} column="4"></CollectionItem>
+                    <CollectionItem key={i} index={i} hash={hash}  offerContract={this.props.categoryList[0].offer_contract} column="3"></CollectionItem>
                 )
             }) 
             }

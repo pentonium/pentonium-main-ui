@@ -17,7 +17,9 @@ class JobDescription extends Component {
     constructor(props){
         super(props);
         this.state={
-            hashedData:{}
+            hashedData:{},
+            offerContract:"",
+            jobId:''
         }
     }
 
@@ -26,6 +28,7 @@ class JobDescription extends Component {
         await this.props.getCategoriesList(this.props.contract , this.props.account);
         const jobId = this.props.match.params.jobId;
         const offerContract = this.props.match.params.offerContract;
+        this.setState({offerContract:offerContract , jobId:jobId});
         // if(jobId == 1 || jobId == 2 || jobId == 3 || jobId == 4 || jobId == 5){    
         //     this.props.fetchJobData(parseInt(jobId , 10));
         // } else{
@@ -117,7 +120,10 @@ class JobDescription extends Component {
                         </div>
                     </Col>
                     <Col md={4} xs={12}>
-                        <UserPriceDetail></UserPriceDetail>
+                        {
+                            this.props.detailData && 
+                            <UserPriceDetail hashId={this.state.jobId} offerContract={this.state.offerContract}></UserPriceDetail>
+                        }
                     </Col>
                     </>
             }
