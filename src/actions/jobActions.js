@@ -18,12 +18,14 @@ export const postJob = (web3 , hash , thumbnail , provider , account , offerCont
     }
 }
 
-export const updateJob = (contract , hash , thumbnail , provider , id) => async dispatch => {
+export const updateJob = (web3 , offerContract , hash , thumbnail , price , id , account) => async dispatch => {
     dispatch({type: POST_UPDATE_JOB_REQUEST});
     try{
-        await contract.methods.update(hash, thumbnail , provider , 0 , id)
+        let contract = new web3.eth.Contract(OFFER_CONTRACT_ABI, offerContract);
+        await contract.methods.update(hash, thumbnail , price , id).send({from:account})
         dispatch({type: POST_UPDATE_JOB_SUCCESS});
     }catch(e){
+        console.log(e)
         dispatch({type: POST_UPDATE_JOB_ERROR});
     }
 }
@@ -42,7 +44,7 @@ export const getJobDetail = (web3 , id , offerContract) => async dispatch => {
     dispatch({type: JOB_DETAIL_REQUEST});
     try{
         let contract = new web3.eth.Contract(OFFER_CONTRACT_ABI, offerContract);
-        
+        console.log('Contract' , contract , id,offerContract);
         let returnData = await contract.methods.gigs(id).call();
 
         // return ipfs.files.get(id , (error , result) => {

@@ -46,8 +46,12 @@ class CollectionItem extends Component {
                         <div className="card-body">
                         <h5 className="card-title">{this.state.hashedData.title}</h5>
                         <p className="card-text">{this.state.hashedData.description}</p>
-                        <p className="card-text"><small className="text-muted">{`$${this.state.hashedData.price}`}</small>
-                        <button className="btn btn-primary"><a href={'/jobs/'+this.props.hash.id +'/'+this.props.offerContract}>Edit</a></button></p>
+                        {/* <p className="card-text"><small className="text-muted">{`$${this.state.hashedData.price}`}</small>
+                        <button className="btn btn-primary"><a href={'/jobs/'+this.props.hash.id +'/'+this.props.offerContract}>Edit</a></button></p> */}
+                        <div className="card-bottom">
+                            <span className="bottom-left">{this.state.hashedData.parentCategory}</span>
+                            <span className="price-tag">{`$${this.state.hashedData.price}`}</span>
+                        </div>
                         </div>
                         </a>
                     </div>

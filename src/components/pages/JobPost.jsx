@@ -219,7 +219,7 @@ class JobPost extends Component {
                   onChange={this.myChangeHandler}
                 />
                 <Form.Control.Feedback type="invalid">
-                  Please provide a valid duration.
+                  Please provide a valid price.
                 </Form.Control.Feedback>
               </Form.Group>
             </Form.Row>

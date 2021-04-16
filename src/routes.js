@@ -40,7 +40,7 @@ export const routes = [
         exact: true,
         component: JobPost
     },{
-        path: "/editdata/:hashId",
+        path: "/editdata/:jobId/:offerContract",
         exact: true,
         component: JobEdit
     },{

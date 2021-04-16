@@ -10,6 +10,9 @@ import { withRouter } from 'react-router-dom';
 import {fetchData} from '../../actions/categoryActions';
 import LazyImage from '../../controllers/LazyImage';
 import {updateJob} from '../../actions/jobActions';
+import {deleteJob, getJobDetail} from '../../actions/jobActions';
+import { getCategoriesList } from "../../actions/categoryListAction";
+import {connectIfAuthorized} from '../../actions/commonAction';
 
 
 class JobEdit extends Component {
@@ -27,31 +30,41 @@ class JobEdit extends Component {
             successful:false,
             buffer:"",
             imageHash:"",
-            dataHash:""
+            dataHash:"",
+            offerContract:'',
+            price:'',
+            jobId:''
         }
         this.captureFile = this.captureFile.bind(this);
         this.uploadFormData = this.uploadFormData.bind(this);
         this.getFileData = this.getFileData.bind(this);
     }
 
-    componentDidMount(){
-        const hashId = this.props.match.params.hashId;
-        this.props.fetchHashJobData(hashId);
+    async componentDidMount(){
+        await this.props.connectIfAuthorized();
+        await this.props.getCategoriesList(this.props.contract , this.props.account);
+        const jobId = this.props.match.params.jobId;
+        const offerContract = this.props.match.params.offerContract;
+        this.setState({offerContract:offerContract , jobId:jobId});
+        await this.props.getJobDetail(this.props.web3 , jobId  , offerContract);
+        let jobData = await fetchData(this.props.detailData.ipfs_hash);
+        this.setState({hashedData:jobData ,title:jobData.title , description:jobData.description , duration:jobData.duration,
+                  parentCategory:jobData.parentCategory ,imageHash:jobData.imageHash , tags:jobData.tags , price:jobData.price});
     }
 
     componentDidUpdate(prevProps){
-        if(prevProps.hashedData !== this.props.hashedData){
-            if(this.props.hashedData){
-                this.props.fetchCategories(this.props.hashedData.parentCategory);
-                this.setState({title:this.props.hashedData.title , description:this.props.hashedData.description , duration:this.props.hashedData.duration,
-                parentCategory:this.props.hashedData.parentCategory ,imageHash:this.props.hashedData.imageHash , tags:this.props.hashedData.tags , isParentSelected:true})
-            }
-        }
-        if(prevProps.categories !== this.props.categories){
-          if(this.props.categories){
-            this.setState({category:this.props.hashedData.category});
-          }
-        }
+        // if(prevProps.hashedData !== this.props.hashedData){
+        //     if(this.props.hashedData){
+        //         this.props.fetchCategories(this.props.hashedData.parentCategory);
+        //         this.setState({title:this.props.hashedData.title , description:this.props.hashedData.description , duration:this.props.hashedData.duration,
+        //         parentCategory:this.props.hashedData.parentCategory ,imageHash:this.props.hashedData.imageHash , tags:this.props.hashedData.tags , isParentSelected:true})
+        //     }
+        // }
+        // if(prevProps.categories !== this.props.categories){
+        //   if(this.props.categories){
+        //     this.setState({category:this.props.hashedData.category});
+        //   }
+        // }
     }
 
     uploadFormData(imageHashV){
@@ -59,19 +72,20 @@ class JobEdit extends Component {
           title:this.state.title,
           duration:this.state.duration,
           parentCategory:this.state.parentCategory,
-          category:this.state.category,
           description:this.state.description,
           tags:this.state.tags,
-          imageHash:this.state.imageHash[0]
+          imageHash:this.state.imageHash[0],
+          price:parseInt(this.state.price)
         }
-        ipfs.files.add(Buffer.from(JSON.stringify(uploadData)) , (error , result)=>{
-          if(error){
-            return
-          }
-          this.setState({dataHash:result[0].hash});
-          this.props.updateJob(this.props.contract , this.state.dataHash , this.state.imageHash[0] , this.props.account , 1);
-          this.getFileData();
-        });
+        // ipfs.files.add(Buffer.from(JSON.stringify(uploadData)) , (error , result)=>{
+        //   if(error){
+        //     return
+        //   }
+        //   this.setState({dataHash:result[0].hash});
+          console.log('Sttae' ,this.state);
+        //   this.props.updateJob(this.props.web3 , this.state.offerContract , this.state.dataHash , this.state.imageHash[0] ,this.state.price , this.state.jobId , this.props.account );
+        //   this.getFileData();
+        // });
       } 
 
 
@@ -143,7 +157,7 @@ class JobEdit extends Component {
         return (
             <div style = {{'width':'100%'}}>
               {
-                !this.state.successful && this.props.hashedData ? 
+                !this.state.successful && this.state.hashedData ? 
                 <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit.bind(this)}>
             <Form.Row>
               <Form.Group as={Col} md="6" controlId="validationCustom01">
@@ -153,7 +167,7 @@ class JobEdit extends Component {
                   type="text"
                   name="title"
                   placeholder="Enter title for your gig"
-                  value={this.state.title ? this.state.title : this.props.title}
+                  value={this.state.title ? this.state.title : this.state.hashedData.title}
                   onChange={this.myChangeHandler}
                 />
                 <Form.Control.Feedback type="invalid">
@@ -167,7 +181,7 @@ class JobEdit extends Component {
                   type="number"
                   name="duration"
                   placeholder="Duration"
-                  value={this.state.duration}
+                  value={this.state.duration ? this.state.duration : this.state.hashedData.duration}
                   onChange={this.myChangeHandler}
                 />
                 <Form.Control.Feedback type="invalid">
@@ -178,16 +192,16 @@ class JobEdit extends Component {
             <Form.Row>
                 <Form.Group as={Col} md="6" controlId="validationCustom03">
                     <Form.Label>Select Parent Category</Form.Label>
-                    <Form.Control required as="select" size="sm" name="parentCategory" value={this.state.parentCategory}  custom onChange={this.onSelectedOptionsChange.bind(this)} >
+                    <Form.Control required as="select" size="sm" name="parentCategory" value={this.state.hashedData.parentCategory}  custom onChange={this.onSelectedOptionsChange.bind(this)} >
                     <option value={''}>Choose...</option>   
-                    {this.props.parentCategories &&
-                      this.props.parentCategories.map((parent) => {
+                    {this.props.categoryList &&
+                      this.props.categoryList.map((parent) => {
                       return <option key={parent.id} value={parent.id}>{parent.name}</option>
                       })
                     } 
                     </Form.Control>
                 </Form.Group>
-                <Form.Group as={Col} md="6" controlId="validationCustom04">
+                {/* <Form.Group as={Col} md="6" controlId="validationCustom04">
                     <Form.Label>Select Category</Form.Label>
                     <Form.Control required as="select" size="sm" name="category" value={this.state.category}  custom  onChange={this.myChangeHandler} >
                     <option value={''}>Choose...</option>   
@@ -197,12 +211,26 @@ class JobEdit extends Component {
                       })
                     } 
                     </Form.Control>
+                </Form.Group> */}
+                <Form.Group as={Col} md="6" controlId="validationCustom04">
+                  <Form.Label>Price (in dollar):</Form.Label>
+                  <Form.Control
+                    required
+                    type="number"
+                    name="price"
+                    placeholder="Price"
+                    value={this.state.price ? this.state.price :this.state.hashedData.price}
+                    onChange={this.myChangeHandler}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Please provide a valid price.
+                  </Form.Control.Feedback>
                 </Form.Group>
             </Form.Row>
             <Form.Group controlId="validationCustom05">
             <Form.Label>Enter your keywords</Form.Label>  
             <ReactTagInput 
-                tags={this.state.tags.length > 0 ? this.state.tags : this.props.hashedData.tags} 
+                tags={this.state.tags.length > 0 ? this.state.tags : this.state.hashedData.tags} 
                 placeholder="Type and press enter"
                 maxTags={10}
                 editable={true}
@@ -230,7 +258,7 @@ class JobEdit extends Component {
             </Form.Group>
             <Form.Group controlId="validationCustom07">
                 <Form.Label>Description</Form.Label>
-                <Form.Control as="textarea" name="description" value={this.state.description} rows={3} onChange={this.myChangeHandler} required />
+                <Form.Control as="textarea" name="description" value={this.state.hashedData.description} rows={3} onChange={this.myChangeHandler} required />
                 <Form.Control.Feedback type="invalid">
                   Description field is required.
                 </Form.Control.Feedback>
@@ -249,12 +277,18 @@ class JobEdit extends Component {
 }
 
 function mapStateToProps(state){
-  const { contract, account } = state.common;
+  const { web3, account, loading, error , contract  } = state.common;
+  const {detailData} = state.jobReducer;
+  const {categoryList} = state.categoryList;
     return {
       parentCategories: state.common.parentCategories,
       categories: state.category.categoryItems,
       hashedData: state.fetchJobs.hashedData,
-      contract, account
+      web3,
+      account,
+      loading,
+      error,
+      contract,detailData,categoryList
       };
   }
   
@@ -263,7 +297,10 @@ function mapDispatchToProps(dispatch){
       fetchParentCategories: () => dispatch(fetchParentCategories()),
       fetchCategories: (id) => dispatch(fetchCategories(id)),
       fetchHashJobData: (id) => dispatch(fetchData(id)),
-      updateJob:(contract , hash , thumbnail , provider , id) => dispatch(updateJob(contract , hash , thumbnail , provider , id))
+      updateJob:(web3 , contract , hash , thumbnail , price , id , account) => dispatch(updateJob(web3 , contract , hash , thumbnail , price , id , account)),
+      connectIfAuthorized:() => dispatch(connectIfAuthorized()),
+      getCategoriesList:(contract,account) => dispatch(getCategoriesList(contract,account)),
+      getJobDetail:(web3 , id , offerContract) => dispatch(getJobDetail(web3 , id , offerContract))
     }
 }
  
