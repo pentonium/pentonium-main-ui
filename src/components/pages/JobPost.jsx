@@ -272,16 +272,16 @@ class JobPost extends Component {
                 </Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId="validationCustom10">
-            <Form.Label>Features</Form.Label>  
-            <ReactTagInput 
-                tags={this.state.features} 
-                placeholder="Type and press enter"
-                maxTags={15}
-                editable={true}
-                readOnly={false}
-                removeOnBackspace={true}
-                onChange={(newTags) => this.handleTags(newTags , 'features')}
-              />
+              <Form.Label>Features</Form.Label>  
+              <ReactTagInput 
+                  tags={this.state.features} 
+                  placeholder="Type and press enter"
+                  maxTags={15}
+                  editable={true}
+                  readOnly={false}
+                  removeOnBackspace={true}
+                  onChange={(newTags) => this.handleTags(newTags , 'features')}
+                />
             </Form.Group>
             <Button type="submit">Submit form</Button>
           </Form>:

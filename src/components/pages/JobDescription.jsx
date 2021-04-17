@@ -41,12 +41,13 @@ class JobDescription extends Component {
         // }
     }
 
-    deleteJob = () =>{
-        this.props.deleteJob(this.props.match.params.jobId)
+    deleteJob = async() =>{
+        const jobId = this.props.match.params.jobId;
+        const offerContract = this.props.match.params.offerContract;
+        await this.props.deleteJob(this.props.web3 , offerContract , this.props.account , jobId);
     }
 
     render() { 
-        console.log(this.props.loading);
         return (
             <Row className="job-desctiption-page">
             {/* {this.props.jobDescription &&
@@ -121,11 +122,14 @@ class JobDescription extends Component {
                                 }
                             </div>
                         </div>
+                        <Button className="delete-job" variant="primary" onClick={this.deleteJob} size="sm" block>
+                            Delete Job
+                        </Button>
                     </Col>
                     <Col md={4} xs={12}>
                         {
-                            this.props.detailData && 
-                            <UserPriceDetail hashId={this.state.jobId} offerContract={this.state.offerContract}></UserPriceDetail>
+                            this.state.hashedData && 
+                            <UserPriceDetail hashId={this.state.jobId} offerContract={this.state.offerContract} data={this.state.hashedData}></UserPriceDetail>
                         }
                     </Col>
                     </>:

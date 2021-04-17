@@ -16,6 +16,9 @@
     p{
         color: $secondaryColor;
     }
+    .fa-clock-o{
+        margin-right: 1%;
+    }
     .customer-data{
         .customer-image{
             img{
@@ -45,6 +48,11 @@
             color: $whiteColor;
             padding: 10px 20px;
         }
+    }
+
+    .delete-job{
+        width: 50%;
+        margin-top: 5%;
     }
     
 }

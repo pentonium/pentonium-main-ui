@@ -52,7 +52,6 @@ class Categories extends Component {
       }
 
     render() { 
-        console.log(this.props.loading);
         const next = this.props.list ? [...this.props.list].slice(-1) : 1;
         return (
             <div className="row">
@@ -95,7 +94,7 @@ class Categories extends Component {
 }
 
 function mapStateToProps(state){
-    const { web3, account, loading, error , contract } = state.common;
+    const { web3, account ,loading, error , contract } = state.common;
     const {list , start , end} = state.jobList;
     return {
         categories: state.category.categoryItems,

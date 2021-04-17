@@ -28,7 +28,7 @@ class Header extends Component {
     async componentWillMount(){
         await this.props.connectIfAuthorized();
         // await this.props.createNewCategory('Theme' , this.props.account , this.props.contract);
-        // await this.props.getCategoriesList(this.props.contract , this.props.account);
+        await this.props.getCategoriesList(this.props.contract , this.props.account);
         // await this.props.getJobsList(this.props.contract , this.props.account , this.props.web3 , this.props.categoryList[0].offer_contract);
     }
 

@@ -50,7 +50,8 @@ class JobEdit extends Component {
         await this.props.getJobDetail(this.props.web3 , jobId  , offerContract);
         let jobData = await fetchData(this.props.detailData.ipfs_hash);
         this.setState({hashedData:jobData ,title:jobData.title , description:jobData.description , duration:jobData.duration,
-                  parentCategory:jobData.parentCategory ,imageHash:jobData.imageHash , tags:jobData.tags , price:jobData.price});
+                  parentCategory:jobData.parentCategory ,imageHash:jobData.imageHash , tags:jobData.tags , price:jobData.price , package:jobData.package,
+                  features:jobData.features});
     }
 
     componentDidUpdate(prevProps){
@@ -76,7 +77,9 @@ class JobEdit extends Component {
           description:this.state.description,
           tags:this.state.tags,
           imageHash:this.state.imageHash,
-          price:Number(this.state.price)
+          price:Number(this.state.price),
+          package:this.state.package,
+          features:this.state.features
         }
         console.log(uploadData);
         ipfs.files.add(Buffer.from(JSON.stringify(uploadData)) ,async  (error , result)=>{
@@ -150,8 +153,12 @@ class JobEdit extends Component {
 
     }
 
-    handleTags = (newTags) => {
+    handleTags = (newTags , type) => {
+      if(type == 'skills'){
         this.setState({tags:newTags});
+      } else {
+        this.setState({features:newTags});
+      }
     }
 
     render() {
@@ -233,7 +240,7 @@ class JobEdit extends Component {
                     </Form.Group>
                 </Form.Row>
                 <Form.Group controlId="validationCustom05">
-                <Form.Label>Enter your keywords</Form.Label>  
+                <Form.Label>Skills</Form.Label>  
                 <ReactTagInput 
                     tags={this.state.tags.length > 0 ? this.state.tags : []} 
                     placeholder="Type and press enter"
@@ -241,7 +248,7 @@ class JobEdit extends Component {
                     editable={true}
                     readOnly={false}
                     removeOnBackspace={true}
-                    onChange={(newTags) => this.handleTags(newTags)}
+                    onChange={(newTags) => this.handleTags(newTags , 'skills')}
                   />
                 </Form.Group>
                 <Form.Group controlId="validationCustom08">
@@ -267,6 +274,25 @@ class JobEdit extends Component {
                     <Form.Control.Feedback type="invalid">
                       Description field is required.
                     </Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group controlId="validationCustom09">
+                  <Form.Label>Package Content</Form.Label>
+                  <Form.Control as="textarea" name="package" value={this.state.package} rows={3} onChange={this.myChangeHandler} required/>
+                  <Form.Control.Feedback type="invalid">
+                    Package field is required.
+                  </Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group controlId="validationCustom10">
+                <Form.Label>Features</Form.Label>  
+                <ReactTagInput 
+                    tags={this.state.features && this.state.features.length > 0 ? this.state.features : []} 
+                    placeholder="Type and press enter"
+                    maxTags={15}
+                    editable={true}
+                    readOnly={false}
+                    removeOnBackspace={true}
+                    onChange={(newTags) => this.handleTags(newTags , 'features')}
+                  />
                 </Form.Group>
                 <Button type="submit">Submit form</Button>
               </Form>:
