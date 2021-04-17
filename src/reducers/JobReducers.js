@@ -62,7 +62,7 @@ export default function(state = initialState, action) {
           return{
             ...state,
             error:false,
-            loading:false
+            loading:true
           } 
           case JOB_DETAIL_SUCCESS:
             return {

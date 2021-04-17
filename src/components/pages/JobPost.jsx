@@ -9,6 +9,7 @@ import ipfs from '../../ipfs';
 import Web3 from 'web3';
 import {postJob} from '../../actions/jobActions';
 import { getCategoriesList } from "../../actions/categoryListAction";
+import Spinner from 'react-bootstrap/Spinner';
 
 
 class JobPost extends Component {
@@ -69,16 +70,19 @@ class JobPost extends Component {
         }
         // console.log('Upload Data' , uploadData);
         // const buffer = Buffer(uploadData);
-        ipfs.files.add(Buffer.from(JSON.stringify(uploadData)) , (error , result)=>{
+        console.log(uploadData);
+        ipfs.files.add(Buffer.from(JSON.stringify(uploadData)) , async(error , result)=>{
           if(error){
             return
           }
-          this.setState({dataHash:result[0].hash});
           // const accounts = await window.web3.eth.getAccounts();
           // storehash.methods.
-          this.props.postJob(this.props.web3 , this.state.dataHash , this.state.imageHash , this.props.account , this.props.account , this.state.offerContract , uploadData.price);
+          this.setState({dataHash:result[0].hash});
+          await this.props.postJob(this.props.web3 , this.state.dataHash , this.state.imageHash , this.props.account , this.props.account , this.state.offerContract , uploadData.price);
           // this.props.createNewCategory('Graphics' , this.props.account , this.props.contract);
-          this.getFileData();
+          this.setState({successful:true});
+          // this.getFileData();
+    
         });
       } 
 
@@ -98,7 +102,6 @@ class JobPost extends Component {
             event.preventDefault();
             event.stopPropagation();
           } else {
-            this.setState({successful:true});
             this.state.imageArray.map((hash) => {
               ipfs.files.add(hash,(error , result) => {
                   if(error){
@@ -162,8 +165,9 @@ class JobPost extends Component {
     render() {
         return (
             <div style = {{'width':'100%'}}>
+              {!this.props.loading ? <>
               {
-                !this.state.successful ? 
+                !this.state.successful  ? 
                 <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit.bind(this)}>
             <Form.Row>
               <Form.Group as={Col} md="6" controlId="validationCustom01">
@@ -281,12 +285,19 @@ class JobPost extends Component {
             </Form.Group>
             <Button type="submit">Submit form</Button>
           </Form>:
-          <div>
-            <p className="text-center">You're job has been posted successfully</p>
-            {this.state.imageHash && this.state.imageHash.map((preview) => {
-                  return <img src={`https://ipfs.io/ipfs/${preview}`} alt="" />
-                })}
-          </div>
+                !this.props.error ? 
+                <div>
+                  <p className="text-center">You're job has been posted successfully</p>
+                </div>:
+                  <div>
+                    <p className="text-center">Error posting the job</p>
+                  </div>
+
+              }
+              </>:
+              <Spinner animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
               }
             </div>
             

@@ -11,6 +11,7 @@ import Button from 'react-bootstrap/Button';
 import {deleteJob, getJobDetail} from '../../actions/jobActions';
 import { getCategoriesList } from "../../actions/categoryListAction";
 import {connectIfAuthorized} from '../../actions/commonAction';
+import Spinner from 'react-bootstrap/Spinner';
 
 
 class JobDescription extends Component {
@@ -34,6 +35,7 @@ class JobDescription extends Component {
         // } else{
             //
             await this.props.getJobDetail(this.props.web3 , jobId , offerContract);
+            // await this.props.deleteJob(this.props.web3 , offerContract , this.props.account , jobId);
             let jobData = await fetchData(this.props.detailData.ipfs_hash);
             this.setState({hashedData:jobData});
         // }
@@ -44,9 +46,10 @@ class JobDescription extends Component {
     }
 
     render() { 
+        console.log(this.props.loading);
         return (
             <Row className="job-desctiption-page">
-            {this.props.jobDescription &&
+            {/* {this.props.jobDescription &&
                     <>
                     <Col md={8} xs={12}>
                         <h1 className="job-title">{this.props.jobDescription.jobTitle}</h1>
@@ -79,8 +82,8 @@ class JobDescription extends Component {
                         <UserPriceDetail></UserPriceDetail>
                     </Col>
                     </>
-            }
-            {this.state.hashedData &&
+            } */}
+            {!this.props.loading && this.state.hashedData ?
                     <>
                     <Col md={8} xs={12}>
                         <h1>{this.state.hashedData.title}</h1>
@@ -93,7 +96,7 @@ class JobDescription extends Component {
                             <Carousel>    
                             {this.state.hashedData.imageHash && this.state.hashedData.imageHash.map((preview , i) => {
                                 return (
-                                    <Carousel.Item>
+                                    <Carousel.Item key={i}>
                                         <LazyImage
                                         key={i}
                                         src={`https://ipfs.io/ipfs/${preview}`}
@@ -112,8 +115,8 @@ class JobDescription extends Component {
                             <div>
                                 <h5>Skills Required:</h5>
                                 {
-                                    this.state.hashedData.tags && this.state.hashedData.tags.map((skill) => {
-                                    return <Badge pill variant="secondary">{skill}</Badge>
+                                    this.state.hashedData.tags && this.state.hashedData.tags.map((skill , i) => {
+                                    return <Badge key={i} pill variant="secondary">{skill}</Badge>
                                     })
                                 }
                             </div>
@@ -125,7 +128,10 @@ class JobDescription extends Component {
                             <UserPriceDetail hashId={this.state.jobId} offerContract={this.state.offerContract}></UserPriceDetail>
                         }
                     </Col>
-                    </>
+                    </>:
+                    <Spinner animation="border" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </Spinner>
             }
             </Row>
          );
@@ -133,8 +139,8 @@ class JobDescription extends Component {
 }
 
 function mapStateToProps(state){
-    const { web3, account, loading, error , contract  } = state.common;
-    const {detailData} = state.jobReducer;
+    const { web3, account , contract  } = state.common;
+    const {detailData , loading, error} = state.jobReducer;
     return {
         jobDescription: state.fetchJobs.jobDescription[0],
         hashedData: state.fetchJobs.hashedData,
@@ -150,7 +156,7 @@ function mapDispatchToProps(dispatch){
     return{
         fetchJobData: (id) => dispatch(fetchJobData(id)),
         fetchHashJobData: (id) => dispatch(fetchData(id)),
-        deleteJob:(id) => dispatch(deleteJob(id)),
+        deleteJob:(web3 , contract , account , id) => dispatch(deleteJob(web3 , contract , account , id)),
         connectIfAuthorized:() => dispatch(connectIfAuthorized()),
         getCategoriesList:(contract,account) => dispatch(getCategoriesList(contract,account)),
         getJobDetail:(web3 , id , offerContract) => dispatch(getJobDetail(web3 , id , offerContract))
