@@ -23,6 +23,7 @@ class JobPost extends Component {
             category:"",
             description:"",
             tags:[],
+            features:[],
             price:0,
             successful:false,
             imageArray:[],
@@ -30,7 +31,8 @@ class JobPost extends Component {
             imageHash:[],
             dataHash:"",
             previewImage:[],
-            offerContract:''
+            offerContract:'',
+            package:''
         }
         this.captureFile = this.captureFile.bind(this);
         this.uploadFormData = this.uploadFormData.bind(this);
@@ -55,14 +57,17 @@ class JobPost extends Component {
     uploadFormData(){
         const uploadData = {
           title:this.state.title,
-          duration:this.state.duration,
+          duration:Number(this.state.duration),
           parentCategory:this.state.parentCategory,
           category:this.state.category,
           description:this.state.description,
           tags:this.state.tags,
           imageHash:this.state.imageHash,
-          price:this.state.price
+          price:Number(this.state.price),
+          package:this.state.package,
+          features:this.state.features
         }
+        // console.log('Upload Data' , uploadData);
         // const buffer = Buffer(uploadData);
         ipfs.files.add(Buffer.from(JSON.stringify(uploadData)) , (error , result)=>{
           if(error){
@@ -71,7 +76,7 @@ class JobPost extends Component {
           this.setState({dataHash:result[0].hash});
           // const accounts = await window.web3.eth.getAccounts();
           // storehash.methods.
-          this.props.postJob(this.props.web3 , this.state.dataHash , this.state.imageHash , this.props.account , this.props.account , this.state.offerContract , this.state.price);
+          this.props.postJob(this.props.web3 , this.state.dataHash , this.state.imageHash , this.props.account , this.props.account , this.state.offerContract , uploadData.price);
           // this.props.createNewCategory('Graphics' , this.props.account , this.props.contract);
           this.getFileData();
         });
@@ -146,8 +151,12 @@ class JobPost extends Component {
       }
     }
 
-    handleTags = (newTags) => {
-        this.setState({tags:newTags});
+    handleTags = (newTags , type) => {
+        if(type == 'skills'){
+          this.setState({tags:newTags});
+        } else {
+          this.setState({features:newTags});
+        }
     }
 
     render() {
@@ -224,7 +233,7 @@ class JobPost extends Component {
               </Form.Group>
             </Form.Row>
             <Form.Group controlId="validationCustom05">
-            <Form.Label>Enter your keywords</Form.Label>  
+            <Form.Label>Skills</Form.Label>  
             <ReactTagInput 
                 tags={this.state.tags} 
                 placeholder="Type and press enter"
@@ -232,7 +241,7 @@ class JobPost extends Component {
                 editable={true}
                 readOnly={false}
                 removeOnBackspace={true}
-                onChange={(newTags) => this.handleTags(newTags)}
+                onChange={(newTags) => this.handleTags(newTags , 'skills')}
               />
             </Form.Group>
             <Form.Group controlId="validationCustom08">
@@ -250,6 +259,25 @@ class JobPost extends Component {
                 <Form.Control.Feedback type="invalid">
                   Description field is required.
                 </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group controlId="validationCustom09">
+                <Form.Label>Package Content</Form.Label>
+                <Form.Control as="textarea" name="package" rows={3} onChange={this.myChangeHandler} required/>
+                <Form.Control.Feedback type="invalid">
+                  Package field is required.
+                </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group controlId="validationCustom10">
+            <Form.Label>Features</Form.Label>  
+            <ReactTagInput 
+                tags={this.state.features} 
+                placeholder="Type and press enter"
+                maxTags={15}
+                editable={true}
+                readOnly={false}
+                removeOnBackspace={true}
+                onChange={(newTags) => this.handleTags(newTags , 'features')}
+              />
             </Form.Group>
             <Button type="submit">Submit form</Button>
           </Form>:

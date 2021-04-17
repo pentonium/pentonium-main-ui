@@ -11,7 +11,6 @@ export const postJob = (web3 , hash , thumbnail , provider , account , offerCont
         let contract = new web3.eth.Contract(OFFER_CONTRACT_ABI, offerContract);
         
         await contract.methods.create(hash , thumbnail + '' , price ).send({from:account});
-
         dispatch({type: POST_JOB_SUCCESS});
     }catch(e){
         dispatch({type: POST_JOB_ERROR});
@@ -22,7 +21,7 @@ export const updateJob = (web3 , offerContract , hash , thumbnail , price , id ,
     dispatch({type: POST_UPDATE_JOB_REQUEST});
     try{
         let contract = new web3.eth.Contract(OFFER_CONTRACT_ABI, offerContract);
-        await contract.methods.update(hash, thumbnail , price , id).send({from:account})
+        await contract.methods.update(hash, thumbnail , price , id).send({from:account});
         dispatch({type: POST_UPDATE_JOB_SUCCESS});
     }catch(e){
         console.log(e)

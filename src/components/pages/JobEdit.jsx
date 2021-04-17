@@ -10,7 +10,7 @@ import { withRouter } from 'react-router-dom';
 import {fetchData} from '../../actions/categoryActions';
 import LazyImage from '../../controllers/LazyImage';
 import {updateJob} from '../../actions/jobActions';
-import {deleteJob, getJobDetail} from '../../actions/jobActions';
+import {getJobDetail} from '../../actions/jobActions';
 import { getCategoriesList } from "../../actions/categoryListAction";
 import {connectIfAuthorized} from '../../actions/commonAction';
 
@@ -32,7 +32,7 @@ class JobEdit extends Component {
             imageHash:"",
             dataHash:"",
             offerContract:'',
-            price:'',
+            price:0,
             jobId:''
         }
         this.captureFile = this.captureFile.bind(this);
@@ -70,22 +70,21 @@ class JobEdit extends Component {
     uploadFormData(imageHashV){
         const uploadData = {
           title:this.state.title,
-          duration:this.state.duration,
+          duration:Number(this.state.duration),
           parentCategory:this.state.parentCategory,
           description:this.state.description,
           tags:this.state.tags,
           imageHash:this.state.imageHash[0],
-          price:parseInt(this.state.price)
+          price:Number(this.state.price)
         }
-        // ipfs.files.add(Buffer.from(JSON.stringify(uploadData)) , (error , result)=>{
-        //   if(error){
-        //     return
-        //   }
-        //   this.setState({dataHash:result[0].hash});
-          console.log('Sttae' ,this.state);
-        //   this.props.updateJob(this.props.web3 , this.state.offerContract , this.state.dataHash , this.state.imageHash[0] ,this.state.price , this.state.jobId , this.props.account );
-        //   this.getFileData();
-        // });
+        ipfs.files.add(Buffer.from(JSON.stringify(uploadData)) , (error , result)=>{
+          if(error){
+            return
+          }
+          this.setState({dataHash:result[0].hash});
+          this.props.updateJob(this.props.web3 , this.state.offerContract , result[0].hash , this.state.imageHash[0] ,uploadData.price , this.state.jobId , this.props.account );
+          this.getFileData();
+        });
       } 
 
 

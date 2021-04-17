@@ -41,12 +41,12 @@ export const UserPriceDetail = (props) => {
                     </Button>
                 </div>
             </Tab>
-            <Tab eventKey="standard" title="Standard">
+            {/* <Tab eventKey="standard" title="Standard"> */}
                 {/* <Sonnet /> */}
-            </Tab>
-            <Tab eventKey="premium" title="Premium">
+            {/* </Tab> */}
+            {/* <Tab eventKey="premium" title="Premium"> */}
                 {/* <Sonnet /> */}
-            </Tab>
+            {/* </Tab> */}
         </Tabs>
         <Button variant="secondary" size="sm" block>
             Contact seller

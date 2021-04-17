@@ -17,6 +17,8 @@ export default function(state = initialState, action) {
         case JOB_LIST_SUCCESS: 
           return {
             ...state,
+            start:action.start,
+            end:action.end,
             list: action.list,
             error: false,
             loading: false

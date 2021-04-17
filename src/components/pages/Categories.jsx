@@ -11,6 +11,8 @@ import {getJobsList} from '../../actions/jobListActions';
 import {connectIfAuthorized} from '../../actions/commonAction';
 import CollectionItem from "../CollectionItem";
 import { Row, Col , Badge } from 'react-bootstrap';
+import {BsFillCaretLeftFill , BsFillCaretRightFill} from "react-icons/bs";
+// import {FiUploadCloud} from 'react-icons/fi';
 // import PaginationItem from 'react-bootstrap/PageItem'
 // import PaginationLink from 'react-bootstrap/Pagination'
 
@@ -19,15 +21,10 @@ import { Row, Col , Badge } from 'react-bootstrap';
 class Categories extends Component {
     constructor(props){
         super(props)
-        this.pageSize = 50;
-        // this.pagesCount = 0;
-        this.dataSet = [...Array(Math.ceil(500 + Math.random() * 500))].map(
-            (a, i) => "Record " + (i + 1)
-          );
-        this.pagesCount = Math.ceil(this.dataSet.length / this.pageSize);
         this.state = {
-        currentPage: 0,
-        offerContract:''
+            currentPage: 1,
+            offerContract:'',
+            maxItemsPerPage:10
         };
     }
 
@@ -55,7 +52,7 @@ class Categories extends Component {
       }
 
     render() { 
-        const { currentPage } = this.state;
+        const next = this.props.list ? [...this.props.list].slice(-1) : 1;
         return (
             <div className="row">
                 { this.props.list &&
@@ -79,23 +76,14 @@ class Categories extends Component {
                                 }
                             </Row>
                             
-                            <Pagination aria-label="Page navigation example">
-            
-                                <Pagination.Item disabled={currentPage <= 0} onClick={e => this.handleClick(e, currentPage - 1)} href="#">
-                                
-                                </Pagination.Item>
-
-                                {[...Array(this.pagesCount)].map((page, i) => 
-                                <Pagination.Item active={i === currentPage} key={i} onClick={e => this.handleClick(e, i)} href="#">
-                                    {i + 1}
-                                </Pagination.Item>
-                                )}
-
-                                <Pagination.Item disabled={currentPage >= this.pagesCount - 1} onClick={e => this.handleClick(e, currentPage + 1)} href="#"> 
-                                
-                                </Pagination.Item> 
-                                
-                            </Pagination>
+                            <div className="pagination-button">
+                                {Number(this.props.start) > 1 ?
+                                    <button onClick={() => this.changePage('back')}><BsFillCaretLeftFill></BsFillCaretLeftFill></button>
+                                : <button disabled><BsFillCaretLeftFill></BsFillCaretLeftFill></button>}
+                                {Number(this.props.end) > Number(next.next)   ?
+                                    <button onClick={() => this.changePage('next')}><BsFillCaretRightFill></BsFillCaretRightFill></button>
+                                : <button disabled><BsFillCaretRightFill></BsFillCaretRightFill></button>}
+                            </div>
                         </div>
                 </div>
                 </>
@@ -107,11 +95,11 @@ class Categories extends Component {
 
 function mapStateToProps(state){
     const { web3, account, loading, error , contract } = state.common;
-    const {list} = state.jobList;
+    const {list , start , end} = state.jobList;
     return {
         categories: state.category.categoryItems,
         web3, account, loading, error , contract,
-        list
+        list , start , end
       };
   }
   

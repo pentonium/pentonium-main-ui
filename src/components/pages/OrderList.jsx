@@ -32,7 +32,6 @@ class OrderList extends Component {
     }
 
     render() { 
-        console.log(this.props);
         return (
             <>
                 <Row>
