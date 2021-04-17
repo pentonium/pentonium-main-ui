@@ -84,10 +84,10 @@ class JobDescription extends Component {
                     <>
                     <Col md={8} xs={12}>
                         <h1>{this.state.hashedData.title}</h1>
-                        <div className="customer-data">
+                        {/* <div className="customer-data">
                             <a><span className="customer-image"><img  src='https://fiverr-res.cloudinary.com/t_profile_original,q_auto,f_auto/attachments/profile/photo/bd375846a2b53df94bc356ffa3458426-1540375416166/be56ddbf-191a-449e-83b7-fd07e3a271bf.jpeg' /></span></a>
                             <a href={"/customers/"+this.state.hashedData.customerId}><span className="customer-name">{this.state.hashedData.title}</span></a>
-                        </div>
+                        </div> */}
                         <div className="job-details">
                             <div className="job-image">
                             <Carousel>    

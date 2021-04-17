@@ -9,10 +9,14 @@ import { OFFER_CONTRACT_ABI } from "../config";
 export const getJobsList = (contract , account , web3 , offerContract) => async dispatch => {
     dispatch({type: JOB_LIST_REQUEST});
     try{
+        let filteredCategory = [];
         let contract = new web3.eth.Contract(OFFER_CONTRACT_ABI, offerContract);
-        let categories = await contract.methods.read(1 , 50 ).call();
-
-        dispatch({type: JOB_LIST_SUCCESS, list: categories});
+        let start = await contract.methods.start().call();
+        let end = await contract.methods.end().call();
+        let categories = await contract.methods.read(start , 10 ).call();
+        filteredCategory = categories.filter((cat) =>{ return cat.ipfs_hash != ""});
+        console.log('List contract' , contract);
+        dispatch({type: JOB_LIST_SUCCESS, list: filteredCategory , start:start , end:end});
     }catch(e){
         dispatch({type: JOB_LIST_ERROR});
     }
