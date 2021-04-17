@@ -13,34 +13,42 @@ import {connectIfAuthorized} from '../actions/commonAction';
 class NewCollection extends Component {
     constructor(props){
         super(props);
+        this.state = {
+            categoryContract:''
+        }
     }
 
     async componentDidMount(){
         await this.props.connectIfAuthorized();
         if(this.props.account){
             await this.props.getCategoriesList(this.props.contract , this.props.account);
-            await this.props.getJobsList(this.props.contract , this.props.account , this.props.web3 , this.props.categoryList[0].offer_contract);
+            this.setState({categoryContract:this.props.categoryList.filter((cat) => cat.name===this.props.categoryName)[0].offer_contract});
+            await this.props.getJobsList(this.props.contract , this.props.account , this.props.web3 , this.state.categoryContract);
         }
 
     }
 
+    viewAllItems = () => {
+        window.location.href=`/categories/${this.state.categoryContract}`;
+    };
+
     render() { 
         return (
             <div className="collections-content" style={{width:'100%'}}>
-            <h2 className="collection-title">Featured Jobs</h2>
+            <h2 className="collection-title">{this.props.categoryName}</h2>
             <Row className="collections">
             {this.props.list && this.props.list.map((hash , i) => {
                 return ( i <=3 && hash.ipfs_hash != "" && hash.ipfs_hash !='abhbi' &&
-                    <CollectionItem key={i} index={i} hash={hash}  offerContract={this.props.categoryList[0].offer_contract} column="3"></CollectionItem>
+                    <CollectionItem key={i} index={i} hash={hash}  offerContract={this.state.categoryContract} column="3"></CollectionItem>
                 )
             }) 
             }
             </Row>
-            {/* <div className="button-center-container"> 
-            {this.props.newData && this.props.newData.length > 4 &&
-                <button className="btn btn-outline-primary" onClick={() => viewAllItems()}>View All</button>
+            <div className="button-center-container"> 
+            {this.props.list && this.props.list.length > 4 &&
+                <button className="btn btn-secondary" onClick={this.viewAllItems}>View All</button>
             }
-            </div> */}
+            </div>
             </div>
          );
     }
