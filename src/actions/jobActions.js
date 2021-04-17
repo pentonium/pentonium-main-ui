@@ -7,18 +7,21 @@ import { OFFER_CONTRACT_ABI } from "../config";
  */
 export const postJob = (web3 , hash , thumbnail , provider , account , offerContract , price) => async dispatch => {
     dispatch({type: POST_JOB_REQUEST});
+    console.log(typeof thumbnail);
     try{
         let contract = new web3.eth.Contract(OFFER_CONTRACT_ABI, offerContract);
         
         await contract.methods.create(hash , thumbnail + '' , price ).send({from:account});
         dispatch({type: POST_JOB_SUCCESS});
     }catch(e){
+        console.log(e);
         dispatch({type: POST_JOB_ERROR});
     }
 }
 
 export const updateJob = (web3 , offerContract , hash , thumbnail , price , id , account) => async dispatch => {
     dispatch({type: POST_UPDATE_JOB_REQUEST});
+    console.log('Type of ' , typeof hash , typeof thumbnail , typeof price , typeof id);
     try{
         let contract = new web3.eth.Contract(OFFER_CONTRACT_ABI, offerContract);
         await contract.methods.update(hash, thumbnail , price , id).send({from:account});
@@ -29,12 +32,16 @@ export const updateJob = (web3 , offerContract , hash , thumbnail , price , id ,
     }
 }
 
-export const deleteJob = (contract , account , id) => async dispatch => {
+export const deleteJob = (web3 , offercontract , account , id) => async dispatch => {
     dispatch({type: DELETE_JOB_REQUEST});
+    console.log('In sucess');
     try{
-        await contract.methods.deleteGig(id).send({from:account})
+        let contract = new web3.eth.Contract(OFFER_CONTRACT_ABI, offercontract);
+        await contract.methods.deleteGig(id).send({from:account});
+        console.log('In sucess');
         dispatch({type: DELETE_JOB_SUCCESS});
     }catch(e){
+        console.log(e);
         dispatch({type: DELETE_JOB_ERROR});
     }
 }

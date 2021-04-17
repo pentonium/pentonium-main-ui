@@ -52,6 +52,7 @@ class Categories extends Component {
       }
 
     render() { 
+        console.log(this.props.loading);
         const next = this.props.list ? [...this.props.list].slice(-1) : 1;
         return (
             <div className="row">
@@ -77,7 +78,7 @@ class Categories extends Component {
                             </Row>
                             
                             <div className="pagination-button">
-                                {Number(this.props.start) > 1 ?
+                                {Number(this.props.start) > 1  ?
                                     <button onClick={() => this.changePage('back')}><BsFillCaretLeftFill></BsFillCaretLeftFill></button>
                                 : <button disabled><BsFillCaretLeftFill></BsFillCaretLeftFill></button>}
                                 {Number(this.props.end) > Number(next.next)   ?
