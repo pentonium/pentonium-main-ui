@@ -7,6 +7,7 @@ import { Row, Col , Badge } from 'react-bootstrap';
 import {getJobsList} from '../actions/jobListActions';
 import { getCategoriesList } from "../actions/categoryListAction";
 import {connectIfAuthorized} from '../actions/commonAction';
+import Spinner from 'react-bootstrap/Spinner';
 
 
 
@@ -34,22 +35,28 @@ class NewCollection extends Component {
 
     render() { 
         return (
+            <>
             <div className="collections-content" style={{width:'100%'}}>
-            <h2 className="collection-title">{this.props.categoryName}</h2>
-            <Row className="collections">
-            {this.props.list && this.props.list.map((hash , i) => {
-                return ( i <=3 && hash.ipfs_hash != "" && hash.ipfs_hash !='abhbi' &&
-                    <CollectionItem key={i} index={i} hash={hash}  offerContract={this.state.categoryContract} column="3"></CollectionItem>
-                )
-            }) 
-            }
-            </Row>
-            <div className="button-center-container"> 
-            {this.props.list && this.props.list.length > 4 &&
-                <button className="btn btn-secondary" onClick={this.viewAllItems}>View All</button>
-            }
+                <h2 className="collection-title">{this.props.categoryName}</h2>
+                <Row className="collections">
+
+                {!this.props.listloading && this.props.list ? this.props.list.map((hash , i) => {
+                    return ( i <=3 && hash.ipfs_hash != "" && hash.ipfs_hash !='abhbi' &&
+                        <CollectionItem key={i} index={i} hash={hash}  offerContract={this.state.categoryContract} column="3"></CollectionItem>
+                    )
+                }):
+                <Spinner animation="border" role="status">
+                        <span className="sr-only">Loading...</span>
+                </Spinner>
+                }
+                </Row>
+                <div className="button-center-container"> 
+                {this.props.list && this.props.list.length > 4 &&
+                    <button className="btn btn-secondary" onClick={this.viewAllItems}>View All</button>
+                }
+                </div>
             </div>
-            </div>
+            </>
          );
     }
 }
@@ -57,7 +64,9 @@ class NewCollection extends Component {
 function mapStateToProps(state){
     const { web3, account, loading, error , contract } = state.common;
     const {list} = state.jobList;
-    const {categoryList} = state.categoryList;
+    const listloading = state.categoryList.loading;
+    const listError = state.categoryList.error;
+    const {categoryList } = state.categoryList;
     return {
         parentCategories: state.common.parentCategories,
         categories: state.category.categoryItems,
@@ -68,6 +77,8 @@ function mapStateToProps(state){
         contract,
         list,
         categoryList,
+        listloading,
+        listError,
         newData: state.fetchJobs.newData
       };
   }

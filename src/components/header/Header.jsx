@@ -213,7 +213,7 @@ class Header extends Component {
                                         <span className="logged-in-user"></span>
                                     </a>     */}
                                     <Dropdown className="logged-in-user-menus">
-                                        <Dropdown.Toggle menuAlign="left"><span className="logged-in-user"></span></Dropdown.Toggle>
+                                        <Dropdown.Toggle menualign={'left'}><span className="logged-in-user"></span></Dropdown.Toggle>
                                         <Dropdown.Menu>
                                         <Dropdown.Item href="/buyer">Buyer</Dropdown.Item>
                                         <Dropdown.Item href="/seller">Seller</Dropdown.Item>
@@ -236,7 +236,7 @@ class Header extends Component {
                 <ul className="nav-items">
                 {this.props.categoryList.map((value, index) => {
                     return (
-                        <li> 
+                        <li key={index}> 
                             {/* <Dropdown onMouseEnter={() => this.toggleMenuOpen(index , true , value.id)}
                             onMouseLeave={() => this.toggleMenuOpen(index , false , value.id)}
                             show={this.state.menuOpen[index]}>       

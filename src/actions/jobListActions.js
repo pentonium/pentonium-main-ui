@@ -15,7 +15,6 @@ export const getJobsList = (contract , account , web3 , offerContract) => async 
         let end = await contract.methods.end().call();
         let categories = await contract.methods.read(start , 10 ).call();
         filteredCategory = categories.filter((cat) =>{ return cat.ipfs_hash != ""});
-        console.log('List contract' , contract);
         dispatch({type: JOB_LIST_SUCCESS, list: filteredCategory , start:start , end:end});
     }catch(e){
         dispatch({type: JOB_LIST_ERROR});

@@ -8,8 +8,8 @@ export const OrderItemList = (props) => {
         
             {props.items.map((list , i) => {
                 return ( 
-                <Row className="order-list-items">   
-                    <Col key={i} md={12} xs={12}> 
+                <Row key={i} className="order-list-items">   
+                    <Col  md={12} xs={12}> 
                         <Row className="order-item-row">
                         <Col className="img-col" md={1} sm={1}>
                             <div>

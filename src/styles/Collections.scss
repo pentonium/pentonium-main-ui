@@ -1,10 +1,14 @@
 .collections{
     margin-bottom: 3rem;
+    min-height: 21rem;
     .card{
         min-height: 340px;
         max-height: 340px;
         overflow: hidden;
         box-shadow: #1c1c2840 0px 0.5rem 1rem, #1c1c2833 0px 0px 0.125rem;
+        .spinner-border{
+            margin-top: 50%;
+        }
             // transform: scale(1.03)
     }
     .card-title{
@@ -35,6 +39,9 @@
         text-overflow: ellipsis;
         color: $secondaryColor;
         line-height: 120.1%;
+    }
+    .spinner-border{
+        margin-top: 5%;
     }
     .card-bottom{
         .price-tag{

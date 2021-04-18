@@ -10,6 +10,8 @@
     .nav-link.active{
         color: $whiteColor!important;
         background-color: $faceColor!important;
+        width: 100%;
+        text-align: center;
     }
 }
 

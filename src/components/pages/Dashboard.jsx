@@ -39,7 +39,7 @@ class DashBoard extends Component {
                     <Button variant="primary" className={this.state.currentTab == 'seller' ? 'active':''} onClick={() => this.changeTab('seller')}>Seller</Button>
                     </Col> */}
                     <Col className="dashboard-menus" md={12}>
-                    <nav class="site-nav">
+                    <nav className="site-nav">
                         <ul>
                         <li className={this.state.currentTab == 'buyer' ? 'active':''}><a href="javaScript:void(0)"  onClick={() => this.changeTab('buyer')} >Buyer</a></li>
                         <li className={this.state.currentTab == 'seller' ? 'active':''}><a href="javaScript:void(0)"  onClick={() => this.changeTab('seller')}>Seller</a></li>

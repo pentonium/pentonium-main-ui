@@ -89,7 +89,7 @@ class ChatPage extends Component {
           </div>
           <div className="chat-body" id="chat-body-div">
           {this.state.messages.map((msg, inex) => (
-            <div className="message-block">
+            <div key={inex} className="message-block">
               <div className="message-row">
                 <div className={(msg.from == this.state.usera)? "chat-right message" : "chat-left message" }>
                   {/* <div className="messge"> */}
@@ -102,7 +102,7 @@ class ChatPage extends Component {
           </div>
           <div className="message-form-container">
             <div className="message-form">
-              <input class="message-input" onChange={this.handleInput} placeholder="Send a message ..." value={this.state.msg}  />
+              <input className="message-input" onChange={this.handleInput} placeholder="Send a message ..." value={this.state.msg}  />
               <span className="image-button"></span>
               {/* <button type="submit" className="send-button">
               </button> */}
