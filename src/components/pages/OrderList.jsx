@@ -42,7 +42,7 @@ class OrderList extends Component {
                     <Button variant="primary" className={this.state.currentTab == 'seller' ? 'active':''} onClick={() => this.changeTab('seller')}>Seller</Button>
                     </Col> */}
                     <Col className="dashboard-menus" md={12}>
-                    <nav class="site-nav">
+                    <nav className="site-nav">
                         <ul>
                         <li className={this.state.currentTab == 'dashboard' ? 'active':''}><a href="javaScript:void(0)"  onClick={() => this.changeTab('dashboard')} >DashBorad</a></li>
                         <li className={this.state.currentTab == 'orderlist' ? 'active':''}><a href="javaScript:void(0)"  onClick={() => this.changeTab('orderlist')}>OrderList</a></li>

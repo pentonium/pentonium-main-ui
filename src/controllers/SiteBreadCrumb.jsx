@@ -11,7 +11,7 @@ const Breadcrumbs = props => {
   return (
     <Breadcrumb className={pathnames.length == 0 ? 'hide-elements':''}>
     {pathnames.length > 0 ? (
-        <Breadcrumb.Item onClick={() => history.push("/")}>Home</Breadcrumb.Item>
+        <Breadcrumb.Item  onClick={() => history.push("/")}>Home</Breadcrumb.Item>
       ) : (
         // <Breadcrumb.Item active>Home</Breadcrumb.Item>
         ''
@@ -20,7 +20,7 @@ const Breadcrumbs = props => {
         const routeTo = `/${pathnames.slice(0, index + 1).join("/")}`;
         const isLast = index === pathnames.length - 1;
         return isLast ? (
-            <Breadcrumb.Item active>{name}</Breadcrumb.Item>
+            <Breadcrumb.Item key={name} active>{name}</Breadcrumb.Item>
         ) : (
           <Breadcrumb.Item key={name} onClick={() => history.push(routeTo)}>
             {name} 

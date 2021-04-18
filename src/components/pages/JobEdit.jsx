@@ -162,7 +162,6 @@ class JobEdit extends Component {
     }
 
     render() {
-      console.log(this.props);
         return (
             <div style = {{'width':'100%'}}>
               {!this.props.loading ?

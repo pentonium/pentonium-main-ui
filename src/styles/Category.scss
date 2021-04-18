@@ -28,9 +28,18 @@
         .card-img-top{
             min-height: 174px;
             max-height: 174px;
+            height: 174px;
             padding: 15px;
             object-fit: cover;
             border-radius: 30px;
+            & > div{
+                height: 9rem;
+            }
+            img{
+                height: 100%;
+                width: 100%;
+                object-fit: cover;
+            }
         }
     }
 }

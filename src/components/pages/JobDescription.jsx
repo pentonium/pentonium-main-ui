@@ -84,7 +84,7 @@ class JobDescription extends Component {
                     </Col>
                     </>
             } */}
-            {!this.props.loading && this.state.hashedData ?
+            {!this.props.loading && this.state.hashedData && this.state.hashedData.imageHash ?
                     <>
                     <Col md={8} xs={12}>
                         <h1>{this.state.hashedData.title}</h1>
@@ -122,14 +122,12 @@ class JobDescription extends Component {
                                 }
                             </div>
                         </div>
-                        <Button className="delete-job" variant="primary" onClick={this.deleteJob} size="sm" block>
-                            Delete Job
-                        </Button>
+                        
                     </Col>
                     <Col md={4} xs={12}>
                         {
                             this.state.hashedData && 
-                            <UserPriceDetail hashId={this.state.jobId} offerContract={this.state.offerContract} data={this.state.hashedData}></UserPriceDetail>
+                            <UserPriceDetail hashId={this.state.jobId} offerContract={this.state.offerContract} data={this.state.hashedData} deleteHandler={this.deleteJob}></UserPriceDetail>
                         }
                     </Col>
                     </>:
@@ -143,8 +141,10 @@ class JobDescription extends Component {
 }
 
 function mapStateToProps(state){
+    let loading = true;
+    loading = state.jobReducer.loading;
     const { web3, account , contract  } = state.common;
-    const {detailData , loading, error} = state.jobReducer;
+    const {detailData , error} = state.jobReducer;
     return {
         jobDescription: state.fetchJobs.jobDescription[0],
         hashedData: state.fetchJobs.hashedData,

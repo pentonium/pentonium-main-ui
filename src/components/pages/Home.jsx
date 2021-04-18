@@ -9,8 +9,8 @@ class Home extends Component {
     render() { 
         return (
                 <Row className="collections-list">
-                <FeaturedCollection></FeaturedCollection>
-                <RatedCollection></RatedCollection>
+                {/* <FeaturedCollection></FeaturedCollection>
+                <RatedCollection></RatedCollection> */}
                 <NewCollection categoryName = 'Solidity Developer'></NewCollection>
                 </Row>
          );

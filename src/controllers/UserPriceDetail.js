@@ -10,7 +10,7 @@ export const UserPriceDetail = (props) => {
     return (
         <>
         <Tabs defaultActiveKey="basic" id="uncontrolled-tab-example">
-            <Tab eventKey="basic" title="Basic">
+            <Tab eventKey="basic" title="More Details">
                 {/* <Sonnet /> */}
                 <div className="tab-content-header">
                     <h5 className="title">
@@ -55,9 +55,14 @@ export const UserPriceDetail = (props) => {
         <Button variant="secondary" size="sm" block>
             Contact seller
         </Button>
-        <Button onClick={navigateToUpdate} variant="secondary" size="sm" block>
-            Edit Job
-        </Button>
+        <div className="description-action-buttons">
+            <Button onClick={navigateToUpdate} variant="secondary" size="sm" block>
+                Edit Job
+            </Button>
+            <Button className="delete-job" onClick={props.deleteHandler} variant="primary"  size="sm" block>
+                Delete Job
+            </Button>
+        </div>
         </>
     )
 }
