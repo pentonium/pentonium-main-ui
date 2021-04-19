@@ -52,9 +52,9 @@ export const UserPriceDetail = (props) => {
                 {/* <Sonnet /> */}
             {/* </Tab> */}
         </Tabs>
-        <Button variant="secondary" size="sm" block>
+        {/* <Button variant="secondary" size="sm" block>
             Contact seller
-        </Button>
+        </Button> */}
         <div className="description-action-buttons">
             <Button onClick={navigateToUpdate} variant="secondary" size="sm" block>
                 Edit Job

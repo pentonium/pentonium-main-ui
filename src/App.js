@@ -25,7 +25,7 @@ class App extends Component {
       <div className="App">
       <Header></Header>
         <Container className="body-padding">
-        <BreadCrumb></BreadCrumb>
+        {/* <BreadCrumb></BreadCrumb> */}
           <Switch>
               {routes.map((route, i) => (
                 <RouteWithSubRoutes key={i} {...route} />
