@@ -94,16 +94,17 @@ class JobDescription extends Component {
                         </div> */}
                         <div className="job-details">
                             <div className="job-image">
-                            <Carousel>    
+                            <Carousel controls={this.state.hashedData.imageHash.length > 1} indicators={false}>    
                             {this.state.hashedData.imageHash && this.state.hashedData.imageHash.map((preview , i) => {
                                 return (
                                     <Carousel.Item key={i}>
-                                        <LazyImage
+                                        {/* <LazyImage
                                         key={i}
                                         src={`https://ipfs.io/ipfs/${preview}`}
                                         alt="EDdit image"
-                                        />
-                                    </Carousel.Item>
+                                        /> */}
+                                        <img   src={`https://ipfs.io/ipfs/${preview}`} alt="Description Card image" />
+                            </Carousel.Item>
                                 )
                             })}       
                             </Carousel>
