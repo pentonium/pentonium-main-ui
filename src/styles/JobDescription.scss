@@ -6,8 +6,12 @@
         }
     }
     .carousel-item{
-        height: 16rem;
-        min-height: 16rem;
+        height: 24rem;
+        img{
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
     }
     .job-title{
         color: $primaryColor;
