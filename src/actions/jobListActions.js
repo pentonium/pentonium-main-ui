@@ -6,7 +6,7 @@ import { OFFER_CONTRACT_ABI } from "../config";
  * get list of categories
  * @param {contract object} contract
  */
-export const getJobsList = (contract , account , web3 , offerContract) => async dispatch => {
+export const getJobsList = (contract , account , web3 , offerContract , catName) => async dispatch => {
     dispatch({type: JOB_LIST_REQUEST});
     try{
         let filteredCategory = [];
@@ -15,7 +15,7 @@ export const getJobsList = (contract , account , web3 , offerContract) => async 
         let end = await contract.methods.end().call();
         let categories = await contract.methods.read(start , 10 ).call();
         filteredCategory = categories.filter((cat) =>{ return cat.ipfs_hash != ""});
-        dispatch({type: JOB_LIST_SUCCESS, list: filteredCategory , start:start , end:end});
+        dispatch({type: JOB_LIST_SUCCESS, list: filteredCategory , start:start , end:end , name:catName});
     }catch(e){
         dispatch({type: JOB_LIST_ERROR});
     }

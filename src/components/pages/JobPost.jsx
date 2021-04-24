@@ -10,6 +10,7 @@ import Web3 from 'web3';
 import {postJob} from '../../actions/jobActions';
 import { getCategoriesList } from "../../actions/categoryListAction";
 import Spinner from 'react-bootstrap/Spinner';
+import { NewCategoryModal } from "../../controllers/NewCategoryModal";
 
 
 class JobPost extends Component {
@@ -33,12 +34,19 @@ class JobPost extends Component {
             dataHash:"",
             previewImage:[],
             offerContract:'',
-            package:''
+            package:'',
+            modalShow:false,
+            newcat:'',
+            catFormValidated:false,
+            loadingCat:false,
+            errorCat:false
         }
         this.captureFile = this.captureFile.bind(this);
         this.uploadFormData = this.uploadFormData.bind(this);
         this.getFileData = this.getFileData.bind(this);
         this.loadWeb3 = this.loadWeb3.bind(this);
+        this.showModal = this.showModal.bind(this);
+        this.handleNewCategorySubmit = this.handleNewCategorySubmit.bind(this);
     }
 
     async componentDidMount(){
@@ -52,6 +60,10 @@ class JobPost extends Component {
           window.web3 = new Web3(window.ethereum);
           await window.ethereum.enable();
       }
+    }
+
+    showModal(flag){
+      this.setState({modalShow:flag , catFormValidated:false });
     }
     
 
@@ -161,133 +173,153 @@ class JobPost extends Component {
         }
     }
 
+    async handleNewCategorySubmit(event){
+      const form = event.currentTarget;
+          event.preventDefault();
+          if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+          } else {
+            // this.setState({catFormValidated:true}); 
+            await this.props.createNewCategory(this.state.newcat , this.props.account , this.props.contract);
+            this.showModal(false);
+          }
+    }
+
     render() {
         return (
             <div style = {{'width':'100%'}}>
               {!this.props.loading ? <>
               {
                 !this.state.successful  ? 
+                <>
+                <NewCategoryModal show={this.state.modalShow} onHide={() => this.showModal(false)} myChangeHandler={this.myChangeHandler} validation={this.state.catFormValidated} handleSubmit={this.handleNewCategorySubmit}></NewCategoryModal>
                 <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit.bind(this)}>
-            <Form.Row>
-              <Form.Group as={Col} md="6" controlId="validationCustom01">
-                <Form.Label>Gig Title</Form.Label>
-                <Form.Control
-                  required
-                  type="text"
-                  name="title"
-                  placeholder="Enter title for your gig"
-                  onChange={this.myChangeHandler}
-                />
-                <Form.Control.Feedback type="invalid">
-                  Please provide a valid title.
-                </Form.Control.Feedback>
-              </Form.Group>
-              <Form.Group as={Col} md="6" controlId="validationCustom02">
-                <Form.Label>Duration (in months):</Form.Label>
-                <Form.Control
-                  required
-                  type="number"
-                  name="duration"
-                  placeholder="Duration"
-                  value={this.state.duration}
-                  onChange={this.myChangeHandler}
-                />
-                <Form.Control.Feedback type="invalid">
-                  Please provide a valid duration.
-                </Form.Control.Feedback>
-              </Form.Group>
-            </Form.Row>
-            <Form.Row>
-                <Form.Group as={Col} md="6" controlId="validationCustom03">
-                    <Form.Label>Select Parent Category</Form.Label>
-                    <Form.Control required as="select" size="sm" name="parentCategory" defaultValue="{''}" custom onChange={this.onSelectedOptionsChange.bind(this)} >
-                    <option value={''}>Choose...</option>   
-                    {this.props.categoryList &&
-                      this.props.categoryList.map((parent) => {
-                      return <option key={parent.name} value={parent.name} contract={parent.offer}>{parent.name}</option>
-                      })
-                    } 
-                    </Form.Control>
-                </Form.Group>
-                {/* <Form.Group as={Col} md="6" controlId="validationCustom04">
-                    <Form.Label>Select Category</Form.Label>
-                    <Form.Control required as="select" size="sm" name="category" defaultValue="{''}" onChange={this.myChangeHandler} custom disabled={!this.state.isParentSelected}>
-                    <option value={''}>Choose...</option>   
-                    {this.props.categories &&
-                      this.props.categories.categories.map((category) => {
-                      return <option key={category.id} value={category.id}>{category.name}</option>
-                      })
-                    } 
-                    </Form.Control>
-                </Form.Group> */}
-                <Form.Group as={Col} md="6" controlId="validationCustom04">
-                <Form.Label>Price (in dollar):</Form.Label>
-                <Form.Control
-                  required
-                  type="number"
-                  name="price"
-                  placeholder="Price"
-                  value={this.state.price}
-                  onChange={this.myChangeHandler}
-                />
-                <Form.Control.Feedback type="invalid">
-                  Please provide a valid price.
-                </Form.Control.Feedback>
-              </Form.Group>
-            </Form.Row>
-            <Form.Group controlId="validationCustom05">
-            <Form.Label>Skills</Form.Label>  
-            <ReactTagInput 
-                tags={this.state.tags} 
-                placeholder="Type and press enter"
-                maxTags={10}
-                editable={true}
-                readOnly={false}
-                removeOnBackspace={true}
-                onChange={(newTags) => this.handleTags(newTags , 'skills')}
-              />
-            </Form.Group>
-            <Form.Group controlId="validationCustom08">
-                <h6>Selected Images:</h6>  
-                {this.state.previewImage && this.state.previewImage.map((preview , i) => {
-                  return <img className="edit-image" key={i} style={{'width':'200px','height':'100px','marginRight':'10px','marginBottom':'10px'}} src={preview} alt="" />
-                })}   
-            </Form.Group>
-            <Form.Group controlId="validationCustom06">
-                    <input type="file" multiple onChange={this.captureFile} />
-            </Form.Group>
-            <Form.Group controlId="validationCustom07">
-                <Form.Label>Description</Form.Label>
-                <Form.Control as="textarea" name="description" rows={3} onChange={this.myChangeHandler} required />
-                <Form.Control.Feedback type="invalid">
-                  Description field is required.
-                </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group controlId="validationCustom09">
-                <Form.Label>Package Content</Form.Label>
-                <Form.Control as="textarea" name="package" rows={3} onChange={this.myChangeHandler} required/>
-                <Form.Control.Feedback type="invalid">
-                  Package field is required.
-                </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group controlId="validationCustom10">
-              <Form.Label>Features</Form.Label>  
-              <ReactTagInput 
-                  tags={this.state.features} 
-                  placeholder="Type and press enter"
-                  maxTags={15}
-                  editable={true}
-                  readOnly={false}
-                  removeOnBackspace={true}
-                  onChange={(newTags) => this.handleTags(newTags , 'features')}
-                />
-            </Form.Group>
-            <Button type="submit">Submit form</Button>
-          </Form>:
-                !this.props.error ? 
-                <div>
-                  <p className="text-center">You're job has been posted successfully</p>
-                </div>:
+                    <Form.Row>
+                      <Form.Group as={Col} md="6" controlId="validationCustom01">
+                        <Form.Label>Gig Title</Form.Label>
+                        <Form.Control
+                          required
+                          type="text"
+                          name="title"
+                          placeholder="Enter title for your gig"
+                          onChange={this.myChangeHandler}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Please provide a valid title.
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                      <Form.Group as={Col} md="6" controlId="validationCustom02">
+                        <Form.Label>Duration (in months):</Form.Label>
+                        <Form.Control
+                          required
+                          type="number"
+                          name="duration"
+                          placeholder="Duration"
+                          value={this.state.duration}
+                          onChange={this.myChangeHandler}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Please provide a valid duration.
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Form.Row>
+                    <Form.Row>
+                        <Form.Group as={Col} md="6" controlId="validationCustom03">
+                            <Form.Label>
+                              <span>Select Parent Category</span>
+                              <Button className="new-category-button" onClick={() => this.showModal(true)} variant="primary" size="sm" block>
+                                  New Category
+                              </Button>
+                            </Form.Label>
+                            <Form.Control required as="select" size="sm" name="parentCategory" defaultValue="{''}" custom onChange={this.onSelectedOptionsChange.bind(this)} >
+                            <option value={''}>Choose...</option>   
+                            {this.props.categoryList &&
+                              this.props.categoryList.map((parent) => {
+                              return <option key={parent.name} value={parent.name} contract={parent.offer}>{parent.name}</option>
+                              })
+                            } 
+                            </Form.Control>
+                        </Form.Group>
+                        {/* <Form.Group as={Col} md="6" controlId="validationCustom04">
+                            <Form.Label>Select Category</Form.Label>
+                            <Form.Control required as="select" size="sm" name="category" defaultValue="{''}" onChange={this.myChangeHandler} custom disabled={!this.state.isParentSelected}>
+                            <option value={''}>Choose...</option>   
+                            {this.props.categories &&
+                              this.props.categories.categories.map((category) => {
+                              return <option key={category.id} value={category.id}>{category.name}</option>
+                              })
+                            } 
+                            </Form.Control>
+                        </Form.Group> */}
+                        <Form.Group as={Col} md="6" controlId="validationCustom04">
+                        <Form.Label>Price (in dollar):</Form.Label>
+                        <Form.Control
+                          required
+                          type="number"
+                          name="price"
+                          placeholder="Price"
+                          value={this.state.price}
+                          onChange={this.myChangeHandler}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Please provide a valid price.
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Form.Row>
+                    <Form.Group controlId="validationCustom05">
+                    <Form.Label>Skills</Form.Label>  
+                    <ReactTagInput 
+                        tags={this.state.tags} 
+                        placeholder="Type and press enter"
+                        maxTags={10}
+                        editable={true}
+                        readOnly={false}
+                        removeOnBackspace={true}
+                        onChange={(newTags) => this.handleTags(newTags , 'skills')}
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="validationCustom08">
+                        <h6>Selected Images:</h6>  
+                        {this.state.previewImage && this.state.previewImage.map((preview , i) => {
+                          return <img className="edit-image" key={i} style={{'width':'200px','height':'100px','marginRight':'10px','marginBottom':'10px'}} src={preview} alt="" />
+                        })}   
+                    </Form.Group>
+                    <Form.Group controlId="validationCustom06">
+                            <input type="file" multiple onChange={this.captureFile} />
+                    </Form.Group>
+                    <Form.Group controlId="validationCustom07">
+                        <Form.Label>Description</Form.Label>
+                        <Form.Control as="textarea" name="description" rows={3} onChange={this.myChangeHandler} required />
+                        <Form.Control.Feedback type="invalid">
+                          Description field is required.
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group controlId="validationCustom09">
+                        <Form.Label>Package Content</Form.Label>
+                        <Form.Control as="textarea" name="package" rows={3} onChange={this.myChangeHandler} required/>
+                        <Form.Control.Feedback type="invalid">
+                          Package field is required.
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group controlId="validationCustom10">
+                      <Form.Label>Features</Form.Label>  
+                      <ReactTagInput 
+                          tags={this.state.features} 
+                          placeholder="Type and press enter"
+                          maxTags={15}
+                          editable={true}
+                          readOnly={false}
+                          removeOnBackspace={true}
+                          onChange={(newTags) => this.handleTags(newTags , 'features')}
+                        />
+                    </Form.Group>
+                    <Button type="submit">Submit form</Button>
+                </Form></>:
+                  !this.props.error ? 
+                  <div>
+                    <p className="text-center">You're job has been posted successfully</p>
+                  </div>:
                   <div>
                     <p className="text-center">Error posting the job</p>
                   </div>
@@ -306,14 +338,16 @@ class JobPost extends Component {
 
 function mapStateToProps(state){
   const { contract, account , web3 } = state.common;
-  const { id, category_name, loading, error } = state.category;
+  const { id, category_name, loadingCat, errorCat } = state.category;
   const {categoryList} = state.categoryList;
+  const {loading , error} = state.jobReducer;
   return {
     parentCategories: state.common.parentCategories,
     categories: state.category.categoryItems,
     contract, account, id, category_name, loading, error,
     categoryList,
-    web3
+    web3,
+    loadingCat, errorCat
     };
   }
   

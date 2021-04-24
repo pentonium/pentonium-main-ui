@@ -18,12 +18,12 @@ export const routes = [
         component: Home
     },
     {
-        path: "/categories/:id",
+        path: "/categories/:name/:id",
         exact: true,
         component: Categories
     },
     {
-        path: "/categories/:parentId/:categoryId",
+        path: "/category",
         exact: true,
         component: Category
     },

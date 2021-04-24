@@ -7,6 +7,7 @@ import Pagination  from 'react-bootstrap/Pagination';
 import {CollectionCard} from '../../controllers/CollectionCard';
 import {getJobsList} from '../../actions/jobListActions';
 import {connectIfAuthorized} from '../../actions/commonAction';
+import { getCategoriesList } from "../../actions/categoryListAction";
 // import PaginationItem from 'react-bootstrap/PageItem'
 // import PaginationLink from 'react-bootstrap/Pagination'
 
@@ -31,8 +32,8 @@ class Category extends Component {
         // this.props.fecthJobByCategory(categoryId);
         await this.props.connectIfAuthorized();
         if(this.props.account){
-            // await this.props.getCategoriesList(this.props.contract , this.props.account);
-            await this.props.getJobsList(this.props.contract , this.props.account , this.props.web3 , categoryId);
+            await this.props.getCategoriesList(this.props.contract , this.props.account);
+            // await this.props.getJobsList(this.props.contract , this.props.account , this.props.web3 , categoryId);
         }
     }
 
@@ -50,26 +51,48 @@ class Category extends Component {
         const { currentPage } = this.state;
         return (
             <div className="row">
-                { this.props.jobCategory && this.props.jobCategory.length > 0 ?
+                { this.props.categoryList && this.props.categoryList.length > 0 ?
                 <>
-                    <CollectionCard items={this.props.jobCategory}></CollectionCard>
-                    <Pagination aria-label="Page navigation example">
-            
-                                <Pagination.Prev className={currentPage <=0 ? 'hide-arrow':''} disabled={currentPage <= 0} onClick={e => this.handleClick(e, currentPage - 1)} href="#">
-                                
-                                </Pagination.Prev>
-
-                                {[...Array(this.pagesCount)].map((page, i) => 
-                                <Pagination.Item active={i === currentPage} key={i} onClick={e => this.handleClick(e, i)} href="#">
-                                    {i + 1}
-                                </Pagination.Item>
-                                )}
-
-                                <Pagination.Next className = {currentPage >= this.pagesCount - 1 ? 'hide-arrow':''} disabled={currentPage >= this.pagesCount - 1} onClick={e => this.handleClick(e, currentPage + 1)} href="#"> 
-                                
-                                </Pagination.Next> 
-                                
-                    </Pagination>
+                    {/* <CollectionCard items={this.props.jobCategory}></CollectionCard> */}
+                    <ul className="category-items">
+                {this.props.categoryList.map((value, index) => {
+                    return (
+                        <li key={index}> 
+                            {/* <Dropdown onMouseEnter={() => this.toggleMenuOpen(index , true , value.id)}
+                            onMouseLeave={() => this.toggleMenuOpen(index , false , value.id)}
+                            show={this.state.menuOpen[index]}>       
+                                <Dropdown.Toggle variant="success" id="dropdown-basic{index}">
+                                    <span >{value.name}</span>
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                    {this.props.categories ? this.props.categories.categories.map((value1 , index) => {
+                                    return(<Dropdown.Item href={'/categories/'+value.id + '/' + value1.id}>{value1.name}</Dropdown.Item>)
+                                    }): ''}
+                                </Dropdown.Menu>
+                            </Dropdown> */}
+                            <a
+                                id={'anchor-nav'+index}
+                                // onMouseEnter={() => this.toggleMenuOpen(index , true , value.id)}
+                                // onMouseLeave={() => this.toggleMenuClose(index , false , value.id)}
+                                aria-controls={value.id}
+                                 href={'/categories/'+value.offer_contract}
+                            >
+                                <span>{value.name}</span>
+                                {/* <i id={'chevron'+index}className={"fa fa-chevron-up rotate "}></i> */}
+                            </a>
+                            {/* <Collapse id={'collapse-id'+index} onMouseEnter={() => this.toggleSubMenu(index , true)} onMouseLeave={() => this.toggleSubMenuOt(index , false)}>
+                                <div className="collapse-content" id={value.id}>
+                                    <div className="container">
+                                {this.props.categories ? this.props.categories.categories.map((value1 , index) => {
+                                    return(<div className="nav-submenu"><a  href={'/categories/'+value.id + '/' + value1.id}>{value1.name}</a></div>)
+                                }): ''}
+                                </div>
+                                </div>
+                            </Collapse> */}
+                        </li>
+                        )
+                    })}
+                    </ul> 
                 </>:
                 <div>
                     No Items found
@@ -82,11 +105,11 @@ class Category extends Component {
 
 function mapStateToProps(state){
     const { web3, account, loading, error , contract } = state.common;
-    const {list} = state.jobList;
+    const {categoryList} = state.categoryList;
     return {
         jobCategory: state.fetchJobs.categoryJob,
         web3, account, loading, error , contract,
-        list
+        categoryList
       };
   }
   
@@ -94,7 +117,8 @@ function mapDispatchToProps(dispatch){
     return{
         fecthJobByCategory: (id) => dispatch(fecthJobByCategory(id)),
         connectIfAuthorized:() => dispatch(connectIfAuthorized()),
-        getJobsList: (contract , account , web3 , offerContract) => dispatch(getJobsList(contract , account , web3 , offerContract))
+        getJobsList: (contract , account , web3 , offerContract) => dispatch(getJobsList(contract , account , web3 , offerContract)),
+        getCategoriesList:(contract,account) => dispatch(getCategoriesList(contract,account)),
     }
 }
  

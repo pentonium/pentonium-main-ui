@@ -44,6 +44,16 @@
     }
 }
 
+.category-items{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    li{
+        flex-basis: 20%;
+    }
+
+}
+
 ul {
     padding: 0px;
     li {
