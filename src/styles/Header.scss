@@ -129,6 +129,19 @@
     float: right;
     margin: 0;
     padding: 0;
+    &.nav-category-list{
+        justify-content: flex-start;
+        width: 100%;
+        position: relative;
+        .li-nav-item{
+            flex-basis: 14.28%;
+        }
+        .view-all-link{
+            position: absolute;
+            right: 0px;
+        }
+
+    }
     &.mid{
         li {
             margin-right: 1rem;

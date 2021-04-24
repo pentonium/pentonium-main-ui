@@ -12,6 +12,7 @@ class Home extends Component {
                 {/* <FeaturedCollection></FeaturedCollection>
                 <RatedCollection></RatedCollection> */}
                 <NewCollection categoryName = 'Solidity Developer'></NewCollection>
+                <NewCollection categoryName = 'Graphics'></NewCollection>
                 </Row>
          );
     }

@@ -1,6 +1,6 @@
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
-import Button from 'react-bootstrap/Button'
+import Button from 'react-bootstrap/Button';
 
 export const UserPriceDetail = (props) => {
     function navigateToUpdate(){

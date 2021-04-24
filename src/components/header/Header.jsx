@@ -233,10 +233,10 @@ class Header extends Component {
                 {this.props.categoryList ? 
             <div className="parent-nav-section">
                 <div className="container">
-                <ul className="nav-items">
+                <ul className="nav-items nav-category-list">
                 {this.props.categoryList.map((value, index) => {
-                    return (
-                        <li key={index}> 
+                    return (index < 5  &&
+                        <li key={index} className="li-nav-item"> 
                             {/* <Dropdown onMouseEnter={() => this.toggleMenuOpen(index , true , value.id)}
                             onMouseLeave={() => this.toggleMenuOpen(index , false , value.id)}
                             show={this.state.menuOpen[index]}>       
@@ -255,7 +255,7 @@ class Header extends Component {
                                 // onMouseLeave={() => this.toggleMenuClose(index , false , value.id)}
                                 aria-controls={value.id}
                                 className={this.state.menuOpen[index] ? 'active-nav':''}
-                                aria-expanded={this.state.menuOpen[index]} href={'/categories/'+value.offer_contract}
+                                aria-expanded={this.state.menuOpen[index]} href={`/categories/${value.name}/${value.offer_contract}`}
                             >
                                 <span>{value.name}</span>
                                 {/* <i id={'chevron'+index}className={"fa fa-chevron-up rotate "}></i> */}
@@ -272,6 +272,19 @@ class Header extends Component {
                             </li>
                         )
                     })}
+                    {this.props.categoryList.length > 6 && 
+                        <li className="view-all-link">
+                            <a
+                                // onMouseEnter={() => this.toggleMenuOpen(index , true , value.id)}
+                                // onMouseLeave={() => this.toggleMenuClose(index , false , value.id)}
+                                aria-controls={'view-all'}
+                                href={'/category'}
+                            >
+                                <span>View All+</span>
+                                {/* <i id={'chevron'+index}className={"fa fa-chevron-up rotate "}></i> */}
+                            </a>
+                        </li>
+                    }
                     </ul> 
                 </div>        
             </div> :''}

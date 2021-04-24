@@ -29,23 +29,18 @@ class CollectionItem extends Component {
                     <>   
                     <div className="card">
                         {this.state.hashedData && this.state.hashedData.imageHash ?
-                            <>
-                            <Carousel controls={this.state.hashedData.imageHash.length > 1} indicators={false}>
+                            <a href={'/jobs/'+this.props.hash.id +'/'+this.props.offerContract}>
+                            <img className="card-img-top" src={`https://ipfs.io/ipfs/${this.state.hashedData.imageHash[0]}`}  alt="Card image" />
+                            {/* <Carousel controls={this.state.hashedData.imageHash.length > 1} indicators={false}>
                                 {this.state.hashedData.imageHash && this.state.hashedData.imageHash.map((image , i) => {
                                     
                                     return(
                                         <Carousel.Item key={i} className="card-img-top">
-                                            {/* <LazyImage
-                                                key={i}
-                                                src={`https://ipfs.io/ipfs/${image}`}
-                                                alt="Card image"
-                                            /> */}
-                                            <img   src={`https://ipfs.io/ipfs/${image}`} alt="Card image" />
+                                            <img   src={`https://ipfs.io/ipfs/${this.state.hashedData.imageHash[0]}`} alt="Card image" />
                                         </Carousel.Item>
                                     )  
                                 })}
-                            </Carousel>
-                            <a href={'/jobs/'+this.props.hash.id +'/'+this.props.offerContract}>
+                            </Carousel> */}
                             <div className="card-body">
                             <h5 className="card-title">{this.state.hashedData.title}</h5>
                             <p className="card-text">{this.state.hashedData.description}</p>
@@ -56,8 +51,7 @@ class CollectionItem extends Component {
                                 <span className="price-tag">{`$${this.state.hashedData.price}`}</span>
                             </div>
                             </div>
-                            </a>
-                            </>:
+                            </a>:
                              <Spinner animation="border" role="status">
                                 <span className="sr-only">Loading...</span>
                             </Spinner>

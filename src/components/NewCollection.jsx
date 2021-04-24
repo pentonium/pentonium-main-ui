@@ -24,23 +24,29 @@ class NewCollection extends Component {
         if(this.props.account){
             await this.props.getCategoriesList(this.props.contract , this.props.account);
             this.setState({categoryContract:this.props.categoryList.filter((cat) => cat.name===this.props.categoryName)[0].offer_contract});
-            await this.props.getJobsList(this.props.contract , this.props.account , this.props.web3 , this.state.categoryContract);
+            await this.props.getJobsList(this.props.contract , this.props.account , this.props.web3 , this.state.categoryContract , this.props.categoryName);
+
         }
 
     }
 
     viewAllItems = () => {
-        window.location.href=`/categories/${this.state.categoryContract}`;
+        window.location.href=`/categories/${this.props.categoryName}/${this.state.categoryContract}`;
     };
 
     render() { 
+        let filteredList = '';
+        // console.log('List' , this.state.list);
+        if(this.props.list && this.props.list.length > 0){
+            filteredList = this.props.list.filter((li) => li.name === this.props.categoryName)[0].list;
+        }
         return (
             <>
             <div className="collections-content" style={{width:'100%'}}>
                 <h2 className="collection-title">{this.props.categoryName}</h2>
                 <Row className="collections">
 
-                {!this.props.listloading && this.props.list ? this.props.list.map((hash , i) => {
+                {!this.props.listloading && filteredList ? filteredList.map((hash , i) => {
                     return ( i <=3 && hash.ipfs_hash != "" && hash.ipfs_hash !='abhbi' &&
                         <CollectionItem key={i} index={i} hash={hash}  offerContract={this.state.categoryContract} column="3"></CollectionItem>
                     )
@@ -51,7 +57,7 @@ class NewCollection extends Component {
                 }
                 </Row>
                 <div className="button-center-container"> 
-                {this.props.list && this.props.list.length > 4 &&
+                {filteredList && filteredList.length > 4 &&
                     <button className="btn btn-secondary" onClick={this.viewAllItems}>View All</button>
                 }
                 </div>
@@ -78,8 +84,7 @@ function mapStateToProps(state){
         list,
         categoryList,
         listloading,
-        listError,
-        newData: state.fetchJobs.newData
+        listError
       };
   }
   
@@ -87,7 +92,7 @@ function mapDispatchToProps(dispatch){
     return{
         fetchNewJobs: () => dispatch(fetchNewJobs()),
         connectIfAuthorized:() => dispatch(connectIfAuthorized()),
-        getJobsList: (contract , account , web3 , offerContract) => dispatch(getJobsList(contract , account , web3 , offerContract)),
+        getJobsList: (contract , account , web3 , offerContract , categoryName) => dispatch(getJobsList(contract , account , web3 , offerContract , categoryName)),
         getCategoriesList:(contract,account) => dispatch(getCategoriesList(contract,account))
     }
 }

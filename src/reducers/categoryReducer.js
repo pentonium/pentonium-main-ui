@@ -1,8 +1,8 @@
 import {FETCH_CATEGORIES , CATEGORY_CU_REQUEST , CATEGORY_CU_SUCCESS , CATEGORY_CU_ERROR} from '../constants';
 
 const initialState = {
-  loading: false,
-  error: false
+  loadingCat: false,
+  errorCat: false
 };
 
 export default function(state = initialState, action) {
@@ -17,19 +17,20 @@ export default function(state = initialState, action) {
     case CATEGORY_CU_REQUEST: 
       return {
           ...state,
-          error: false,
-          loading: true
+          errorCat: false,
+          loadingCat: true
       }
     case CATEGORY_CU_SUCCESS:
       return {
         ...state,
-        error: false,
-        loading: false
+        errorCat: false,
+        loadingCat: false
       }
     case CATEGORY_CU_ERROR:
       return {
         ...state,
-        error:true
+        errorCat:true,
+        laodingCat:false
       } 
     default:
       return state;

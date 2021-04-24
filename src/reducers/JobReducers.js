@@ -22,6 +22,7 @@ export default function(state = initialState, action) {
         case POST_JOB_ERROR:
           return {
             ...state,
+            loading:false,
             error:true
           }
           case POST_UPDATE_JOB_REQUEST: 

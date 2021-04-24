@@ -1,7 +1,7 @@
 import {JOB_LIST_REQUEST , JOB_LIST_SUCCESS , JOB_LIST_ERROR} from '../constants';
 
 const initialState = {
-  list:[],  
+  list: [],  
   loading: false,
   error: false
 };
@@ -19,7 +19,7 @@ export default function(state = initialState, action) {
             ...state,
             start:action.start,
             end:action.end,
-            list: action.list,
+            list: [...state.list, {'name':action.name , list:action.list}],
             error: false,
             loading: false
           }
