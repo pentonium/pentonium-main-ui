@@ -1,21 +1,61 @@
 import React, { Component } from "react";
 import {  Row } from "react-bootstrap";
-import FeaturedCollection from "../FeaturedCollection";
-import RatedCollection from "../RatedCollection";
+import { connect } from 'react-redux';
 import NewCollection from "../NewCollection";
+import {getAllCategoryJobs} from '../../actions/jobListActions';
+import {connectIfAuthorized} from '../../actions/commonAction';
+import {home_contract_addresses} from '../../config';
 
 class Home extends Component {
-    state = {  }
+
+    constructor(props){
+        super(props)
+        this.state={
+            contract:['0x350F4fa7dAbd45CFBdfc8A61ee1E0A5a0E13De3D' , '0xf726830e3721dc764281983e8095053fd44bf500']
+        }
+        this.getAllCategories = this.getAllCategories.bind(this);
+    }
+
+    componentDidMount(){
+        this.getAllCategories();
+    }
+
+    async getAllCategories(){
+        await this.props.connectIfAuthorized();
+        await this.props.getAllCategoryJobs(this.props.account , this.props.web3 , home_contract_addresses);
+    }
+    
     render() { 
         return (
                 <Row className="collections-list">
-                {/* <FeaturedCollection></FeaturedCollection>
-                <RatedCollection></RatedCollection> */}
-                <NewCollection categoryName = 'Solidity Developer'></NewCollection>
-                <NewCollection categoryName = 'Graphics'></NewCollection>
+                {
+                    this.props.fulllist && this.props.fulllist.map((job , i) => {
+                        return <NewCollection key={i} categoryName={job.name} list={job.list} categoryContract={job.offerContract}></NewCollection>
+                    })
+                }
                 </Row>
          );
     }
 }
+
+function mapStateToProps(state){
+    const { web3, account, loading, error , contract } = state.common;
+    const {fulllist} = state.jobList;
+    return {
+        web3,
+        account,
+        loading,
+        error,
+        contract,
+        fulllist
+      };
+  }
+  
+function mapDispatchToProps(dispatch){
+    return{
+        connectIfAuthorized:() => dispatch(connectIfAuthorized()),
+        getAllCategoryJobs: (account , web3 , offerContract) => dispatch(getAllCategoryJobs(account , web3 , offerContract))
+    }
+}
  
-export default Home;
+export default connect(mapStateToProps , mapDispatchToProps)(Home);

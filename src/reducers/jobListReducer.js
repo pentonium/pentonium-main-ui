@@ -1,9 +1,10 @@
-import {JOB_LIST_REQUEST , JOB_LIST_SUCCESS , JOB_LIST_ERROR} from '../constants';
+import {JOB_LIST_REQUEST , JOB_LIST_SUCCESS , JOB_LIST_ERROR , ALL_JOB_LIST_REQUEST , ALL_JOB_LIST_SUCCESS , ALL_JOB_LIST_ERROR} from '../constants';
 
 const initialState = {
-  list: [],  
+  list:[],  
   loading: false,
-  error: false
+  error: false,
+  fulllist:[]
 };
 
 export default function(state = initialState, action) {
@@ -19,7 +20,7 @@ export default function(state = initialState, action) {
             ...state,
             start:action.start,
             end:action.end,
-            list: [...state.list, {'name':action.name , list:action.list}],
+            list: action.list,
             error: false,
             loading: false
           }
@@ -28,7 +29,26 @@ export default function(state = initialState, action) {
             ...state,
             list: [],
             error:true
+        }
+        case ALL_JOB_LIST_REQUEST: 
+        return {
+            ...state,
+            error: false,
+            loading: true
+        }
+        case ALL_JOB_LIST_SUCCESS: 
+          return {
+            ...state,
+            fulllist: action.list,
+            error: false,
+            loading: false
           }
+        case ALL_JOB_LIST_ERROR:
+          return {
+            ...state,
+            fulllist: [],
+            error:true
+        }
         default:
             return state;
     }

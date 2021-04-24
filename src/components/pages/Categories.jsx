@@ -30,13 +30,12 @@ class Categories extends Component {
 
     async componentDidMount(){
         const categoryId = this.props.match.params.id;
-        const catName = this.props.match.params.name;
         // this.props.fetchCategories(categoryId);
         this.setState({offerContract:categoryId});
         await this.props.connectIfAuthorized();
         if(this.props.account){
             // await this.props.getCategoriesList(this.props.contract , this.props.account);
-            await this.props.getJobsList(this.props.contract , this.props.account , this.props.web3 , categoryId , catName);
+            await this.props.getJobsList(this.props.contract , this.props.account , this.props.web3 , categoryId);
         }
         // this.pagesCount = Math.ceil(this.props.categories.length / this.pageSize);
         // console.log(this.pagesCount);
@@ -53,15 +52,11 @@ class Categories extends Component {
       }
 
     render() { 
-        let filteredList = '';
-        let next = '';
-        if(this.props.list && this.props.list.length > 0){
-            filteredList = this.props.list.filter((li) => li.name === this.props.match.params.name)[0].list;
-            next = filteredList ? [...filteredList].slice(-1) : 1;
-        }
+        const next = this.props.list ? [...this.props.list].slice(-1) : 1;
+        console.log('List' , this.props.list);
         return (
             <div className="row">
-                { filteredList &&
+                { this.props.list &&
                 <>
                 <div className="col-md-12 parent-cateogory-title text-center">
                     {/* <h1>{this.props.categories.name}</h1>
@@ -74,7 +69,7 @@ class Categories extends Component {
                         <div className="col-md-12">
                             {/* <CategoryList {...this.props.categories}></CategoryList> */}
                             <Row className="collections">
-                                {filteredList && filteredList.map((hash , i) => {
+                                {this.props.list && this.props.list.map((hash , i) => {
                                     return ( hash.ipfs_hash != "" && hash.ipfs_hash !='abhbi' &&
                                         <CollectionItem key={i} index={i} hash={hash}  offerContract={this.state.offerContract}></CollectionItem>
                                     )
@@ -113,7 +108,7 @@ function mapDispatchToProps(dispatch){
     return{
         fetchCategories: (id) => dispatch(fetchCategories(id)),
         connectIfAuthorized:() => dispatch(connectIfAuthorized()),
-        getJobsList: (contract , account , web3 , offerContract , catName) => dispatch(getJobsList(contract , account , web3 , offerContract , catName))
+        getJobsList: (contract , account , web3 , offerContract) => dispatch(getJobsList(contract , account , web3 , offerContract))
     }
 }
  
