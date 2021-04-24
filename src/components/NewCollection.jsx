@@ -37,7 +37,7 @@ class NewCollection extends Component {
     render() { 
         let filteredList = '';
         // console.log('List' , this.state.list);
-        if(this.props.list && this.props.list.length > 0){
+        if(this.props.list && this.props.list.length > 1){
             filteredList = this.props.list.filter((li) => li.name === this.props.categoryName)[0].list;
         }
         return (
