@@ -879,3 +879,5 @@ export const ORDER_CONTRACT_ABI = [
 		"type": "function"
 	}
 ];
+
+export const home_contract_addresses = ['0x350F4fa7dAbd45CFBdfc8A61ee1E0A5a0E13De3D' , '0xf726830e3721dc764281983e8095053fd44bf500'];
