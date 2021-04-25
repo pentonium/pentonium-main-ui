@@ -8,7 +8,7 @@ import {getJobsList} from '../actions/jobListActions';
 import { getCategoriesList } from "../actions/categoryListAction";
 import {connectIfAuthorized} from '../actions/commonAction';
 import Spinner from 'react-bootstrap/Spinner';
-
+import { withRouter } from "react-router";
 
 
 class NewCollection extends Component {
@@ -17,7 +17,7 @@ class NewCollection extends Component {
     }
 
     viewAllItems = () => {
-        window.location.href=`/categories/${this.props.categoryContract}`;
+        this.props.history.push(`/categories/${this.props.categoryContract}`);
     };
 
     render() { 
@@ -27,7 +27,7 @@ class NewCollection extends Component {
                 <h2 className="collection-title">{this.props.categoryName}</h2>
                 <Row className="collections">
 
-                {this.props.list ? this.props.list.map((hash , i) => {
+                {!this.props.loading && this.props.list ? this.props.list.map((hash , i) => {
                     return ( i <=3 && hash.ipfs_hash != "" && hash.ipfs_hash !='abhbi' &&
                         <CollectionItem key={i} index={i} hash={hash}  offerContract={this.props.categoryContract} column="3"></CollectionItem>
                     )
@@ -48,4 +48,4 @@ class NewCollection extends Component {
     }
 }
  
-export default NewCollection;
+export default withRouter(NewCollection);

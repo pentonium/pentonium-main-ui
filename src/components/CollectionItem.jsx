@@ -6,6 +6,9 @@ import Carousel from 'react-bootstrap/Carousel';
 import LazyImage from '../controllers/LazyImage';
 import { getJobDetail } from "../actions/jobActions";
 import Spinner from 'react-bootstrap/Spinner';
+import {
+    Link
+  } from "react-router-dom";
 
 
 class CollectionItem extends Component {
@@ -25,11 +28,11 @@ class CollectionItem extends Component {
         return (
             <>
                 {
-                    <Col key={this.props.index} md={this.props.column ? parseInt(this.props.column , 10) : 3} xs={12}> 
+                    <Col md={this.props.column ? parseInt(this.props.column , 10) : 3} xs={12}> 
                     <>   
                     <div className="card">
                         {this.state.hashedData && this.state.hashedData.imageHash ?
-                            <a href={'/jobs/'+this.props.hash.id +'/'+this.props.offerContract}>
+                            <Link to={'/jobs/'+this.props.hash.id +'/'+this.props.offerContract}>
                             <img className="card-img-top" src={`https://ipfs.io/ipfs/${this.state.hashedData.imageHash[0]}`}  alt="Card image" />
                             {/* <Carousel controls={this.state.hashedData.imageHash.length > 1} indicators={false}>
                                 {this.state.hashedData.imageHash && this.state.hashedData.imageHash.map((image , i) => {
@@ -43,7 +46,9 @@ class CollectionItem extends Component {
                             </Carousel> */}
                             <div className="card-body">
                             <h5 className="card-title">{this.state.hashedData.title}</h5>
-                            <p className="card-text">{this.state.hashedData.description}</p>
+                            {/* Descripton commented un comment if needed */}
+                            {/* <p className=></p> */}
+                            {/* <p className="card-text">{this.state.hashedData.description}</p> */}
                             {/* <p className="card-text"><small className="text-muted">{`$${this.state.hashedData.price}`}</small>
                             <button className="btn btn-primary"><a href={'/jobs/'+this.props.hash.id +'/'+this.props.offerContract}>Edit</a></button></p> */}
                             <div className="card-bottom">
@@ -51,7 +56,7 @@ class CollectionItem extends Component {
                                 <span className="price-tag">{`$${this.state.hashedData.price}`}</span>
                             </div>
                             </div>
-                            </a>:
+                            </Link>:
                              <Spinner animation="border" role="status">
                                 <span className="sr-only">Loading...</span>
                             </Spinner>
