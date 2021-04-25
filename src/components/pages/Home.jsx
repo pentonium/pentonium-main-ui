@@ -39,7 +39,6 @@ class Home extends Component {
 }
 
 function mapStateToProps(state){
-    console.log('State' , state);
     const { web3, account, loading, error , contract } = state.common;
     const {fulllist } = state.jobList;
     const fulllistloading = state.jobList.loading;
