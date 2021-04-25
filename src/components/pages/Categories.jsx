@@ -12,6 +12,7 @@ import {connectIfAuthorized} from '../../actions/commonAction';
 import CollectionItem from "../CollectionItem";
 import { Row, Col , Badge } from 'react-bootstrap';
 import {BsFillCaretLeftFill , BsFillCaretRightFill} from "react-icons/bs";
+import Spinner from 'react-bootstrap/Spinner';
 // import {FiUploadCloud} from 'react-icons/fi';
 // import PaginationItem from 'react-bootstrap/PageItem'
 // import PaginationLink from 'react-bootstrap/Pagination'
@@ -24,39 +25,39 @@ class Categories extends Component {
         this.state = {
             currentPage: 1,
             offerContract:'',
-            maxItemsPerPage:10
+            maxItemsPerPage:10,
+            currentLocation:''
         };
+        this.getJobs = this.getJobs.bind(this);
     }
 
-    async componentDidMount(){
+    async getJobs(){
         const categoryId = this.props.match.params.id;
-        // this.props.fetchCategories(categoryId);
+        this.setState({currentLocation:this.props.match.url});
         this.setState({offerContract:categoryId});
         await this.props.connectIfAuthorized();
         if(this.props.account){
-            // await this.props.getCategoriesList(this.props.contract , this.props.account);
             await this.props.getJobsList(this.props.contract , this.props.account , this.props.web3 , categoryId);
         }
-        // this.pagesCount = Math.ceil(this.props.categories.length / this.pageSize);
-        // console.log(this.pagesCount);
     }
 
-    handleClick(e, index) {
-    
-        e.preventDefault();
-    
-        this.setState({
-          currentPage: index
-        });
-        
-      }
+    async componentDidMount(){
+        this.getJobs();
+    }
+
+     
+
+    componentDidUpdate(prevProps , prevState){
+        if(prevState.currentLocation !== this.props.history.location.pathname){
+            this.getJobs();
+        }
+    }
 
     render() { 
         const next = this.props.list ? [...this.props.list].slice(-1) : 1;
-        console.log('List' , this.props.list);
         return (
             <div className="row">
-                { this.props.list &&
+                {!this.props.loading &&  this.props.list ?
                 <>
                 <div className="col-md-12 parent-cateogory-title text-center">
                     {/* <h1>{this.props.categories.name}</h1>
@@ -70,7 +71,7 @@ class Categories extends Component {
                             {/* <CategoryList {...this.props.categories}></CategoryList> */}
                             <Row className="collections">
                                 {this.props.list && this.props.list.map((hash , i) => {
-                                    return ( hash.ipfs_hash != "" && hash.ipfs_hash !='abhbi' &&
+                                return ( hash.ipfs_hash != "" && hash.ipfs_hash !='abhbi' &&
                                         <CollectionItem key={i} index={i} hash={hash}  offerContract={this.state.offerContract}></CollectionItem>
                                     )
                                 }) 
@@ -87,7 +88,10 @@ class Categories extends Component {
                             </div>
                         </div>
                 </div>
-                </>
+                </>:
+                <Spinner animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+                </Spinner>
                 }
             </div>
          );
@@ -95,8 +99,8 @@ class Categories extends Component {
 }
 
 function mapStateToProps(state){
-    const { web3, account ,loading, error , contract } = state.common;
-    const {list , start , end} = state.jobList;
+    const { web3, account  , contract } = state.common;
+    const {list , start , end , loading, error} = state.jobList;
     return {
         categories: state.category.categoryItems,
         web3, account, loading, error , contract,

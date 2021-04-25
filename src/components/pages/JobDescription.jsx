@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import {fetchJobData} from '../../actions/categoryActions';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { Row, Col , Badge } from 'react-bootstrap';
 import {fetchData} from '../../actions/categoryActions';
 import LazyImage from '../../controllers/LazyImage';
@@ -47,6 +47,10 @@ class JobDescription extends Component {
         await this.props.deleteJob(this.props.web3 , offerContract , this.props.account , jobId);
     }
 
+    naviageToUpdate = () => {
+        this.props.history.push(`/editdata/${this.state.jobId}/${this.state.offerContract}`)
+    }
+
     render() { 
         return (
             <Row className="job-desctiption-page">
@@ -90,7 +94,7 @@ class JobDescription extends Component {
                         <h1>{this.state.hashedData.title}</h1>
                         <div className="customer-data">
                             <a><span className="customer-image"><img  src='/static/media/768px-MetaMask_Fox.svg.a7610ce1.png' /></span></a>
-                            <a href={"/customers/"+this.state.hashedData.customerId}><span className="customer-name">{this.props.account}</span></a>
+                            <Link to={"/customers/"+this.state.hashedData.customerId}><span className="customer-name">{this.props.account}</span></Link>
                         </div>
                         <div className="job-details">
                             <div className="job-image">
@@ -128,7 +132,7 @@ class JobDescription extends Component {
                     <Col md={4} xs={12}>
                         {
                             this.state.hashedData && 
-                            <UserPriceDetail hashId={this.state.jobId} offerContract={this.state.offerContract} data={this.state.hashedData} deleteHandler={this.deleteJob}></UserPriceDetail>
+                            <UserPriceDetail hashId={this.state.jobId} offerContract={this.state.offerContract} data={this.state.hashedData} deleteHandler={this.deleteJob} navigateToUpdate={this.naviageToUpdate}></UserPriceDetail>
                         }
                     </Col>
                     </>:
@@ -168,4 +172,4 @@ function mapDispatchToProps(dispatch){
     }
 }
  
-export default withRouter(connect(mapStateToProps , mapDispatchToProps)(JobDescription));
+export default withRouter(connect(mapStateToProps , mapDispatchToProps)(withRouter(JobDescription)));

@@ -81,7 +81,6 @@ class JobEdit extends Component {
           package:this.state.package,
           features:this.state.features
         }
-        console.log(uploadData);
         ipfs.files.add(Buffer.from(JSON.stringify(uploadData)) ,async  (error , result)=>{
           if(error){
             return

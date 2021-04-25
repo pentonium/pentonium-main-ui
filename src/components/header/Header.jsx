@@ -7,6 +7,8 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Collapse from 'react-bootstrap/Collapse';
 import {getJobsList} from '../../actions/jobListActions';
 import { getCategoriesList } from "../../actions/categoryListAction";
+import {Link} from "react-router-dom";
+import { withRouter } from "react-router";
 
 
 
@@ -76,7 +78,8 @@ class Header extends Component {
     }
 
     navigateToPost(){
-        window.location.href="/post-job";
+        // window.location.href="/post-job";
+        this.props.history.push('/post-job');
     }
 
     toggleMenuOpen(index , value , id){
@@ -154,9 +157,9 @@ class Header extends Component {
                 <div className="header-core">
                      <div className="container">
                     <div className="logo-section">
-                        <a href="/">
+                        <Link to="/">
                             <span className="header-logo"></span>
-                        </a>    
+                        </Link>    
                     </div>
                     {/* <div className="nav-mid-section">
                         <ul className="nav-items mid">
@@ -215,8 +218,8 @@ class Header extends Component {
                                     <Dropdown className="logged-in-user-menus">
                                         <Dropdown.Toggle menualign={'left'}><span className="logged-in-user"></span></Dropdown.Toggle>
                                         <Dropdown.Menu>
-                                        <Dropdown.Item href="/buyer">Buyer</Dropdown.Item>
-                                        <Dropdown.Item href="/seller">Seller</Dropdown.Item>
+                                        <Dropdown.Item><Link to="/buyer">Buyer</Link></Dropdown.Item>
+                                        <Dropdown.Item><Link to="/seller">Seller</Link></Dropdown.Item>
                                         <Dropdown.Item eventKey="2">Logout</Dropdown.Item>
                                         </Dropdown.Menu>
                                     </Dropdown>
@@ -249,17 +252,17 @@ class Header extends Component {
                                     }): ''}
                                 </Dropdown.Menu>
                             </Dropdown> */}
-                            <a
+                            <Link
                                 id={'anchor-nav'+index}
                                 // onMouseEnter={() => this.toggleMenuOpen(index , true , value.id)}
                                 // onMouseLeave={() => this.toggleMenuClose(index , false , value.id)}
                                 aria-controls={value.id}
                                 className={this.state.menuOpen[index] ? 'active-nav':''}
-                                aria-expanded={this.state.menuOpen[index]} href={`/categories/${value.name}/${value.offer_contract}`}
+                                aria-expanded={this.state.menuOpen[index]} to={`/categories/${value.name}/${value.offer_contract}`}
                             >
                                 <span>{value.name}</span>
                                 {/* <i id={'chevron'+index}className={"fa fa-chevron-up rotate "}></i> */}
-                            </a>
+                            </Link>
                             {/* <Collapse id={'collapse-id'+index} onMouseEnter={() => this.toggleSubMenu(index , true)} onMouseLeave={() => this.toggleSubMenuOt(index , false)}>
                                 <div className="collapse-content" id={value.id}>
                                     <div className="container">
@@ -274,15 +277,15 @@ class Header extends Component {
                     })}
                     {this.props.categoryList.length > 6 && 
                         <li className="view-all-link">
-                            <a
+                            <Link
                                 // onMouseEnter={() => this.toggleMenuOpen(index , true , value.id)}
                                 // onMouseLeave={() => this.toggleMenuClose(index , false , value.id)}
                                 aria-controls={'view-all'}
-                                href={'/category'}
+                                to={'/category'}
                             >
                                 <span>View All+</span>
                                 {/* <i id={'chevron'+index}className={"fa fa-chevron-up rotate "}></i> */}
-                            </a>
+                            </Link>
                         </li>
                     }
                     </ul> 
@@ -325,4 +328,4 @@ function mapDispatchToProps(dispatch){
     }
 }
  
-export default connect(mapStateToProps , mapDispatchToProps)(Header);
+export default connect(mapStateToProps , mapDispatchToProps)(withRouter(Header));

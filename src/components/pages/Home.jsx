@@ -30,7 +30,7 @@ class Home extends Component {
                 <Row className="collections-list">
                 {
                     this.props.fulllist && this.props.fulllist.map((job , i) => {
-                        return <NewCollection key={i} categoryName={job.name} list={job.list} categoryContract={job.offerContract}></NewCollection>
+                        return <NewCollection key={i} categoryName={job.name} list={job.list} categoryContract={job.offerContract} loading={this.props.loading}></NewCollection>
                     })
                 }
                 </Row>
@@ -40,14 +40,16 @@ class Home extends Component {
 
 function mapStateToProps(state){
     const { web3, account, loading, error , contract } = state.common;
-    const {fulllist} = state.jobList;
+    const {fulllist } = state.jobList;
+    const fulllistloading = state.jobList.loading;
     return {
         web3,
         account,
         loading,
         error,
         contract,
-        fulllist
+        fulllist,
+        fulllistloading
       };
   }
   

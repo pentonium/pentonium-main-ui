@@ -3,9 +3,6 @@ import Tab from 'react-bootstrap/Tab';
 import Button from 'react-bootstrap/Button';
 
 export const UserPriceDetail = (props) => {
-    function navigateToUpdate(){
-        window.location.href=`/editdata/${props.hashId}/${props.offerContract}`;
-    }
 
     return (
         <>
@@ -56,7 +53,7 @@ export const UserPriceDetail = (props) => {
             Contact seller
         </Button> */}
         <div className="description-action-buttons">
-            <Button onClick={navigateToUpdate} variant="secondary" size="sm" block>
+            <Button onClick={props.navigateToUpdate} variant="secondary" size="sm" block>
                 Edit Job
             </Button>
             <Button className="delete-job" onClick={props.deleteHandler} variant="primary"  size="sm" block>

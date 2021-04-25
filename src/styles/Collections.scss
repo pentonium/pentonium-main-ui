@@ -15,16 +15,16 @@
         display: block;
         display: -webkit-box;
         max-width: 100%;
-        min-height: 34px;
-        max-height: 34px;
+        min-height: 65px;
+        max-height: 65px;
         line-height: 35px;
-        -webkit-line-clamp: 1;
+        -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
         color: $primaryColor;
         font-weight: $fontWeight700;
-        margin-bottom: 0rem;
+        margin-bottom: 2.5rem;
     }
     .card-text{
         display: block;

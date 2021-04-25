@@ -1,4 +1,5 @@
 import { Row, Col } from 'react-bootstrap'
+import { Link } from 'react-router-dom';
 
 
 export const CollectionCard = (props) => {
@@ -13,7 +14,7 @@ export const CollectionCard = (props) => {
             {props.items.map((list , i) => {
                 return ( i <=3 &&
                 <Col key={i} md={props.column ? parseInt(props.column , 10) : 3} xs={12}> 
-                    <a href={'/jobs/'+list.id}>   
+                    <Link to={'/jobs/'+list.id}>   
                     <div className="card">
                         <img className="card-img-top" src={list.image} alt="Card image" />
                         <div className="card-body">
@@ -25,7 +26,7 @@ export const CollectionCard = (props) => {
                         </div>
                         </div>
                     </div>
-                    </a>
+                    </Link>
                 </Col>
                 )
             }) 

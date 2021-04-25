@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import '../../styles/Category.scss';
 import {fecthJobByCategory} from '../../actions/categoryActions';
-import { withRouter } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import Pagination  from 'react-bootstrap/Pagination';
 import {CollectionCard} from '../../controllers/CollectionCard';
 import {getJobsList} from '../../actions/jobListActions';
@@ -70,16 +70,16 @@ class Category extends Component {
                                     }): ''}
                                 </Dropdown.Menu>
                             </Dropdown> */}
-                            <a
+                            <Link
                                 id={'anchor-nav'+index}
                                 // onMouseEnter={() => this.toggleMenuOpen(index , true , value.id)}
                                 // onMouseLeave={() => this.toggleMenuClose(index , false , value.id)}
                                 aria-controls={value.id}
-                                 href={'/categories/'+value.offer_contract}
+                                 to={'/categories/'+value.offer_contract}
                             >
                                 <span>{value.name}</span>
                                 {/* <i id={'chevron'+index}className={"fa fa-chevron-up rotate "}></i> */}
-                            </a>
+                            </Link>
                             {/* <Collapse id={'collapse-id'+index} onMouseEnter={() => this.toggleSubMenu(index , true)} onMouseLeave={() => this.toggleSubMenuOt(index , false)}>
                                 <div className="collapse-content" id={value.id}>
                                     <div className="container">
