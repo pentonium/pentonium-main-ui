@@ -8,10 +8,11 @@ import LazyImage from '../../controllers/LazyImage';
 import Carousel from 'react-bootstrap/Carousel';
 import { UserPriceDetail } from "../../controllers/UserPriceDetail";
 import Button from 'react-bootstrap/Button';
-import {deleteJob, getJobDetail} from '../../actions/jobActions';
+import {deleteJob, getJobDetail , placeOrder} from '../../actions/jobActions';
 import { getCategoriesList } from "../../actions/categoryListAction";
 import {connectIfAuthorized} from '../../actions/commonAction';
 import Spinner from 'react-bootstrap/Spinner';
+import { genKeyPairFromSeed } from "skynet-js";
 
 
 class JobDescription extends Component {
@@ -30,21 +31,36 @@ class JobDescription extends Component {
         const jobId = this.props.match.params.jobId;
         const offerContract = this.props.match.params.offerContract;
         this.setState({offerContract:offerContract , jobId:jobId});
-        // if(jobId == 1 || jobId == 2 || jobId == 3 || jobId == 4 || jobId == 5){    
-        //     this.props.fetchJobData(parseInt(jobId , 10));
-        // } else{
-            //
-            await this.props.getJobDetail(this.props.web3 , jobId , offerContract);
-            // await this.props.deleteJob(this.props.web3 , offerContract , this.props.account , jobId);
-            let jobData = await fetchData(this.props.detailData.ipfs_hash);
-            this.setState({hashedData:jobData});
-        // }
+        await this.props.getJobDetail(this.props.web3 , jobId , offerContract);
+        let jobData = await fetchData(this.props.detailData.ipfs_hash);
+        this.setState({hashedData:jobData});
     }
 
     deleteJob = async() =>{
         const jobId = this.props.match.params.jobId;
         const offerContract = this.props.match.params.offerContract;
         await this.props.deleteJob(this.props.web3 , offerContract , this.props.account , jobId);
+    }
+
+    makeid = (length) => {
+        var result           = [];
+        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for ( var i = 0; i < length; i++ ) {
+          result.push(characters.charAt(Math.floor(Math.random() * 
+     charactersLength)));
+       }
+       return result.join('');
+    }
+
+    placeOrder = () => {
+        const serviceProvider = this.makeid(200);
+        const cientProvider = this.makeid(200);
+        let { publicKey } = genKeyPairFromSeed(serviceProvider);
+        let { privateKey } = genKeyPairFromSeed(cientProvider);
+        const jobId = this.props.match.params.jobId;
+        const offerContract = this.props.match.params.offerContract;
+        this.props.placeOrder(this.props.account , this.props.web3 , jobId , offerContract  , publicKey , privateKey);
     }
 
     naviageToUpdate = () => {
@@ -54,40 +70,6 @@ class JobDescription extends Component {
     render() { 
         return (
             <Row className="job-desctiption-page">
-            {/* {this.props.jobDescription &&
-                    <>
-                    <Col md={8} xs={12}>
-                        <h1 className="job-title">{this.props.jobDescription.jobTitle}</h1>
-                        <div className="customer-data">
-                            <a><span className="customer-image"><img  src="https://fiverr-res.cloudinary.com/t_profile_original,q_auto,f_auto/attachments/profile/photo/bd375846a2b53df94bc356ffa3458426-1540375416166/be56ddbf-191a-449e-83b7-fd07e3a271bf.jpeg" /></span></a>
-                            <a href={"/customers/"+this.props.jobDescription.customerId}><span className="customer-name">{this.props.jobDescription.customerName}</span></a>
-                        </div>
-                        <div className="job-details">
-                            <div className="job-image">
-                            <img src={this.props.jobDescription.image}/>
-                            </div>
-                            <div>
-                                <h4>About Job:</h4>
-                                <p>{this.props.jobDescription.description}</p>
-                            </div>
-                            <div>
-                                <h5>Skills Required:</h5>
-                                {
-                                    this.props.jobDescription.skills.map((skill) => {
-                                    return <Badge pill variant="secondary">{skill}</Badge>
-                                    })
-                                }
-                            </div>
-                            <Button style={{'margin-top':'20px'}}variant="primary" size="md" onClick={this.deleteJob}>
-                                Delete Gig
-                            </Button>
-                        </div>
-                    </Col>
-                    <Col md={4} xs={12}>
-                        <UserPriceDetail></UserPriceDetail>
-                    </Col>
-                    </>
-            } */}
             {!this.props.loading && this.state.hashedData && this.state.hashedData.imageHash ?
                     <>
                     <Col md={8} xs={12}>
@@ -132,7 +114,7 @@ class JobDescription extends Component {
                     <Col md={4} xs={12}>
                         {
                             this.state.hashedData && 
-                            <UserPriceDetail hashId={this.state.jobId} offerContract={this.state.offerContract} data={this.state.hashedData} deleteHandler={this.deleteJob} navigateToUpdate={this.naviageToUpdate}></UserPriceDetail>
+                            <UserPriceDetail hashId={this.state.jobId} offerContract={this.state.offerContract} data={this.state.hashedData} deleteHandler={this.deleteJob} navigateToUpdate={this.naviageToUpdate} placeOrderHandler={this.placeOrder}></UserPriceDetail>
                         }
                     </Col>
                     </>:
@@ -168,7 +150,8 @@ function mapDispatchToProps(dispatch){
         deleteJob:(web3 , contract , account , id) => dispatch(deleteJob(web3 , contract , account , id)),
         connectIfAuthorized:() => dispatch(connectIfAuthorized()),
         getCategoriesList:(contract,account) => dispatch(getCategoriesList(contract,account)),
-        getJobDetail:(web3 , id , offerContract) => dispatch(getJobDetail(web3 , id , offerContract))
+        getJobDetail:(web3 , id , offerContract) => dispatch(getJobDetail(web3 , id , offerContract)),
+        placeOrder:(account , web3 , id , offerContract , clientPorvider , serviceProvider) => dispatch(placeOrder(account,web3 , id , offerContract , clientPorvider , serviceProvider))
     }
 }
  

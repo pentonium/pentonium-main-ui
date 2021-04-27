@@ -50,7 +50,6 @@ class JobPost extends Component {
     }
 
     async componentDidMount(){
-      // this.props.fetchParentCategories();
         await this.props.connectIfAuthorized();
         await this.props.getCategoriesList(this.props.contract , this.props.account);
     }
@@ -80,19 +79,13 @@ class JobPost extends Component {
           package:this.state.package,
           features:this.state.features
         }
-        // console.log('Upload Data' , uploadData);
-        // const buffer = Buffer(uploadData);
         ipfs.files.add(Buffer.from(JSON.stringify(uploadData)) , async(error , result)=>{
           if(error){
             return
           }
-          // const accounts = await window.web3.eth.getAccounts();
-          // storehash.methods.
           this.setState({dataHash:result[0].hash});
           await this.props.postJob(this.props.web3 , this.state.dataHash , this.state.imageHash , this.props.account , this.props.account , this.state.offerContract , uploadData.price);
-          // this.props.createNewCategory('Graphics' , this.props.account , this.props.contract);
           this.setState({successful:true});
-          // this.getFileData();
     
         });
       } 
@@ -130,7 +123,6 @@ class JobPost extends Component {
     onSelectedOptionsChange(event){
         const value = event.currentTarget.value;
         this.myChangeHandler(event);
-        // this.props.fetchCategories(value);
         let filteredCategory = this.props.categoryList.filter((cat) => {
            if (cat.name === value){
              return cat
