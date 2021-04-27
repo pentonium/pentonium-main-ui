@@ -1,4 +1,4 @@
-import {POST_JOB_REQUEST , POST_JOB_SUCCESS , POST_JOB_ERROR , POST_UPDATE_JOB_REQUEST , POST_UPDATE_JOB_SUCCESS , POST_UPDATE_JOB_ERROR , DELETE_JOB_REQUEST ,DELETE_JOB_SUCCESS ,  DELETE_JOB_ERROR , JOB_DETAIL_REQUEST , JOB_DETAIL_SUCCESS , JOB_DETAIL_ERROR} from '../constants';
+import {POST_JOB_REQUEST , POST_JOB_SUCCESS , POST_JOB_ERROR , POST_UPDATE_JOB_REQUEST , POST_UPDATE_JOB_SUCCESS , POST_UPDATE_JOB_ERROR , DELETE_JOB_REQUEST ,DELETE_JOB_SUCCESS ,  DELETE_JOB_ERROR , JOB_DETAIL_REQUEST , JOB_DETAIL_SUCCESS , JOB_DETAIL_ERROR , PLACE_ORDER_REQUEST , PLACE_ORDER_ERROR , PLACE_ORDER_SUCCESS} from '../constants';
 import { OFFER_CONTRACT_ABI } from "../config";
 
 /**
@@ -48,16 +48,23 @@ export const getJobDetail = (web3 , id , offerContract) => async dispatch => {
         let contract = new web3.eth.Contract(OFFER_CONTRACT_ABI, offerContract);
         console.log('Contract' , contract , id,offerContract);
         let returnData = await contract.methods.gigs(id).call();
-
-        // return ipfs.files.get(id , (error , result) => {
-        //     dispatch({
-        //         type:FETCH_HASH_JOB_DATA,
-        //         payload:JSON.parse(result[0].content.toString())
-        //     });
-        //   });
         dispatch({type: JOB_DETAIL_SUCCESS , detail:returnData});
     }catch(e){
         console.log('Error' , e);
         dispatch({type: JOB_DETAIL_ERROR});
+    }
+}
+
+export const placeOrder = (account , web3 , id , offerContract , clientProvider , serviceProvider) => async dispatch => {
+    console.log(clientProvider , serviceProvider);
+    dispatch({type:PLACE_ORDER_REQUEST});
+    try{
+        let contract = new web3.eth.Contract(OFFER_CONTRACT_ABI, offerContract);
+        await contract.methods.placeOrder(id , clientProvider , serviceProvider).send({from:account});
+        dispatch({type:PLACE_ORDER_SUCCESS});
+
+    }catch(e){
+        console.log(e);
+        dispatch({type:PLACE_ORDER_ERROR});
     }
 }

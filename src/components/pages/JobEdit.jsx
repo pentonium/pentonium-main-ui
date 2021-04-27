@@ -54,21 +54,6 @@ class JobEdit extends Component {
                   features:jobData.features});
     }
 
-    componentDidUpdate(prevProps){
-        // if(prevProps.hashedData !== this.props.hashedData){
-        //     if(this.props.hashedData){
-        //         this.props.fetchCategories(this.props.hashedData.parentCategory);
-        //         this.setState({title:this.props.hashedData.title , description:this.props.hashedData.description , duration:this.props.hashedData.duration,
-        //         parentCategory:this.props.hashedData.parentCategory ,imageHash:this.props.hashedData.imageHash , tags:this.props.hashedData.tags , isParentSelected:true})
-        //     }
-        // }
-        // if(prevProps.categories !== this.props.categories){
-        //   if(this.props.categories){
-        //     this.setState({category:this.props.hashedData.category});
-        //   }
-        // }
-    }
-
     async uploadFormData(imageHashV){
         const uploadData = {
           title:this.state.title,
