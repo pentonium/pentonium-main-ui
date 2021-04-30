@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import { connect } from "react-redux";
 import NewCollection from "../NewCollection";
 import { getAllCategoryJobs } from "../../actions/jobListActions";
@@ -30,7 +30,23 @@ class Home extends Component {
       <>
         <Header onScroll={true} />
         <div className="poster">
-          <img src="/assets/img/banner.png" alt="" />
+          <Container>
+            {/* <img src="/assets/img/banner.png" alt="" /> */}
+            <Row className="align-center">
+              <Col md={5}>
+                <h1>Work From Home</h1>
+                <p>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Voluptate sequi sed minus a aspernatur, quo quidem architecto
+                  consequatur iusto suscipit quae hic sit, repudiandae nihil
+                  atque cumque mollitia at similique!
+                </p>
+              </Col>
+              <Col md={7}>
+                <img src="/assets/img/banner-1.svg" alt="" />
+              </Col>
+            </Row>
+          </Container>
         </div>
         <Container>
           <Row className="collections-list">
