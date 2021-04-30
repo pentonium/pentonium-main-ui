@@ -60,10 +60,8 @@ class JobDescription extends Component {
   };
 
   placeOrder = () => {
-    const serviceProvider = this.makeid(200);
     const cientProvider = this.makeid(200);
-    let { publicKey } = genKeyPairFromSeed(serviceProvider);
-    let { privateKey } = genKeyPairFromSeed(cientProvider);
+    let { publicKey, privateKey } = genKeyPairFromSeed(cientProvider);
     const jobId = this.props.match.params.jobId;
     const offerContract = this.props.match.params.offerContract;
     this.props.placeOrder(
