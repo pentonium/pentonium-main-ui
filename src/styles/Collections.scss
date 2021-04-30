@@ -1,87 +1,85 @@
-.collections{
-    margin-bottom: 3rem;
-    min-height: 21rem;
-    .card{
-        min-height: 340px;
-        max-height: 340px;
-        overflow: hidden;
-        box-shadow: #1c1c2840 0px 0.5rem 1rem, #1c1c2833 0px 0px 0.125rem;
-        .spinner-border{
-            margin-top: 50%;
-        }
-            // transform: scale(1.03)
+.collections {
+  margin-bottom: 3rem;
+  min-height: 21rem;
+  .card {
+    // box-shadow: #1c1c2840 0px 0.5rem 1rem, #1c1c2833 0px 0px 0.125rem;
+    .spinner-border {
+      margin-top: 50%;
     }
-    .card-title{
-        display: block;
-        display: -webkit-box;
-        max-width: 100%;
-        min-height: 65px;
-        max-height: 65px;
-        line-height: 35px;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        color: $primaryColor;
-        font-weight: $fontWeight700;
-        margin-bottom: 2.5rem;
+    // transform: scale(1.03)
+  }
+  .card-title {
+    display: block;
+    display: -webkit-box;
+    max-width: 100%;
+    // height: 60px;
+    line-height: 20px;
+    font-size: 16px;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    // color: $primaryColor;
+    font-weight: $fontWeight700;
+    margin-bottom: 0.6rem;
+  }
+  .card-text {
+    display: block;
+    display: -webkit-box;
+    max-width: 100%;
+    min-height: 48px;
+    max-height: 48px;
+    font-size: 14px;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: $secondaryColor;
+    line-height: 120.1%;
+  }
+  .spinner-border {
+    margin-top: 5%;
+  }
+  .card-bottom {
+    .price-tag {
+      float: right;
+      background: #eef7fe;
+      padding: 8px 24px;
+      border-radius: 10px;
+      overflow: hidden;
+      color: #576873;
+      font-size: 14px;
+      font-weight: 700;
+      span {
+        font-weight: 100;
+        margin-right: 8px;
+      }
     }
-    .card-text{
-        display: block;
-        display: -webkit-box;
-        max-width: 100%;
-        min-height: 48px;
-        max-height: 48px;
-        font-size: 14px;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        color: $secondaryColor;
-        line-height: 120.1%;
+    .bottom-left {
+      color: #8a9ba7;
+      font-size: 14px;
+      line-height: 37px;
     }
-    .spinner-border{
-        margin-top: 5%;
-    }
-    .card-bottom{
-        .price-tag{
-            float: right;
-            width: 90px;
-            height: 30px;
-            background: #EEF7FE;
-            padding: 5px 26px;
-            border-radius: 5px;
-            overflow: hidden;
-            color: $primaryColor;
-            font-size: 14px;
-            font-weight: 700;
-        }
-        .bottom-left{
-            height: 30px;
-            padding: 5px 0px;
-            color: $primaryColor;
-            font-size: 14px;
-        }
-    }
+  }
 }
 
-.collections-list{
-    padding: 0px 15px;
-    .collections-content{
-        margin-top: 1rem;
-    }
-    .collection-title{
-        color:$primaryColor;
-        font-weight: $fontWeight700;
-        margin-bottom: 2rem;
-    }
+.collections-list {
+  padding: 0px 15px;
+  .collections-content {
+    margin-top: 1rem;
+  }
+  .collection-title {
+    color: $primaryColor;
+    font-weight: $fontWeight700;
+    margin-bottom: 2rem;
+  }
 }
 
-.collections-seller{
-    .collections{
-        margin:0rem;
-    }
-    .card{
-        margin: 1rem 0rem;
-    }
+.collections-seller {
+  .collections {
+    margin: 0rem;
+  }
+  .card {
+    margin: 1rem 0rem;
+  }
 }

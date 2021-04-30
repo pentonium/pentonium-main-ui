@@ -4,7 +4,8 @@ const initialState = {
   list:[],  
   loading: false,
   error: false,
-  fulllist:[]
+  fulllist:[],
+  categoryNane: ""
 };
 
 export default function(state = initialState, action) {
@@ -21,6 +22,7 @@ export default function(state = initialState, action) {
             start:action.start,
             end:action.end,
             list: action.list,
+            categoryNane: action.name,
             error: false,
             loading: false
           }

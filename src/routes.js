@@ -18,7 +18,7 @@ export const routes = [
         component: Home
     },
     {
-        path: "/categories/:name/:id",
+        path: "/categories/:id",
         exact: true,
         component: Categories
     },

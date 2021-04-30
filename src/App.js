@@ -18,20 +18,23 @@ class App extends Component {
   };
 
   componentDidMount() {
+    // alert(window.location.pathname);
   }
 
   render() {
     return (
       <div className="App">
-      <Header></Header>
-        <Container className="body-padding">
+        {window.location.pathname != "/" &&
+          <Header></Header>
+        }
+        {/* <Container className="body-padding"> */}
         {/* <BreadCrumb></BreadCrumb> */}
           <Switch>
               {routes.map((route, i) => (
                 <RouteWithSubRoutes key={i} {...route} />
               ))}
           </Switch>
-         </Container> 
+         {/* </Container>  */}
          <Footer></Footer>
       </div>
     );
