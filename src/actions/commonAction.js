@@ -89,19 +89,25 @@ export const connectWallet = () => async dispatch =>  {
  */
 export const connectIfAuthorized = () => async dispatch =>  {
     
-    if (window.ethereum) {
-        try{
-            const web3 = new Web3(window.ethereum);
 
-            let data = await initialize(web3);
+    let web3 = new Web3('wss://ropsten.infura.io/ws/v3/5a0874c0f5464a0b8e4050e5528bf94d');
+    let data = await initialize(web3);
+
+    console.log("data", data);
+    dispatch({type: WALLET_CONNECT_SUCCESS, ...data});
+    // if (window.ethereum) {
+    //     try{
+    //         const web3 = new Web3(window.ethereum);
+
+    //         let data = await initialize(web3);
 
 
-            hookInWalletChange();
-            dispatch({type: WALLET_CONNECT_SUCCESS, ...data});
+    //         hookInWalletChange();
+    //         dispatch({type: WALLET_CONNECT_SUCCESS, ...data});
             
-        }catch (error) {
-        }
-    }
+    //     }catch (error) {
+    //     }
+    // }
 }
 
 
@@ -114,15 +120,20 @@ export const connectIfAuthorized = () => async dispatch =>  {
  */
 async function initialize(web3){
 
-    var accounts = await web3.eth.getAccounts();
+    // var accounts = await web3.eth.getAccounts();
 
-    if(accounts.length > 0){
-        var firstAcc = accounts[0];
 
-        let contract = new web3.eth.Contract(CATEGORY_CONTRACT_ABI, CATEGORY_CONTRACT_ADDRESS);
+    let contract = new web3.eth.Contract(CATEGORY_CONTRACT_ABI, CATEGORY_CONTRACT_ADDRESS);
 
-        return({web3: web3, contract: contract, account: firstAcc});
-    }
+    return({web3: web3, contract: contract, account: "0x"});
+
+    // if(accounts.length > 0){
+    //     var firstAcc = accounts[0];
+
+    //     let contract = new web3.eth.Contract(CATEGORY_CONTRACT_ABI, CATEGORY_CONTRACT_ADDRESS);
+
+    //     return({web3: web3, contract: contract, account: firstAcc});
+    // }
 }
 
 

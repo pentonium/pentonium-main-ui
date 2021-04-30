@@ -30,10 +30,7 @@ class Home extends Component {
       <>
         <Header onScroll={true} />
         <div className="poster">
-          <img
-            src="https://cdn.umso.co/ffippcfkspq2/assets/4kmjbqk1.png?w=1200&h=630&fit=crop"
-            alt=""
-          />
+          <img src="/assets/img/banner.png" alt="" />
         </div>
         <Container>
           <Row className="collections-list">
