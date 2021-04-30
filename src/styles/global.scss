@@ -17,6 +17,59 @@ img {
   }
 }
 
+.edit-image {
+  height: 200px;
+  width: 200px;
+  display: inline-block;
+  margin-top: 8px;
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+}
+
+.edit-image + .edit-image {
+  margin-left: 20px;
+}
+
+input.form-control {
+  font-size: 24px;
+  padding: 24px 20px;
+  height: 60px;
+  text-transform: capitalize;
+}
+
+textarea.form-control {
+  font-size: 24px;
+  padding: 24px 20px;
+}
+
+.custom-select {
+  font-size: 24px;
+  height: 60px;
+  padding: 2px 12px;
+  text-transform: capitalize;
+}
+
+.form-group label,
+.image-selector h6 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #211e4f;
+  margin-top: 20px;
+}
+
+.react-tag-input {
+  font-size: 24px;
+}
+
+.submit {
+  font-size: 20px;
+  line-height: 60px;
+  margin-top: 40px;
+}
+
 .body-padding {
   padding-top: 14rem;
   margin-bottom: 2rem;
@@ -47,10 +100,8 @@ a {
 }
 
 .new-category-button {
-  position: absolute;
-  width: 20%;
-  top: -5px;
-  right: 10px;
+  line-height: 48px;
+  margin-top: 56px;
 }
 
 .btn-primary {

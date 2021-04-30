@@ -33,13 +33,13 @@ class JobPost extends Component {
       validated: false,
       isParentSelected: false,
       title: "",
-      duration: 0,
+      duration: null,
       parentCategory: "",
       category: "",
       description: "",
       tags: [],
       features: [],
-      price: 0,
+      price: null,
       successful: false,
       imageArray: [],
       buffer: "",
@@ -208,7 +208,7 @@ class JobPost extends Component {
   render() {
     return (
       <Container className="body-padding">
-        <div style={{ width: "100%" }}>
+        <div style={{ maxWidth: "640px", margin: "auto" }}>
           {!this.props.loading ? (
             <>
               {!this.state.successful ? (
@@ -228,7 +228,7 @@ class JobPost extends Component {
                     <Form.Row>
                       <Form.Group
                         as={Col}
-                        md="6"
+                        lg="12"
                         controlId="validationCustom01"
                       >
                         <Form.Label>Gig Title</Form.Label>
@@ -236,19 +236,23 @@ class JobPost extends Component {
                           required
                           type="text"
                           name="title"
-                          placeholder="Enter title for your gig"
+                          placeholder="A Nice Title"
                           onChange={this.myChangeHandler}
+                          autoComplete="off"
                         />
                         <Form.Control.Feedback type="invalid">
                           Please provide a valid title.
                         </Form.Control.Feedback>
                       </Form.Group>
+                    </Form.Row>
+
+                    <Form.Row>
                       <Form.Group
                         as={Col}
                         md="6"
                         controlId="validationCustom02"
                       >
-                        <Form.Label>Duration (in months):</Form.Label>
+                        <Form.Label>Duration (In Days):</Form.Label>
                         <Form.Control
                           required
                           type="number"
@@ -261,24 +265,33 @@ class JobPost extends Component {
                           Please provide a valid duration.
                         </Form.Control.Feedback>
                       </Form.Group>
+                      <Form.Group
+                        as={Col}
+                        md="6"
+                        controlId="validationCustom04"
+                      >
+                        <Form.Label>Price (In Dai):</Form.Label>
+                        <Form.Control
+                          required
+                          type="number"
+                          name="price"
+                          placeholder="Price"
+                          value={this.state.price}
+                          onChange={this.myChangeHandler}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          Please provide a valid price.
+                        </Form.Control.Feedback>
+                      </Form.Group>
                     </Form.Row>
                     <Form.Row>
                       <Form.Group
                         as={Col}
-                        md="6"
+                        md="8"
                         controlId="validationCustom03"
                       >
                         <Form.Label>
                           <span>Select Parent Category</span>
-                          <Button
-                            className="new-category-button"
-                            onClick={() => this.showModal(true)}
-                            variant="primary"
-                            size="sm"
-                            block
-                          >
-                            New Category
-                          </Button>
                         </Form.Label>
                         <Form.Control
                           required
@@ -304,57 +317,53 @@ class JobPost extends Component {
                             })}
                         </Form.Control>
                       </Form.Group>
-
                       <Form.Group
                         as={Col}
-                        md="6"
-                        controlId="validationCustom04"
+                        md="4"
+                        controlId="validationCustom03"
                       >
-                        <Form.Label>Price (in dollar):</Form.Label>
-                        <Form.Control
-                          required
-                          type="number"
-                          name="price"
-                          placeholder="Price"
-                          value={this.state.price}
-                          onChange={this.myChangeHandler}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                          Please provide a valid price.
-                        </Form.Control.Feedback>
+                        <Button
+                          className="new-category-button"
+                          onClick={() => this.showModal(true)}
+                          variant="primary"
+                          size="sm"
+                          block
+                        >
+                          New Category
+                        </Button>
                       </Form.Group>
                     </Form.Row>
-                    <Form.Group controlId="validationCustom05">
-                      <Form.Label>Skills</Form.Label>
-                      <ReactTagInput
-                        tags={this.state.tags}
-                        placeholder="Type and press enter"
-                        maxTags={10}
-                        editable={true}
-                        readOnly={false}
-                        removeOnBackspace={true}
-                        onChange={(newTags) =>
-                          this.handleTags(newTags, "skills")
-                        }
-                      />
-                    </Form.Group>
-                    <Form.Group controlId="validationCustom08">
-                      <h6>Selected Images:</h6>
+                    <Form.Row>
+                      <Form.Group
+                        as={Col}
+                        md="12"
+                        controlId="validationCustom05"
+                      >
+                        <Form.Label>Skills</Form.Label>
+                        <ReactTagInput
+                          tags={this.state.tags}
+                          placeholder="Type and press enter"
+                          maxTags={10}
+                          editable={true}
+                          readOnly={false}
+                          removeOnBackspace={true}
+                          onChange={(newTags) =>
+                            this.handleTags(newTags, "skills")
+                          }
+                        />
+                      </Form.Group>
+                    </Form.Row>
+                    <Form.Group
+                      controlId="validationCustom08"
+                      className="image-selector"
+                    >
+                      <h6 cla>Selected Images:</h6>
                       {this.state.previewImage &&
                         this.state.previewImage.map((preview, i) => {
                           return (
-                            <img
-                              className="edit-image"
-                              key={i}
-                              style={{
-                                width: "200px",
-                                height: "100px",
-                                marginRight: "10px",
-                                marginBottom: "10px",
-                              }}
-                              src={preview}
-                              alt=""
-                            />
+                            <div class="edit-image" key={i}>
+                              <img src={preview} alt="" />
+                            </div>
                           );
                         })}
                     </Form.Group>
@@ -401,7 +410,12 @@ class JobPost extends Component {
                         }
                       />
                     </Form.Group>
-                    <Button type="submit">Submit form</Button>
+                    <Button
+                      type="submit"
+                      className="submit btn btn-block btn-large"
+                    >
+                      Submit
+                    </Button>
                   </Form>
                 </>
               ) : !this.props.error ? (
