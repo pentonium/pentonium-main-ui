@@ -2,8 +2,11 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import {fetchActiveJobs} from '../../actions/categoryActions';
 import { withRouter } from 'react-router-dom';
-import { Row, Col , Badge } from 'react-bootstrap';
-import { OrderItemList } from "../../controllers/OrderItemList";
+import { Row, Col , Badge, Container } from 'react-bootstrap';
+import { getClientProviderList , getServiceProviderList } from "../../actions/jobListActions";
+import { connectWallet } from "../../actions/commonAction";
+import { BUYER, SELLER } from "../../constants";
+import OrderItemList from "../../controllers/OrderItemList";
 
 
 
@@ -14,18 +17,34 @@ class OrderList extends Component {
             activeTab : 'currentJobs',
             currentTab:'dashboard'
         }
-        this.getJobData = this.getJobData.bind(this);
         this.changeTab = this.changeTab.bind(this);
         }
 
-    componentDidMount(){
-        this.props.fetchActiveJobs('123' , true);
+    async componentDidMount(){
+        await this.props.connectWallet();
+        this.getOrderData();
     }
 
-    getJobData(activeTab , flag){
-        this.props.fetchActiveJobs('123' , flag);
-        this.setState({activeTab:activeTab});
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.match.params.type !== this.props.match.params.type) {
+          this.getOrderData();
+        }
     }
+
+    getOrderData = async () => {
+        const userType = this.props.match.params.type;
+        if(userType == BUYER){   
+            await this.props.getClientProviderList(this.props.web3 , this.props.account , this.props.contract);
+        } else if (userType == SELLER){
+            console.log(this.props.web3 , this.props.account);
+            await this.props.getServiceProviderList(this.props.web3 , this.props.account , this.props.contract);
+        }
+    }
+
+    // getJobData(activeTab , flag){
+    //     this.props.fetchActiveJobs('123' , flag);
+    //     this.setState({activeTab:activeTab});
+    // }
 
     changeTab(name){
         this.setState({currentTab:name})
@@ -33,7 +52,8 @@ class OrderList extends Component {
 
     render() { 
         return (
-            <>
+            <div className="order-list-container">
+                <Container>
                 <Row>
                     {/* <Col md={1}>    
                         <Button variant="primary" className={this.state.currentTab == 'buyer' ? 'active':''} onClick={() => this.changeTab('buyer')}>Buyer</Button>
@@ -79,26 +99,40 @@ class OrderList extends Component {
                 </Row>}
                 {this.state.currentTab == 'orderlist' &&<Row className="order-list-page">
                 <Col md={12}>
-                    {this.props.activeJobs &&
-                        <OrderItemList items={this.props.activeJobs} link='/collection/featured' column="3"></OrderItemList>
+                    {this.props.list && !this.props.loading && this.props.list.map((value , i) => {
+                        return (
+                            <Row key={i} className="order-list-items">   
+                                <OrderItemList orderContract={value} web3={this.props.web3} history={this.props.history} account={this.props.account} column="3" type={this.props.match.params.type}></OrderItemList> 
+                            </Row>
+                        )
+                    })  
                     }
                 </Col>
                 </Row>}
-            </>
+                </Container>
+            </div>
          );
     }
 }
 
 function mapStateToProps(state){
+    const { web3, account, contract } = state.common;
+    const { list , loading , error } = state.jobList;
     return {
-        activeJobs: state.fetchJobs.activeJobs
+        activeJobs: state.fetchJobs.activeJobs,
+        web3,
+        account,
+        contract,list , loading , error
       };
   }
   
 function mapDispatchToProps(dispatch){
     return{
-        fetchActiveJobs: (id , flag) => dispatch(fetchActiveJobs(id , flag))
+        fetchActiveJobs: (id , flag) => dispatch(fetchActiveJobs(id , flag)),
+        getServiceProviderList:(web3 , account,contract) => dispatch(getServiceProviderList(web3 ,account,contract)),
+        getClientProviderList:(web3 , account , contract) => dispatch(getClientProviderList(web3,account,contract)),
+        connectWallet: () => dispatch(connectWallet())
     }
 }
  
-export default withRouter(connect(mapStateToProps , mapDispatchToProps)(OrderList));
+export default withRouter(connect(mapStateToProps , mapDispatchToProps)(withRouter(OrderList)));

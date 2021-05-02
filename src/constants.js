@@ -38,3 +38,31 @@ export const ALL_JOB_LIST_ERROR = 'ALL_JOB_LIST_ERROR';
 export const PLACE_ORDER_SUCCESS = "PLACE_ORDER_SUCCESS";
 export const PLACE_ORDER_REQUEST = "PLACE_ORDER_REQUEST";
 export const PLACE_ORDER_ERROR = "PLACE_ORDER_ERROR";
+export const CLIENT_LIST_REQUEST = "CLIENT_LIST_REQUEST";
+export const CLIENT_LIST_SUCCESS = "CLIENT_LIST_SUCCESS";
+export const CLIENT_LIST_ERROR = "CLIENT_LIST_ERROR";
+
+
+
+
+
+
+// User Type constants
+export const BUYER = 'buyer';
+export const SELLER = 'seller';
+
+
+
+// Order status constants
+export const ORDER_CREATED = "200";
+export const ORDER_REJECTED = "202";
+export const ORDER_ACCEPTED = "201";
+export const ORDER_CANCELLED = "203";
+
+// Order status messages
+export const ORDER_MESSAGES = {
+    "201":"Active",
+    "200":"Created",
+    "202":"Rejected",
+    "203":"Cancelled"
+}

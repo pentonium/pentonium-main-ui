@@ -5,12 +5,12 @@ import {POST_JOB_REQUEST , POST_JOB_SUCCESS , POST_JOB_ERROR , POST_UPDATE_JOB_R
  * get list of categories
  * @param {contract object} contract
  */
-export const postJob = (web3 , hash , thumbnail , provider , account , offerContract , price) => async dispatch => {
+export const postJob = (web3 , hash , thumbnail , provider , account , offerContract , price , duration) => async dispatch => {
     dispatch({type: POST_JOB_REQUEST});
     try{
         let contract = new web3.eth.Contract(OFFER_CONTRACT_ABI, offerContract);
-        
-        await contract.methods.create(hash , thumbnail + '' , price ).send({from:account});
+
+        await contract.methods.create(hash , thumbnail + '' , price , duration ).send({from:account});
         dispatch({type: POST_JOB_SUCCESS});
     }catch(e){
         console.log(e);

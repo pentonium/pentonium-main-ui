@@ -34,30 +34,6 @@ export const OFFER_CONTRACT_ABI = [
 	{
 		"inputs": [
 			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "client_orders",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
 				"internalType": "string",
 				"name": "ipfs_hash",
 				"type": "string"
@@ -70,6 +46,11 @@ export const OFFER_CONTRACT_ABI = [
 			{
 				"internalType": "uint256",
 				"name": "price",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "duration",
 				"type": "uint256"
 			}
 		],
@@ -107,44 +88,6 @@ export const OFFER_CONTRACT_ABI = [
 	{
 		"inputs": [
 			{
-				"internalType": "address",
-				"name": "client_adr",
-				"type": "address"
-			}
-		],
-		"name": "getClientOrders",
-		"outputs": [
-			{
-				"internalType": "address[]",
-				"name": "",
-				"type": "address[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "serviceProvider_adr",
-				"type": "address"
-			}
-		],
-		"name": "getServiceProviderOrders",
-		"outputs": [
-			{
-				"internalType": "address[]",
-				"name": "",
-				"type": "address[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
@@ -166,6 +109,11 @@ export const OFFER_CONTRACT_ABI = [
 				"internalType": "address",
 				"name": "service_provider",
 				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "duration",
+				"type": "uint256"
 			},
 			{
 				"internalType": "uint256",
@@ -248,6 +196,11 @@ export const OFFER_CONTRACT_ABI = [
 					},
 					{
 						"internalType": "uint256",
+						"name": "duration",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
 						"name": "price",
 						"type": "uint256"
 					},
@@ -270,30 +223,6 @@ export const OFFER_CONTRACT_ABI = [
 				"internalType": "struct PTMOffers.gig[]",
 				"name": "",
 				"type": "tuple[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "service_provider_orders",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
 			}
 		],
 		"stateMutability": "view",
@@ -340,6 +269,11 @@ export const OFFER_CONTRACT_ABI = [
 			{
 				"internalType": "uint256",
 				"name": "price",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "duration",
 				"type": "uint256"
 			},
 			{
