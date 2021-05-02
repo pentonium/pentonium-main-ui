@@ -12,6 +12,7 @@ import {
 import {
   fetchParentCategories,
   connectIfAuthorized,
+  connectWallet,
 } from "../../actions/commonAction";
 import {
   createNewCategory,
@@ -63,7 +64,7 @@ class JobPost extends Component {
   }
 
   async componentDidMount() {
-    await this.props.connectIfAuthorized();
+    // await this.props.connectWallet();
     await this.props.getCategoriesList(this.props.contract, this.props.account);
   }
 
@@ -105,7 +106,8 @@ class JobPost extends Component {
           this.props.account,
           this.props.account,
           this.state.offerContract,
-          uploadData.price
+          uploadData.price,
+          uploadData.duration
         );
         this.setState({ successful: true });
       }
@@ -473,7 +475,8 @@ function mapDispatchToProps(dispatch) {
       provider,
       account,
       offerContract,
-      price
+      price,
+      duration
     ) =>
       dispatch(
         postJob(
@@ -483,7 +486,8 @@ function mapDispatchToProps(dispatch) {
           provider,
           account,
           offerContract,
-          price
+          price,
+          duration
         )
       ),
     createNewCategory: (name, addr, contract) =>
@@ -491,6 +495,7 @@ function mapDispatchToProps(dispatch) {
     getCategoriesList: (contract, account) =>
       dispatch(getCategoriesList(contract, account)),
     connectIfAuthorized: () => dispatch(connectIfAuthorized()),
+    connectWallet: () => dispatch(connectWallet()),
   };
 }
 

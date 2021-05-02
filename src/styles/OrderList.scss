@@ -7,7 +7,9 @@
         color: $primaryColorLighter;
     }
     .order-list-items{
+        margin: 0px;
         padding: 0.5rem;
+        min-height: 89px;
         border-left: 1px solid #dadce0;
         border-right: 1px solid #dadce0;
         border-top: 1px solid #dadce0;
@@ -26,6 +28,9 @@
                 width: 50px;
             }
         }
+        .spinner-border{
+            margin-top: 2%;
+        }
         .order-item-title{
             font-size: 1rem;
             color: $primaryColor;
@@ -36,6 +41,9 @@
             overflow: hidden;
             white-space: nowrap;
             font-weight: 500;
+        }
+        .action-button{
+            padding-top: 1%;
         }
         .order-item-text{
             font-size: 0.75rem;
@@ -62,4 +70,9 @@
         }
 
     }
+}
+
+.order-list-container{
+    padding-top: 18%;
+    padding-bottom: 3%;
 }

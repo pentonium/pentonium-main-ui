@@ -52,11 +52,11 @@ export const routes = [
         exact:true,
         component:Dashboard
     },{
-        path:'/buyer',
+        path:'/:type',
         exact:true,
         component:OrderList
     },{
-            path:'/seller',
+            path:'/:type',
             exact:true,
             component:OrderList
     },{

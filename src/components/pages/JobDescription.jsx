@@ -10,9 +10,10 @@ import { UserPriceDetail } from "../../controllers/UserPriceDetail";
 import Button from "react-bootstrap/Button";
 import { deleteJob, getJobDetail, placeOrder } from "../../actions/jobActions";
 import { getCategoriesList } from "../../actions/categoryListAction";
-import { connectIfAuthorized } from "../../actions/commonAction";
+import { connectIfAuthorized , connectWallet } from "../../actions/commonAction";
 import Spinner from "react-bootstrap/Spinner";
 import { genKeyPairFromSeed } from "skynet-js";
+import { BUYER, SELLER } from "../../constants";
 
 class JobDescription extends Component {
   constructor(props) {
@@ -25,7 +26,8 @@ class JobDescription extends Component {
   }
 
   async componentDidMount() {
-    await this.props.connectIfAuthorized();
+    // await this.props.connectIfAuthorized();
+    // await this.props.connectWallet();
     await this.props.getCategoriesList(this.props.contract, this.props.account);
     const jobId = this.props.match.params.jobId;
     const offerContract = this.props.match.params.offerContract;
@@ -59,7 +61,9 @@ class JobDescription extends Component {
     return result.join("");
   };
 
-  placeOrder = () => {
+  placeOrder = async () => {
+    // 
+    // await this.props.connectIfAuthorized();  
     const cientProvider = this.makeid(200);
     let { publicKey, privateKey } = genKeyPairFromSeed(cientProvider);
     const jobId = this.props.match.params.jobId;
@@ -190,6 +194,7 @@ function mapDispatchToProps(dispatch) {
     deleteJob: (web3, contract, account, id) =>
       dispatch(deleteJob(web3, contract, account, id)),
     connectIfAuthorized: () => dispatch(connectIfAuthorized()),
+    connectWallet: () => dispatch(connectWallet()),
     getCategoriesList: (contract, account) =>
       dispatch(getCategoriesList(contract, account)),
     getJobDetail: (web3, id, offerContract) =>

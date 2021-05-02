@@ -3,7 +3,7 @@ import { Col, Container, Row } from "react-bootstrap";
 import { connect } from "react-redux";
 import NewCollection from "../NewCollection";
 import { getAllCategoryJobs } from "../../actions/jobListActions";
-import { connectIfAuthorized } from "../../actions/commonAction";
+import { connectIfAuthorized, connectWallet } from "../../actions/commonAction";
 import { home_contract_addresses } from "../../config";
 import Header from "../header/Header";
 
@@ -17,7 +17,7 @@ class Home extends Component {
   }
 
   getAllCategories = async () => {
-    await this.props.connectIfAuthorized();
+    // await this.props.connectWallet();
     await this.props.getAllCategoryJobs(
       this.props.account,
       this.props.web3,
@@ -89,6 +89,7 @@ function mapDispatchToProps(dispatch) {
     connectIfAuthorized: () => dispatch(connectIfAuthorized()),
     getAllCategoryJobs: (account, web3, offerContract) =>
       dispatch(getAllCategoryJobs(account, web3, offerContract)),
+      connectWallet:() => dispatch(connectWallet())
   };
 }
 

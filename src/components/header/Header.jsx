@@ -24,6 +24,7 @@ class Header extends Component {
     showSub: true,
   };
   async componentWillMount() {
+    // await this.props.connectWallet();
     // await this.props.connectIfAuthorized();
     // await this.props.getCategoriesList(this.props.contract, this.props.account);
   }
@@ -90,6 +91,10 @@ class Header extends Component {
     this.props.history.push("/post-job");
   }
 
+  naviagteToUser = (type) => {
+    this.props.history.push(`/${type}`)
+  }
+
   render() {
     return (
       <>
@@ -118,11 +123,11 @@ class Header extends Component {
                             />
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
-                            <Dropdown.Item>
-                              <Link to="/buyer">Buyer</Link>
+                            <Dropdown.Item onClick={() => this.naviagteToUser('buyer')}>
+                              Buyer
                             </Dropdown.Item>
-                            <Dropdown.Item>
-                              <Link to="/seller">Seller</Link>
+                            <Dropdown.Item onClick={() => this.naviagteToUser('seller')}>
+                              Seller
                             </Dropdown.Item>
                           </Dropdown.Menu>
                         </Dropdown>

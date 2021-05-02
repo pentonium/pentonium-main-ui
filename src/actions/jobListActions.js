@@ -1,5 +1,5 @@
 import { OFFER_CONTRACT_ABI } from '../config/abi/offerContract';
-import {JOB_LIST_REQUEST , JOB_LIST_SUCCESS , JOB_LIST_ERROR , ALL_JOB_LIST_REQUEST , ALL_JOB_LIST_SUCCESS , ALL_JOB_LIST_ERROR} from '../constants';
+import {JOB_LIST_REQUEST , JOB_LIST_SUCCESS , JOB_LIST_ERROR , ALL_JOB_LIST_REQUEST , ALL_JOB_LIST_SUCCESS , ALL_JOB_LIST_ERROR , CLIENT_LIST_REQUEST , CLIENT_LIST_SUCCESS , CLIENT_LIST_ERROR} from '../constants';
 
 
 /**
@@ -30,7 +30,6 @@ export const getJobsList = (contract , account , web3 , offerContract, _start, j
 
 export const getAllCategoryJobs = (account , web3 , contractList) => async dispatch => {
     dispatch({type:ALL_JOB_LIST_REQUEST});
-    console.log(contractList);
     try{
         let list = [];
         for(let i = 0; i<contractList.length; i++){
@@ -46,4 +45,29 @@ export const getAllCategoryJobs = (account , web3 , contractList) => async dispa
     }catch(e){
         dispatch({type:ALL_JOB_LIST_ERROR});
     }
+}
+
+export const getClientProviderList = (web3 , accounts , contract) => async dispatch => {
+    dispatch({type:CLIENT_LIST_REQUEST});
+    try {
+        let list = await contract.methods.getClientOrders(accounts).call();
+        dispatch({type:CLIENT_LIST_SUCCESS , list:list});
+    }catch(e){
+        dispatch({type:CLIENT_LIST_ERROR});
+    }
+
+}
+
+export const getServiceProviderList = (web3 , accounts , contract) => async dispatch => {
+    dispatch({type:CLIENT_LIST_REQUEST});
+    
+    try {
+        let list = await contract.methods.getServiceProviderOrders(accounts).call();
+        // let list = await contract.methods.getServiceProviderOrders(accounts).call();
+        dispatch({type:CLIENT_LIST_SUCCESS , list:list});
+    }catch(e){
+        console.log(e);
+        dispatch({type:CLIENT_LIST_ERROR});
+    }
+
 }
