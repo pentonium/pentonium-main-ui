@@ -83,7 +83,7 @@ class Header extends Component {
   // }
 
   connectToMetaMask = async () => {
-    // await this.props.connectWallet();
+    await this.props.connectWallet();
     // await this.props.getCategoriesList(this.props.contract, this.props.account);
   };
 
@@ -92,8 +92,8 @@ class Header extends Component {
   }
 
   naviagteToUser = (type) => {
-    this.props.history.push(`/${type}`)
-  }
+    this.props.history.push(`/${type}`);
+  };
 
   render() {
     return (
@@ -123,10 +123,14 @@ class Header extends Component {
                             />
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
-                            <Dropdown.Item onClick={() => this.naviagteToUser('buyer')}>
+                            <Dropdown.Item
+                              onClick={() => this.naviagteToUser("buyer")}
+                            >
                               Buyer
                             </Dropdown.Item>
-                            <Dropdown.Item onClick={() => this.naviagteToUser('seller')}>
+                            <Dropdown.Item
+                              onClick={() => this.naviagteToUser("seller")}
+                            >
                               Seller
                             </Dropdown.Item>
                           </Dropdown.Menu>
@@ -135,7 +139,7 @@ class Header extends Component {
                     ) : (
                       <button
                         className="btn btn-primary connect-btn"
-                        onClick={this.connectToMetaMask()}
+                        onClick={this.connectToMetaMask}
                       >
                         Connect
                       </button>

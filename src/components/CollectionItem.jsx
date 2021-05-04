@@ -58,9 +58,11 @@ class CollectionItem extends Component {
                     </div>
                   </Link>
                 ) : (
-                  <Spinner animation="border" role="status">
-                    <span className="sr-only">Loading...</span>
-                  </Spinner>
+                  <div className="text-center">
+                    <Spinner animation="border" role="status">
+                      <span className="sr-only">Loading...</span>
+                    </Spinner>
+                  </div>
                 )}
               </div>
             </>

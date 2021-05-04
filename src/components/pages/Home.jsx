@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row, Spinner } from "react-bootstrap";
 import { connect } from "react-redux";
 import NewCollection from "../NewCollection";
 import { getAllCategoryJobs } from "../../actions/jobListActions";
@@ -12,12 +12,11 @@ class Home extends Component {
     super(props);
   }
 
-  componentDidMount() {
-    this.getAllCategories();
+  async componentDidMount() {
+    await this.getAllCategories();
   }
 
   getAllCategories = async () => {
-    // await this.props.connectWallet();
     await this.props.getAllCategoryJobs(
       this.props.account,
       this.props.web3,
@@ -49,6 +48,13 @@ class Home extends Component {
           </Container>
         </div>
         <Container>
+          {this.props.loading && (
+            <div className="text-center">
+              <Spinner animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+            </div>
+          )}
           <Row className="collections-list">
             {this.props.fulllist &&
               this.props.fulllist.map((job, i) => {
@@ -58,7 +64,6 @@ class Home extends Component {
                     categoryName={job.name}
                     list={job.list}
                     categoryContract={job.offerContract}
-                    loading={this.props.loading}
                   ></NewCollection>
                 );
               })}
@@ -70,17 +75,16 @@ class Home extends Component {
 }
 
 function mapStateToProps(state) {
-  const { web3, account, loading, error, contract } = state.common;
-  const { fulllist } = state.jobList;
-  const fulllistloading = state.jobList.loading;
+  const { web3, account, error, contract } = state.common;
+  const { fulllist, loading } = state.jobList;
+
   return {
     web3,
     account,
-    loading,
     error,
     contract,
     fulllist,
-    fulllistloading,
+    loading,
   };
 }
 
@@ -89,7 +93,6 @@ function mapDispatchToProps(dispatch) {
     connectIfAuthorized: () => dispatch(connectIfAuthorized()),
     getAllCategoryJobs: (account, web3, offerContract) =>
       dispatch(getAllCategoryJobs(account, web3, offerContract)),
-      connectWallet:() => dispatch(connectWallet())
   };
 }
 

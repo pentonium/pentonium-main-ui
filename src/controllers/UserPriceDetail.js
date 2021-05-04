@@ -7,24 +7,25 @@ export const UserPriceDetail = (props) => {
     return (
         <>
         <Tabs defaultActiveKey="basic" id="uncontrolled-tab-example">
-            <Tab eventKey="basic" title="More Details">
+            <Tab eventKey="basic" title={null}>
                 {/* <Sonnet /> */}
                 <div className="tab-content-header">
                     <h5 className="title">
-                        <b>Intro Package</b>
-                        <span className="price">{props.data.price} ETH</span>
+                        <i className="fa fa-clock-o"></i>&nbsp;{props.data.duration} Days Delivery
                     </h5>
+                    <span className="price">{props.data.price} Dai</span>
                     <p className="short-desc">
                         <span>{props.data.package}</span>
                     </p>
                 </div>
                 <div className="tab-content-body">
-                    <span style={{'marginRight':'10px'}}><b><i className="fa fa-clock-o"></i>{props.data.duration} Month Delivery</b></span>
+
                     <ul className="user-feature">
                         {props.data.features && props.data.features.length > 0 && props.data.features.map((feat , index) => {
                             return (<li key={index}>{feat}</li>)
                         })}
                     </ul>
+                    <br />
                     <Button variant="primary" size="md" onClick={props.placeOrderHandler} block>
                         Place Order
                     </Button>

@@ -56,10 +56,6 @@ export const routes = [
         exact:true,
         component:OrderList
     },{
-            path:'/:type',
-            exact:true,
-            component:OrderList
-    },{
         path:'**',
         component:NotFound
     }

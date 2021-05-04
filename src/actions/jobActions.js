@@ -46,8 +46,12 @@ export const getJobDetail = (web3 , id , offerContract) => async dispatch => {
     dispatch({type: JOB_DETAIL_REQUEST});
     try{
         let contract = new web3.eth.Contract(OFFER_CONTRACT_ABI, offerContract);
-        console.log('Contract' , contract , id,offerContract);
+
+        console.log("id", id, offerContract);
+
         let returnData = await contract.methods.gigs(id).call();
+
+        console.log("job", returnData);
         dispatch({type: JOB_DETAIL_SUCCESS , detail:returnData});
     }catch(e){
         console.log('Error' , e);

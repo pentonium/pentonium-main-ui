@@ -1,19 +1,15 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchJobData } from "../../actions/categoryActions";
 import { Link, withRouter } from "react-router-dom";
 import { Row, Col, Badge, Container } from "react-bootstrap";
 import { fetchData } from "../../actions/categoryActions";
-import LazyImage from "../../controllers/LazyImage";
 import Carousel from "react-bootstrap/Carousel";
 import { UserPriceDetail } from "../../controllers/UserPriceDetail";
-import Button from "react-bootstrap/Button";
 import { deleteJob, getJobDetail, placeOrder } from "../../actions/jobActions";
 import { getCategoriesList } from "../../actions/categoryListAction";
-import { connectIfAuthorized , connectWallet } from "../../actions/commonAction";
+import { connectIfAuthorized, connectWallet } from "../../actions/commonAction";
 import Spinner from "react-bootstrap/Spinner";
 import { genKeyPairFromSeed } from "skynet-js";
-import { BUYER, SELLER } from "../../constants";
 
 class JobDescription extends Component {
   constructor(props) {
@@ -26,13 +22,11 @@ class JobDescription extends Component {
   }
 
   async componentDidMount() {
-    // await this.props.connectIfAuthorized();
-    // await this.props.connectWallet();
-    await this.props.getCategoriesList(this.props.contract, this.props.account);
     const jobId = this.props.match.params.jobId;
     const offerContract = this.props.match.params.offerContract;
     this.setState({ offerContract: offerContract, jobId: jobId });
     await this.props.getJobDetail(this.props.web3, jobId, offerContract);
+
     let jobData = await fetchData(this.props.detailData.ipfs_hash);
     this.setState({ hashedData: jobData });
   }
@@ -62,15 +56,13 @@ class JobDescription extends Component {
   };
 
   placeOrder = async () => {
-    // 
-    // await this.props.connectIfAuthorized();  
     const cientProvider = this.makeid(200);
     let { publicKey, privateKey } = genKeyPairFromSeed(cientProvider);
     const jobId = this.props.match.params.jobId;
     const offerContract = this.props.match.params.offerContract;
     this.props.placeOrder(
       this.props.account,
-      this.props.web3,
+      this.props.accountConnection,
       jobId,
       offerContract,
       publicKey,
@@ -87,84 +79,86 @@ class JobDescription extends Component {
   render() {
     return (
       <Container className="body-padding">
-        <Row className="job-desctiption-page">
-          {!this.props.loading &&
-          this.state.hashedData &&
-          this.state.hashedData.imageHash ? (
-            <>
-              <Col md={8} xs={12}>
-                <h1>{this.state.hashedData.title}</h1>
-                <div className="customer-data">
-                  <a>
-                    <span className="customer-image">
-                      <img src="/static/media/768px-MetaMask_Fox.svg.a7610ce1.png" />
-                    </span>
-                  </a>
-                  <Link to={"/customers/" + this.state.hashedData.customerId}>
-                    <span className="customer-name">{this.props.account}</span>
-                  </Link>
-                </div>
-                <div className="job-details">
-                  <div className="job-image">
-                    <Carousel
-                      controls={this.state.hashedData.imageHash.length > 1}
-                      indicators={false}
-                    >
-                      {this.state.hashedData.imageHash &&
-                        this.state.hashedData.imageHash.map((preview, i) => {
-                          return (
-                            <Carousel.Item key={i}>
-                              {/* <LazyImage
-                                        key={i}
-                                        src={`https://ipfs.io/ipfs/${preview}`}
-                                        alt="EDdit image"
-                                        /> */}
-                              <img
-                                src={`https://ipfs.io/ipfs/${preview}`}
-                                alt="Description Card image"
-                              />
-                            </Carousel.Item>
-                          );
-                        })}
-                    </Carousel>
-                    <img src={this.state.hashedData.image} />
-                  </div>
-                  <div>
-                    <h4>About Job:</h4>
-                    <p>{this.state.hashedData.description}</p>
-                  </div>
-                  <div>
-                    <h5>Skills Required:</h5>
-                    {this.state.hashedData.tags &&
-                      this.state.hashedData.tags.map((skill, i) => {
+        {!this.props.loading &&
+        this.state.hashedData &&
+        this.state.hashedData.imageHash ? (
+          <Row className="job-desctiption-page">
+            <Col md={8} xs={12}>
+              <h1>{this.state.hashedData.title}</h1>
+              <div className="customer-data">
+                <a>
+                  <span className="customer-image">
+                    <img src="https://t3.ftcdn.net/jpg/01/83/55/76/360_F_183557656_DRcvOesmfDl5BIyhPKrcWANFKy2964i9.jpg" />
+                  </span>
+                </a>
+                <Link
+                  to={"/customers/" + this.props.detailData.service_provider}
+                >
+                  <span className="customer-name">
+                    {this.props.detailData.service_provider}
+                  </span>
+                </Link>
+              </div>
+              <div className="job-details">
+                <div className="job-image">
+                  <Carousel
+                    controls={this.state.hashedData.imageHash.length > 1}
+                    indicators={false}
+                  >
+                    {this.state.hashedData.imageHash &&
+                      this.state.hashedData.imageHash.map((preview, i) => {
                         return (
-                          <Badge key={i} pill variant="secondary">
-                            {skill}
-                          </Badge>
+                          <Carousel.Item key={i}>
+                            <img
+                              src={`https://ipfs.io/ipfs/${preview}`}
+                              alt="Description Card image"
+                            />
+                          </Carousel.Item>
                         );
                       })}
-                  </div>
+                  </Carousel>
+                  <img src={this.state.hashedData.image} />
                 </div>
-              </Col>
-              <Col md={4} xs={12}>
-                {this.state.hashedData && (
-                  <UserPriceDetail
-                    hashId={this.state.jobId}
-                    offerContract={this.state.offerContract}
-                    data={this.state.hashedData}
-                    deleteHandler={this.deleteJob}
-                    navigateToUpdate={this.naviageToUpdate}
-                    placeOrderHandler={this.placeOrder}
-                  ></UserPriceDetail>
-                )}
-              </Col>
-            </>
-          ) : (
+                <br />
+                <div>
+                  <h4>About Job:</h4>
+                  <p>{this.state.hashedData.description}</p>
+                </div>
+                <br />
+                <div>
+                  <h5>Skills:</h5>
+                  {this.state.hashedData.tags &&
+                    this.state.hashedData.tags.map((skill, i) => {
+                      return (
+                        <Badge key={i} pill variant="secondary">
+                          {skill}
+                        </Badge>
+                      );
+                    })}
+                </div>
+                <br />
+              </div>
+            </Col>
+            <Col md={4} xs={12}>
+              {this.state.hashedData && (
+                <UserPriceDetail
+                  hashId={this.state.jobId}
+                  offerContract={this.state.offerContract}
+                  data={this.state.hashedData}
+                  deleteHandler={this.deleteJob}
+                  navigateToUpdate={this.naviageToUpdate}
+                  placeOrderHandler={this.placeOrder}
+                ></UserPriceDetail>
+              )}
+            </Col>
+          </Row>
+        ) : (
+          <div className="text-center">
             <Spinner animation="border" role="status">
               <span className="sr-only">Loading...</span>
             </Spinner>
-          )}
-        </Row>
+          </div>
+        )}
       </Container>
     );
   }
@@ -173,12 +167,13 @@ class JobDescription extends Component {
 function mapStateToProps(state) {
   let loading = true;
   loading = state.jobReducer.loading;
-  const { web3, account, contract } = state.common;
+  const { web3, accountConnection, account, contract } = state.common;
   const { detailData, error } = state.jobReducer;
   return {
     jobDescription: state.fetchJobs.jobDescription[0],
     hashedData: state.fetchJobs.hashedData,
     web3,
+    accountConnection,
     account,
     loading,
     error,
@@ -189,14 +184,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchJobData: (id) => dispatch(fetchJobData(id)),
     fetchHashJobData: (id) => dispatch(fetchData(id)),
     deleteJob: (web3, contract, account, id) =>
       dispatch(deleteJob(web3, contract, account, id)),
-    connectIfAuthorized: () => dispatch(connectIfAuthorized()),
-    connectWallet: () => dispatch(connectWallet()),
-    getCategoriesList: (contract, account) =>
-      dispatch(getCategoriesList(contract, account)),
     getJobDetail: (web3, id, offerContract) =>
       dispatch(getJobDetail(web3, id, offerContract)),
     placeOrder: (

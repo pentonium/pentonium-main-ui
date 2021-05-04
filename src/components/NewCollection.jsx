@@ -25,7 +25,7 @@ class NewCollection extends Component {
         <div className="collections-content" style={{ width: "100%" }}>
           <h2 className="collection-title">{this.props.categoryName}</h2>
           <Row className="collections">
-            {!this.props.loading && this.props.list ? (
+            {this.props.list ? (
               this.props.list.map((hash, i) => {
                 return (
                   i <= 3 &&

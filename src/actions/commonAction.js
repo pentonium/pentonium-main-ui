@@ -1,4 +1,4 @@
-import {FETCH_PARENT_CATEGORIES, WALLET_CONNECT_REQUEST, WALLET_CONNECT_SUCCESS, WALLET_CONNECT_ERROR, FETCH_CUSTOMER_DATA} from '../constants';
+import {FETCH_PARENT_CATEGORIES, WALLET_CONNECT_REQUEST, WALLET_CONNECT_SUCCESS, WALLET_CONNECT_ERROR, FETCH_CUSTOMER_DATA, ACCOUNT_CONNECTION} from '../constants';
 import jsonData from '../data/category.json';
 import jobsData from '../data/jobsData.json';
 import customerData from '../data/customerData.json';
@@ -60,7 +60,7 @@ export const connectWallet = () => async dispatch =>  {
             let data = await initialize(web3);
           
             hookInWalletChange();
-            dispatch({type: WALLET_CONNECT_SUCCESS, ...data});
+            dispatch({type: ACCOUNT_CONNECTION, ...data});
         } catch (error) {
             dispatch({type: WALLET_CONNECT_ERROR});
             console.error(error);
@@ -88,26 +88,28 @@ export const connectWallet = () => async dispatch =>  {
  * initialize permission manager contract
  */
 export const connectIfAuthorized = () => async dispatch =>  {
-    
+
+    dispatch({type: WALLET_CONNECT_REQUEST});
 
     let web3 = new Web3('wss://ropsten.infura.io/ws/v3/5a0874c0f5464a0b8e4050e5528bf94d');
-    let data = await initialize(web3);
 
-    console.log("data", data);
-    dispatch({type: WALLET_CONNECT_SUCCESS, ...data});
-    // if (window.ethereum) {
-    //     try{
-    //         const web3 = new Web3(window.ethereum);
+    let contract = new web3.eth.Contract(CATEGORY_CONTRACT_ABI, CATEGORY_CONTRACT_ADDRESS);
 
-    //         let data = await initialize(web3);
+    dispatch({type: WALLET_CONNECT_SUCCESS, web3: web3, contract: contract});
+    
+    if (window.ethereum) {
+        try{
+            const web3 = new Web3(window.ethereum);
+
+            let data = await initialize(web3);
 
 
-    //         hookInWalletChange();
-    //         dispatch({type: WALLET_CONNECT_SUCCESS, ...data});
+            hookInWalletChange();
+            dispatch({type: ACCOUNT_CONNECTION, ...data});
             
-    //     }catch (error) {
-    //     }
-    // }
+        }catch (error) {
+        }
+    }
 }
 
 
@@ -120,20 +122,15 @@ export const connectIfAuthorized = () => async dispatch =>  {
  */
 async function initialize(web3){
 
-    // var accounts = await web3.eth.getAccounts();
+    var accounts = await web3.eth.getAccounts();
 
+    if(accounts.length > 0){
+        var firstAcc = accounts[0];
 
-    let contract = new web3.eth.Contract(CATEGORY_CONTRACT_ABI, CATEGORY_CONTRACT_ADDRESS);
+        let contract = new web3.eth.Contract(CATEGORY_CONTRACT_ABI, CATEGORY_CONTRACT_ADDRESS);
 
-    return({web3: web3, contract: contract, account: "0x"});
-
-    // if(accounts.length > 0){
-    //     var firstAcc = accounts[0];
-
-    //     let contract = new web3.eth.Contract(CATEGORY_CONTRACT_ABI, CATEGORY_CONTRACT_ADDRESS);
-
-    //     return({web3: web3, contract: contract, account: firstAcc});
-    // }
+        return({accountConnection: web3, contract: contract, account: firstAcc});
+    }
 }
 
 

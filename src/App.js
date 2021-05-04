@@ -10,35 +10,49 @@ import 'font-awesome/css/font-awesome.min.css';
 import Header from "./components/header/Header";
 import Footer from './components/footer/Footer';
 import './styles/index.scss';
-import { Container } from "react-bootstrap";
-import BreadCrumb from "./controllers/SiteBreadCrumb";
+import { connect } from "react-redux";
+import { connectIfAuthorized } from "./actions/commonAction";
 
 class App extends Component {
-  state = {
-  };
 
-  componentDidMount() {
-    // alert(window.location.pathname);
+  async componentDidMount() {
+    await this.props.connectIfAuthorized();
   }
 
   render() {
     return (
       <div className="App">
+        {this.props.web3 ?
+        <>
         {window.location.pathname != "/" &&
           <Header></Header>
         }
-        {/* <Container className="body-padding"> */}
-        {/* <BreadCrumb></BreadCrumb> */}
           <Switch>
               {routes.map((route, i) => (
                 <RouteWithSubRoutes key={i} {...route} />
               ))}
           </Switch>
-         {/* </Container>  */}
          <Footer></Footer>
+         </>
+         : <div>Loading....</div>}
       </div>
     );
   }
 }
 
-export default App;
+function mapStateToProps(state) {
+const { web3,  loading, error } = state.common;
+  return {
+    web3,
+    loading,
+    error,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    connectIfAuthorized: () => dispatch(connectIfAuthorized()),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

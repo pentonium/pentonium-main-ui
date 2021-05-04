@@ -18,17 +18,15 @@ class Categories extends Component {
 
   getJobs = async (start, list) => {
     const categoryId = this.props.match.params.id;
-    await this.props.connectIfAuthorized();
-    if (this.props.account) {
-      await this.props.getJobsList(
-        this.props.contract,
-        this.props.account,
-        this.props.web3,
-        categoryId,
-        start,
-        list
-      );
-    }
+
+    await this.props.getJobsList(
+      this.props.contract,
+      this.props.account,
+      this.props.web3,
+      categoryId,
+      start,
+      list
+    );
   };
 
   async componentDidMount() {
@@ -52,51 +50,51 @@ class Categories extends Component {
 
     return (
       <Container className="body-padding">
-        <div className="row">
-          {!this.props.loading && this.props.list ? (
-            <>
-              <div className="col-md-12 parent-cateogory-title text-center">
-                <h1>{this.props.categoryNane}</h1>
-                {/* <p>{this.props.categories.text}</p> */}
-              </div>
-              <div className="row col-md-12 categories-section">
-                <div className="col-md-12">
-                  <Row className="collections">
-                    {this.props.list &&
-                      this.props.list.map((hash, i) => {
-                        return (
-                          hash.ipfs_hash != "" &&
-                          hash.ipfs_hash != "abhbi" && (
-                            <CollectionItem
-                              key={i}
-                              index={i}
-                              hash={hash}
-                              offerContract={this.props.match.params.id}
-                            ></CollectionItem>
-                          )
-                        );
-                      })}
-                  </Row>
+        {!this.props.loading && this.props.list ? (
+          <div className="row">
+            <div className="col-md-12 parent-cateogory-title text-center">
+              <h1>{this.props.categoryNane}</h1>
+              {/* <p>{this.props.categories.text}</p> */}
+            </div>
+            <div className="row col-md-12 categories-section">
+              <div className="col-md-12">
+                <Row className="collections">
+                  {this.props.list &&
+                    this.props.list.map((hash, i) => {
+                      return (
+                        hash.ipfs_hash != "" &&
+                        hash.ipfs_hash != "abhbi" && (
+                          <CollectionItem
+                            key={i}
+                            index={i}
+                            hash={hash}
+                            offerContract={this.props.match.params.id}
+                          ></CollectionItem>
+                        )
+                      );
+                    })}
+                </Row>
 
-                  <div className="text-center">
-                    {Number(this.props.end) > Number(page_end) && (
-                      <div
-                        className="btn btn-primary"
-                        onClick={() => this.getJobs(nextId, this.props.list)}
-                      >
-                        Load More
-                      </div>
-                    )}
-                  </div>
+                <div className="text-center">
+                  {Number(this.props.end) > Number(page_end) && (
+                    <div
+                      className="btn btn-primary"
+                      onClick={() => this.getJobs(nextId, this.props.list)}
+                    >
+                      Load More
+                    </div>
+                  )}
                 </div>
               </div>
-            </>
-          ) : (
+            </div>
+          </div>
+        ) : (
+          <div className="text-center">
             <Spinner animation="border" role="status">
               <span className="sr-only">Loading...</span>
             </Spinner>
-          )}
-        </div>
+          </div>
+        )}
       </Container>
     );
   }

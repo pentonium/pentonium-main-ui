@@ -1,9 +1,11 @@
-import {FETCH_PARENT_CATEGORIES, FETCH_CUSTOMER_DATA , WALLET_CONNECT_REQUEST, WALLET_CONNECT_SUCCESS, WALLET_CONNECT_ERROR} from '../constants';
+import {FETCH_PARENT_CATEGORIES, FETCH_CUSTOMER_DATA ,
+ WALLET_CONNECT_REQUEST, WALLET_CONNECT_SUCCESS, WALLET_CONNECT_ERROR,
+ ACCOUNT_CONNECTION} from '../constants';
 
 const initialState = {
   web3: null,
   contract: null,
-  permissionManager: null,
+  accountConnection: null,
   account: null,
   loading: false,
   error: false
@@ -46,8 +48,6 @@ export default function(state = initialState, action) {
         ...state,
         web3: action.web3,
         contract: action.contract,
-        permissionManager: action.permissionManager,
-        account: action.account,
         loading: false
       }
     case WALLET_CONNECT_ERROR:
@@ -59,6 +59,13 @@ export default function(state = initialState, action) {
         loading: false,
         error: true
       } 
+    case ACCOUNT_CONNECTION:
+      return {
+        ...state,
+        accountConnection: action.accountConnection,
+        contract: action.contract,
+        account: action.account,
+      }
     default:
       return state;
   }

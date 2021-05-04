@@ -1,78 +1,83 @@
-.order-list-page{
-    margin-top: 2rem;
-    p{
-        cursor: pointer;
+.order-list-page {
+  margin-top: 2rem;
+  p {
+    cursor: pointer;
+  }
+  p.active {
+    color: $primaryColorLighter;
+  }
+  .order-list-items {
+    margin: 0px;
+    border: 1px solid #dadce0;
+    .order-item-row {
+      height: 140px;
+      align-items: center;
     }
-    p.active{
-        color: $primaryColorLighter;
+    &:first-child {
+      border-radius: 8px 8px 0 0;
     }
-    .order-list-items{
-        margin: 0px;
-        padding: 0.5rem;
-        min-height: 89px;
-        border-left: 1px solid #dadce0;
-        border-right: 1px solid #dadce0;
-        border-top: 1px solid #dadce0;
-        &:first-child{
-            border-radius: 8px 8px 0 0;
-        }
-        &:last-child{
-            border-bottom: 1px solid #dadce0;
-            border-radius: 0 0 8px 8px;
-        }
-        .img-col{
-            text-align: center;
-            padding-top: 4px;
-            .list-image{
-                height: 50px;
-                width: 50px;
-            }
-        }
-        .spinner-border{
-            margin-top: 2%;
-        }
-        .order-item-title{
-            font-size: 1rem;
-            color: $primaryColor;
-            margin-bottom: 5px;
-            max-height: 21px;
-            min-height: 21px;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-            font-weight: 500;
-        }
-        .action-button{
-            padding-top: 1%;
-        }
-        .order-item-text{
-            font-size: 0.75rem;
-            color: $secondaryColor;
-            margin-bottom: 0rem;
-            max-height: 20px;
-            min-height: 20px;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-            font-weight: 400;
-        }
-        .order-item-price{
-            color: #188038;
-            max-height: 20px;
-            min-height: 20px;
-            font-size: 1rem;
-            font-weight: $fontWeight500;
-            margin-bottom: 5px;
-        }
-        .order-subtext{
-            color: $secondaryColor;
-            font-size: 0.75rem;
-        }
-
+    &:last-child {
+      border-bottom: 1px solid #dadce0;
+      border-radius: 0 0 8px 8px;
     }
+    .img-col {
+      //   text-align: center;
+      height: 100%;
+      width: 100%;
+      .list-image {
+        // height: 50px;
+        // width: 50px;
+      }
+      img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+      }
+    }
+    .spinner-border {
+      margin-top: 2%;
+    }
+    .order-item-title {
+      font-size: 1rem;
+      color: $primaryColor;
+      margin-bottom: 5px;
+      max-height: 21px;
+      min-height: 21px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      font-weight: 500;
+    }
+    .action-button {
+      padding-top: 1%;
+    }
+    .order-item-text {
+      font-size: 0.75rem;
+      color: $secondaryColor;
+      margin-bottom: 0rem;
+      max-height: 20px;
+      min-height: 20px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      font-weight: 400;
+    }
+    .order-item-price {
+      color: #188038;
+      max-height: 20px;
+      min-height: 20px;
+      font-size: 1rem;
+      font-weight: $fontWeight500;
+      margin-bottom: 5px;
+    }
+    .order-subtext {
+      color: $secondaryColor;
+      font-size: 0.75rem;
+    }
+  }
 }
 
-.order-list-container{
-    padding-top: 18%;
-    padding-bottom: 3%;
+.order-list-container {
+  padding-top: 18%;
+  padding-bottom: 3%;
 }
