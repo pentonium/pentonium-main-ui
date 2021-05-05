@@ -53,8 +53,7 @@ export const getServiceProvider =  async (web3 , account , orderContract) =>  {
     // console.log(orderContract);
     let contract = new web3.eth.Contract(ORDER_CONTRACT_ABI , orderContract);
     console.log('Contract' , contract);
-    let data = await contract.methods.getServiceProviderRequirements().call();
-    console.log(data);
+    let data = await contract.methods.getServiceProviderRequirements().call({from: account});
     return data;
     // await contract.methods.
     // return await fetchDataFromHash(contract);
