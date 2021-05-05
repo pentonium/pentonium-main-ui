@@ -92,7 +92,7 @@ class Header extends Component {
   }
 
   naviagteToUser = (type) => {
-    this.props.history.push(`/${type}`);
+    this.props.history.push(`/order/${type}`);
   };
 
   render() {

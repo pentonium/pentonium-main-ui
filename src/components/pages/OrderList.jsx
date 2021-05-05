@@ -27,16 +27,23 @@ class OrderList extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    let prevUserType = this.getUserTpe(prevProps.match.url);
+    let userType = this.getUserTpe(this.props.match.url);
     if (
-      prevProps.match.params.type !== this.props.match.params.type ||
+      prevUserType !== userType ||
       prevProps.accountConnection != this.props.accountConnection
     ) {
       this.getOrderData();
     }
   }
 
+  getUserTpe = (locationUrl) => {
+    let param = locationUrl.split("/")[2]
+    return param;
+  }
+
   getOrderData = async () => {
-    const userType = this.props.match.params.type;
+    const userType = this.getUserTpe(this.props.match.url);
     console.log(this.props.accountConnection, this.props.account);
     if (userType == BUYER) {
       await this.props.getClientProviderList(
@@ -63,6 +70,7 @@ class OrderList extends Component {
   }
 
   render() {
+    const type = this.getUserTpe(this.props.match.url);
     return (
       <div className="order-list-container">
         <Container>
@@ -146,7 +154,7 @@ class OrderList extends Component {
                         history={this.props.history}
                         account={this.props.account}
                         column="3"
-                        type={this.props.match.params.type}
+                        type={type}
                       ></OrderItemList>
                     </Row>
                   );
