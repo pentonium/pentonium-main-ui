@@ -44,7 +44,11 @@ export const routes = [
         exact: true,
         component: JobEdit
     },{
-        path: "/chatpage",
+        path: "/chatpage/buyer/:orderContract",
+        exact: true,
+        component: ChatPage
+    },{
+        path: "/chatpage/seller/:orderContract",
         exact: true,
         component: ChatPage
     },{
@@ -52,7 +56,11 @@ export const routes = [
         exact:true,
         component:Dashboard
     },{
-        path:'/:type',
+        path:'/order/seller',
+        exact:true,
+        component:OrderList
+    },{
+        path:'/order/buyer',
         exact:true,
         component:OrderList
     },{

@@ -100,7 +100,7 @@ class JobPost extends Component {
         }
         this.setState({ dataHash: result[0].hash });
         await this.props.postJob(
-          this.props.web3,
+          this.props.accountConnection,
           this.state.dataHash,
           this.state.imageHash,
           this.props.account,
@@ -444,7 +444,7 @@ class JobPost extends Component {
 }
 
 function mapStateToProps(state) {
-  const { contract, account, web3 } = state.common;
+  const { contract, account, web3 , accountConnection } = state.common;
   const { id, category_name, loadingCat, errorCat } = state.category;
   const { categoryList } = state.categoryList;
   const { loading, error } = state.jobReducer;
@@ -453,6 +453,7 @@ function mapStateToProps(state) {
     categories: state.category.categoryItems,
     contract,
     account,
+    accountConnection,
     id,
     category_name,
     loading,

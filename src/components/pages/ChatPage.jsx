@@ -1,9 +1,13 @@
 import { Component } from "react";
+import { connect } from "react-redux";
 import { SkynetClient, genKeyPairFromSeed } from "skynet-js";
 import {Chat} from '../../controllers/Chat';
 import { Row, Col , Badge } from 'react-bootstrap';
 import {BsToggles , BsFileArrowUp} from "react-icons/bs";
 import {FiUploadCloud} from 'react-icons/fi';
+import { withRouter } from "react-router-dom";
+import { BUYER, SELLER } from "../../constants";
+import { getClientProvider, getServiceProvider } from "../../actions/orderActions";
  
 class ChatPage extends Component {
   state = {
@@ -18,6 +22,7 @@ class ChatPage extends Component {
   async componentDidMount(){
     // await this.chatPage("user1", "user2");
     // await this.setData();
+    this.connectToSkyNet();
   }
 
   connectToSkyNet = async() => {
@@ -25,14 +30,20 @@ class ChatPage extends Component {
       "user-1" :  "some private text of user 1 test 1",
       "user-2" :  "some private text of user 2 test 2",
     };
+    const userType = this.getUserTpe(this.props.match.url);
+    await getServiceProvider(this.props.accountConnection , this.props.account , this.props.match.params.orderContract);
+    // const chat = new Chat(keys[this.state.usera], keys[this.state.userb], 'me', );
 
-    const chat = new Chat(keys[this.state.usera], keys[this.state.userb], this.state.usera, this.state.userb);
+    // this.setState({
+    //   chat: chat,
+    // });
 
-    this.setState({
-      chat: chat,
-    });
+    // await this.keepLoadingData();
+  }
 
-    await this.keepLoadingData();
+  getUserTpe = (locationUrl) => {
+    let param = locationUrl.split("/")[2]
+    return param;
   }
 
   componentDidUpdate(){
@@ -48,7 +59,7 @@ class ChatPage extends Component {
           messages: msg.chat
         })
       }
-    }, 5000);
+    }, 2000);
   }
 
   handleInput = (e) =>{
@@ -60,6 +71,7 @@ class ChatPage extends Component {
   sendMessage = async() => {
     const that = this;
     await this.state.chat.sendMessage(this.state.msg);
+    this.setState({msg:''});
   }
 
   scrollToBottom() {
@@ -123,4 +135,22 @@ class ChatPage extends Component {
   }
 }
 
-export default ChatPage;
+function mapStateToProps(state) {
+  const { web3, accountConnection, account, contract } = state.common;
+  return {
+    activeJobs: state.fetchJobs.activeJobs,
+    web3,
+    accountConnection,
+    account,
+    contract
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+  };
+}
+
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(withRouter(ChatPage))
+);
