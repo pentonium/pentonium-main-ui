@@ -1,23 +1,21 @@
 import { SkynetClient, genKeyPairFromSeed } from "skynet-js";
+import { BUYER, SELLER } from "../constants";
 
 export class Chat{
 
 
-    constructor(user1Pharase, user2Pharase, from, to){
+    constructor(user1privateKey, user1publicKey ,  user2PublicKey,  topic , from, type){
         this.client = new SkynetClient("https://skyportal.xyz");
 
-        let { publicKey } = genKeyPairFromSeed(user1Pharase);
-        let { privateKey } = genKeyPairFromSeed(user1Pharase);
 
-        this.publicKey = publicKey;
-        this.privateKey = privateKey;
+        this.publicKey = user1publicKey;
+        this.privateKey = user1privateKey;
 
-        let pair2 = genKeyPairFromSeed(user2Pharase);
-        this.publicKey2 = pair2.publicKey;
+        this.publicKey2 = user2PublicKey;
 
         this.from = from;
-        this.to = to;
-        this.topic = "p2p-chat";
+        this.to = type;
+        this.topic = topic+'';
     }
 
     async loadMessages(){
