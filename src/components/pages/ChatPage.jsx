@@ -6,10 +6,10 @@ import { BsToggles, BsFileArrowUp } from "react-icons/bs";
 import { FiUploadCloud } from "react-icons/fi";
 import { withRouter } from "react-router-dom";
 import { BUYER, SELLER } from "../../constants";
-import { SkynetClient, genKeyPairFromSeed } from "skynet-js";
 import {
   getAddresses,
   getClientProvider,
+  getOrderDetail,
   getServiceProvider,
 } from "../../actions/orderActions";
 
@@ -21,10 +21,20 @@ class ChatPage extends Component {
     usera: "me",
     userb: null,
     loadId: null,
+    orderData: {},
   };
 
   async componentDidMount() {
     this.connectToSkyNet();
+
+    let data = await getOrderDetail(
+      this.props.web3,
+      this.props.account,
+      this.props.match.params.orderContract
+    );
+
+    console.log(data.data);
+    this.setState({ orderData: data.data });
   }
 
   connectToSkyNet = async () => {
@@ -88,23 +98,25 @@ class ChatPage extends Component {
       clearInterval(this.state.loadId);
     }
 
-    const msg = await that.state.chat.loadMessages();
-    if (msg.chat != that.state.messages) {
-      that.setState({
-        messages: msg.chat,
-      });
-    }
-
-    let loadId = setInterval(async () => {
+    if (that.state.chat) {
       const msg = await that.state.chat.loadMessages();
       if (msg.chat != that.state.messages) {
         that.setState({
           messages: msg.chat,
         });
       }
-    }, 5000);
 
-    this.setState({ loadId: loadId });
+      let loadId = setInterval(async () => {
+        const msg = await that.state.chat.loadMessages();
+        if (msg.chat != that.state.messages) {
+          that.setState({
+            messages: msg.chat,
+          });
+        }
+      }, 5000);
+
+      this.setState({ loadId: loadId });
+    }
   };
 
   handleInput = (e) => {
@@ -131,10 +143,18 @@ class ChatPage extends Component {
     return (
       <Container className="body-padding">
         <Row>
-          <Col md={3}>
-            <hr />
+          <Col md={4}>
+            {this.state.orderData.title && (
+              <>
+                <h3>{this.state.orderData.title}</h3>
+                <hr />
+                <h4>{this.state.orderData.price} Dai</h4>
+                <hr />
+                <p>{this.state.orderData.description.substring(0, 200)}..</p>
+              </>
+            )}
           </Col>
-          <Col md={9}>
+          <Col md={8}>
             <div className="chat-feed">
               <div className="chat-body" id="chat-body-div">
                 {this.state.messages.map((msg, inex) => (
