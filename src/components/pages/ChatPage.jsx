@@ -1,90 +1,122 @@
 import { Component } from "react";
 import { connect } from "react-redux";
 import { SkynetClient, genKeyPairFromSeed } from "skynet-js";
-import {Chat} from '../../controllers/Chat';
-import { Row, Col , Badge } from 'react-bootstrap';
-import {BsToggles , BsFileArrowUp} from "react-icons/bs";
-import {FiUploadCloud} from 'react-icons/fi';
+import { Chat } from "../../controllers/Chat";
+import { Row, Col, Badge, Container } from "react-bootstrap";
+import { BsToggles, BsFileArrowUp } from "react-icons/bs";
+import { FiUploadCloud } from "react-icons/fi";
 import { withRouter } from "react-router-dom";
 import { BUYER, SELLER } from "../../constants";
-import { getClientProvider, getServiceProvider } from "../../actions/orderActions";
- 
+import {
+  getAddresses,
+  getClientProvider,
+  getServiceProvider,
+} from "../../actions/orderActions";
+
 class ChatPage extends Component {
   state = {
     msg: "",
-    ipfs: null,
     chat: null,
     messages: [],
     usera: "me",
-    userb: "user-2",
+    userb: null,
+    loadId: null,
   };
 
-  async componentDidMount(){
-    // await this.chatPage("user1", "user2");
-    // await this.setData();
+  async componentDidMount() {
     this.connectToSkyNet();
   }
 
-  connectToSkyNet = async() => {
-    // let keys = {
-    //   "user-1" :  "some private text of user 1 test 1",
-    //   "user-2" :  "some private text of user 2 test 2",
-    // };
+  connectToSkyNet = async () => {
     const userType = this.getUserTpe(this.props.match.url);
-    let otheruser = '';
-    if(userType === BUYER){
-      otheruser = SELLER
+    let keys = [];
+
+    let addresses = await getAddresses(
+      this.props.accountConnection,
+      this.props.match.params.orderContract
+    );
+
+    let from = addresses.client;
+    let to = addresses.serviceProvider;
+
+    if (userType === BUYER) {
+      keys = await getClientProvider(
+        this.props.accountConnection,
+        this.props.account,
+        this.props.match.params.orderContract
+      );
     } else {
-      otheruser = BUYER
+      keys = await getServiceProvider(
+        this.props.accountConnection,
+        this.props.account,
+        this.props.match.params.orderContract
+      );
+
+      from = addresses.serviceProvider;
+      to = addresses.client;
     }
-    let keys = await getServiceProvider(this.props.accountConnection , this.props.account , this.props.match.params.orderContract);
-    const chat = new Chat(keys[0] , keys[1] , keys[2] , this.props.orderContract, this.props.account+'', otheruser);
+
+    const chat = new Chat(keys[0], keys[1], keys[2], "some-data", from, to);
 
     this.setState({
       chat: chat,
-      userb:otheruser,
-      usera:this.props.account
+      userb: to,
+      usera: from,
     });
 
     await this.keepLoadingData();
-  }
+  };
 
   getUserTpe = (locationUrl) => {
-    let param = locationUrl.split("/")[2]
+    let param = locationUrl.split("/")[2];
     return param;
-  }
+  };
 
-  componentDidUpdate(){
+  componentDidUpdate() {
     this.scrollToBottom();
   }
 
-  keepLoadingData = async() => {
+  componentWillUnmount() {
+    if (this.state.loadId) {
+      clearInterval(this.state.loadId);
+    }
+  }
+
+  keepLoadingData = async () => {
     const that = this;
-    // setInterval(async() => {
+    if (this.state.loadId) {
+      clearInterval(this.state.loadId);
+    }
+    let loadId = setInterval(async () => {
       const msg = await that.state.chat.loadMessages();
-      if(msg.chat != that.state.messages){
+      if (msg.chat != that.state.messages) {
         that.setState({
           messages: msg.chat,
-          msg:''
-        })
+        });
       }
-    // }, 3000);
-  }
+    }, 5000);
 
-  handleInput = (e) =>{
+    this.setState({ loadId: loadId });
+  };
+
+  handleInput = (e) => {
     this.setState({
-      msg: e.target.value
+      msg: e.target.value,
     });
-  }
+  };
 
-  sendMessage = async() => {
-    const that = this;
-    await this.state.chat.sendMessage(this.state.msg);
+  sendMessage = async () => {
+    if (this.state.msg != "") {
+      this.setState({
+        msg: "",
+      });
+      await this.state.chat.sendMessage(this.state.msg);
+    }
     await this.keepLoadingData();
-  }
+  };
 
   scrollToBottom() {
-    const objDiv = document.getElementById('chat-body-div');
+    const objDiv = document.getElementById("chat-body-div");
     objDiv.scrollTop = objDiv.scrollHeight;
   }
 
@@ -92,40 +124,48 @@ class ChatPage extends Component {
     this.setState({
       usera: "user-2",
       userb: "user-1",
-    })
-  }
+    });
+  };
 
   render() {
-
     return (
-      <>
+      <Container className="body-padding">
         <div className="chat-feed">
-          <div className="chat-title-container">
+          {/* <div className="chat-title-container">
               <div className="chat-title">
                 Me
               </div>
               <div className="chat-subtitle">
                 {this.state.userb}
               </div>
-          </div>
+          </div> */}
           <div className="chat-body" id="chat-body-div">
-          {this.state.messages.map((msg, inex) => (
-            <div key={inex} className="message-block">
-              <div className="message-row">
-                {msg.from}
-                <div className={(msg.from == this.state.usera)? "chat-right message" : "chat-left message" }>
-                  {/* <div className="messge"> */}
-                  {msg.msg}
-                  {this.state.usera}
-                  {/* </div> */}
+            {this.state.messages.map((msg, inex) => (
+              <div key={inex} className="message-block">
+                <div className="message-row">
+                  {/* <div className="name">{msg.from}</div> */}
+                  <div
+                    className={
+                      msg.from == this.state.usera
+                        ? "chat-right message"
+                        : "chat-left message"
+                    }
+                  >
+                    {msg.msg}
+                    {/* {this.state.usera} */}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
           </div>
           <div className="message-form-container">
             <div className="message-form">
-              <textarea className="message-input" onChange={this.handleInput} placeholder="Send a message ..." value={this.state.msg}  />
+              <textarea
+                className="message-input"
+                onChange={this.handleInput}
+                placeholder="Send a message ..."
+                value={this.state.msg}
+              />
               <span className="image-button"></span>
               {/* <button type="submit" className="send-button">
               </button> */}
@@ -135,13 +175,18 @@ class ChatPage extends Component {
               <button type="submit" className="toggle" title="Toggle User"  onClick={this.toggleUser}>
                 <BsToggles></BsToggles>
               </button> */}
-              <button type="submit" className="send-msg-button" title="Send Message" onClick={this.sendMessage}>
+              <button
+                type="submit"
+                className="send-msg-button"
+                title="Send Message"
+                onClick={this.sendMessage}
+              >
                 <BsFileArrowUp></BsFileArrowUp>
               </button>
             </div>
           </div>
         </div>
-      </>
+      </Container>
     );
   }
 }
@@ -153,13 +198,12 @@ function mapStateToProps(state) {
     web3,
     accountConnection,
     account,
-    contract
+    contract,
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-  };
+  return {};
 }
 
 export default withRouter(

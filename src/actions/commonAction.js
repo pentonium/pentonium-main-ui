@@ -3,7 +3,7 @@ import jsonData from '../data/category.json';
 import jobsData from '../data/jobsData.json';
 import customerData from '../data/customerData.json';
 import Web3 from "web3";
-import { CONTRACT_ADDRESS , CONTRACT_ABI , CATEGORY_CONTRACT_ADDRESS } from "../config";
+import { CATEGORY_CONTRACT_ADDRESS } from "../config";
 import { CATEGORY_CONTRACT_ABI } from '../config/abi/categoryContract';
 
 export const fetchParentCategories = () => ({
