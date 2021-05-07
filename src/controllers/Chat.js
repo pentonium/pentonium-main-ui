@@ -63,11 +63,21 @@ export class Chat{
         return this.messages;
     }
 
-    async sendMessage(msg){
-        
-        if(this.loadMessage == true){
-            return false;
+    async waitAndMessage (msg){
+        const that = this;
+        if(this.loadMessage){
+            const i = setInterval(async() => {
+                if(!that.loadMessage){
+                    clearInterval(i);
+                    await that.sendMessage(msg);
+                }
+            }, 500);
+        }else{
+            this.sendMessage(msg);
         }
+    }
+
+    async sendMessage(msg){
 
         if(!this.messages){
             this.messages = { chat: []}
