@@ -31,13 +31,15 @@ class NewCollection extends Component {
                   i <= 3 &&
                   hash.ipfs_hash != "" &&
                   hash.ipfs_hash != "abhbi" && (
+                    <Col 
+                    key={i} xs={12} sm={6} md={4} lg={3}>  
                     <CollectionItem
-                      key={i}
                       index={i}
                       hash={hash}
                       offerContract={this.props.categoryContract}
                       column="3"
                     ></CollectionItem>
+                    </Col>
                   )
                 );
               })

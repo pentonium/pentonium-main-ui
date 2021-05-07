@@ -211,7 +211,7 @@ class JobPost extends Component {
     return (
       <Container className="body-padding">
         <div style={{ maxWidth: "640px", margin: "auto" }}>
-          {!this.props.loading ? (
+          {(
             <>
               {!this.state.successful ? (
                 <>
@@ -240,6 +240,7 @@ class JobPost extends Component {
                           name="title"
                           placeholder="A Nice Title"
                           onChange={this.myChangeHandler}
+                          disabled={this.props.loading}
                           autoComplete="off"
                         />
                         <Form.Control.Feedback type="invalid">
@@ -260,6 +261,7 @@ class JobPost extends Component {
                           type="number"
                           name="duration"
                           placeholder="Duration"
+                          disabled={this.props.loading}
                           value={this.state.duration}
                           onChange={this.myChangeHandler}
                         />
@@ -277,6 +279,7 @@ class JobPost extends Component {
                           required
                           type="number"
                           name="price"
+                          disabled={this.props.loading}
                           placeholder="Price"
                           value={this.state.price}
                           onChange={this.myChangeHandler}
@@ -300,6 +303,7 @@ class JobPost extends Component {
                           as="select"
                           size="sm"
                           name="parentCategory"
+                          disabled={this.props.loading}
                           defaultValue="{''}"
                           custom
                           onChange={this.onSelectedOptionsChange.bind(this)}
@@ -329,9 +333,9 @@ class JobPost extends Component {
                           onClick={() => this.showModal(true)}
                           variant="primary"
                           size="sm"
-                          block
+                          block disabled={this.props.loading}
                         >
-                          New Category
+                          {this.props.loading ? 'Loading…' : 'New Category'}
                         </Button>
                       </Form.Group>
                     </Form.Row>
@@ -347,7 +351,7 @@ class JobPost extends Component {
                           placeholder="Type and press enter"
                           maxTags={10}
                           editable={true}
-                          readOnly={false}
+                          readOnly={this.props.loading}
                           removeOnBackspace={true}
                           onChange={(newTags) =>
                             this.handleTags(newTags, "skills")
@@ -370,7 +374,7 @@ class JobPost extends Component {
                         })}
                     </Form.Group>
                     <Form.Group controlId="validationCustom06">
-                      <input type="file" multiple onChange={this.captureFile} />
+                      <input type="file" disabled={this.props.loading} multiple onChange={this.captureFile} />
                     </Form.Group>
                     <Form.Group controlId="validationCustom07">
                       <Form.Label>Description</Form.Label>
@@ -378,6 +382,7 @@ class JobPost extends Component {
                         as="textarea"
                         name="description"
                         rows={3}
+                        disabled={this.props.loading}
                         onChange={this.myChangeHandler}
                         required
                       />
@@ -391,6 +396,7 @@ class JobPost extends Component {
                         as="textarea"
                         name="package"
                         rows={3}
+                        disabled={this.props.loading}
                         onChange={this.myChangeHandler}
                         required
                       />
@@ -406,6 +412,7 @@ class JobPost extends Component {
                         maxTags={15}
                         editable={true}
                         readOnly={false}
+                        readOnly={this.props.loading}
                         removeOnBackspace={true}
                         onChange={(newTags) =>
                           this.handleTags(newTags, "features")
@@ -414,9 +421,10 @@ class JobPost extends Component {
                     </Form.Group>
                     <Button
                       type="submit"
+                      disabled={this.props.loading}
                       className="submit btn btn-block btn-large"
                     >
-                      Submit
+                      {this.props.loading ? 'Loading…' : 'Submit'}
                     </Button>
                   </Form>
                 </>
@@ -432,11 +440,13 @@ class JobPost extends Component {
                 </div>
               )}
             </>
-          ) : (
-            <Spinner animation="border" role="status">
-              <span className="sr-only">Loading...</span>
-            </Spinner>
-          )}
+          )  
+          // (
+          //   <Spinner animation="border" role="status">
+          //     <span className="sr-only">Loading...</span>
+          //   </Spinner>
+          // )
+          }
         </div>
       </Container>
     );
