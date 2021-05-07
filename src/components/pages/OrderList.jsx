@@ -38,9 +38,9 @@ class OrderList extends Component {
   }
 
   getUserTpe = (locationUrl) => {
-    let param = locationUrl.split("/")[2]
+    let param = locationUrl.split("/")[2];
     return param;
-  }
+  };
 
   getOrderData = async () => {
     const userType = this.getUserTpe(this.props.match.url);
@@ -72,19 +72,18 @@ class OrderList extends Component {
   render() {
     const type = this.getUserTpe(this.props.match.url);
     return (
-      <div className="order-list-container">
-        <Container>
-          <Row>
-            {/* <Col md={1}>    
+      <Container className="body-padding">
+        <Row>
+          {/* <Col md={1}>    
                         <Button variant="primary" className={this.state.currentTab == 'buyer' ? 'active':''} onClick={() => this.changeTab('buyer')}>Buyer</Button>
                     </Col>
                     <Col md={1}>
                     <Button variant="primary" className={this.state.currentTab == 'seller' ? 'active':''} onClick={() => this.changeTab('seller')}>Seller</Button>
                     </Col> */}
-            <Col className="dashboard-menus" md={12}>
-              <nav className="site-nav">
-                <ul>
-                  {/* <li
+          <Col className="dashboard-menus" md={12}>
+            <nav className="site-nav">
+              <ul>
+                {/* <li
                     className={
                       this.state.currentTab == "dashboard" ? "active" : ""
                     }
@@ -96,73 +95,72 @@ class OrderList extends Component {
                       DashBorad
                     </a>
                   </li> */}
-                  <li
-                    className={
-                      this.state.currentTab == "orderlist" ? "active" : ""
-                    }
+                <li
+                  className={
+                    this.state.currentTab == "orderlist" ? "active" : ""
+                  }
+                >
+                  <a
+                    href="javaScript:void(0)"
+                    onClick={() => this.changeTab("orderlist")}
                   >
-                    <a
-                      href="javaScript:void(0)"
-                      onClick={() => this.changeTab("orderlist")}
-                    >
-                      OrderList
-                    </a>
-                  </li>
-                </ul>
-              </nav>
+                    OrderList
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </Col>
+        </Row>
+        {this.state.currentTab == "dashboard" && (
+          <Row>
+            <Col md={12} className="buyer">
+              <p className="dashboard-header">Statistics</p>
+              <Row className="buyer-stats">
+                <Col md={3}>
+                  <h3>100</h3>
+                  <h5>Number of orders</h5>
+                  <p>+14.00(+0.50%)</p>
+                </Col>
+                <Col md={3}>
+                  <h3>$32,451</h3>
+                  <h5>Total value of orders</h5>
+                  <p>+14.00(+0.50%)</p>
+                </Col>
+                <Col md={3}>
+                  <h3>80</h3>
+                  <h5>Successfully completed</h5>
+                  <p>+14.00(+0.50%)</p>
+                </Col>
+                <Col md={3}>
+                  <h3>20</h3>
+                  <h5>Rejected Orders</h5>
+                  <p>+14.00(+0.50%)</p>
+                </Col>
+              </Row>
             </Col>
           </Row>
-          {this.state.currentTab == "dashboard" && (
-            <Row>
-              <Col md={12} className="buyer">
-                <p className="dashboard-header">Statistics</p>
-                <Row className="buyer-stats">
-                  <Col md={3}>
-                    <h3>100</h3>
-                    <h5>Number of orders</h5>
-                    <p>+14.00(+0.50%)</p>
-                  </Col>
-                  <Col md={3}>
-                    <h3>$32,451</h3>
-                    <h5>Total value of orders</h5>
-                    <p>+14.00(+0.50%)</p>
-                  </Col>
-                  <Col md={3}>
-                    <h3>80</h3>
-                    <h5>Successfully completed</h5>
-                    <p>+14.00(+0.50%)</p>
-                  </Col>
-                  <Col md={3}>
-                    <h3>20</h3>
-                    <h5>Rejected Orders</h5>
-                    <p>+14.00(+0.50%)</p>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          )}
-          {this.state.currentTab == "orderlist" && (
-            <div className="order-list-page">
-              {this.props.list &&
-                !this.props.loading &&
-                this.props.list.map((value, i) => {
-                  return (
-                    <Row key={i} className="order-list-items">
-                      <OrderItemList
-                        orderContract={value}
-                        web3={this.props.accountConnection}
-                        history={this.props.history}
-                        account={this.props.account}
-                        column="3"
-                        type={type}
-                      ></OrderItemList>
-                    </Row>
-                  );
-                })}
-            </div>
-          )}
-        </Container>
-      </div>
+        )}
+        {this.state.currentTab == "orderlist" && (
+          <div className="order-list-page">
+            {this.props.list &&
+              !this.props.loading &&
+              this.props.list.map((value, i) => {
+                return (
+                  <Row key={i} className="order-list-items">
+                    <OrderItemList
+                      orderContract={value}
+                      web3={this.props.accountConnection}
+                      history={this.props.history}
+                      account={this.props.account}
+                      column="3"
+                      type={type}
+                    ></OrderItemList>
+                  </Row>
+                );
+              })}
+          </div>
+        )}
+      </Container>
     );
   }
 }
