@@ -116,12 +116,12 @@ class Header extends Component {
                             />
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
-                            <Dropdown.Item>
-                              <Link to="/order/buyer">Buyer</Link>
-                            </Dropdown.Item>
-                            <Dropdown.Item>
-                              <Link to="/order/seller">Seller</Link>
-                            </Dropdown.Item>
+                            <Link to="/order/buyer" className="dropdown-item">
+                              Buyer
+                            </Link>
+                            <Link to="/order/seller" className="dropdown-item">
+                              Seller
+                            </Link>
                           </Dropdown.Menu>
                         </Dropdown>
                       </div>

@@ -1,6 +1,5 @@
 import { Component } from "react";
 import { connect } from "react-redux";
-import { SkynetClient, genKeyPairFromSeed } from "skynet-js";
 import { Chat } from "../../controllers/Chat";
 import { Row, Col, Badge, Container } from "react-bootstrap";
 import { BsToggles, BsFileArrowUp } from "react-icons/bs";
@@ -10,6 +9,7 @@ import { BUYER, SELLER } from "../../constants";
 import {
   getAddresses,
   getClientProvider,
+  getOrderDetail,
   getServiceProvider,
 } from "../../actions/orderActions";
 
@@ -21,10 +21,20 @@ class ChatPage extends Component {
     usera: "me",
     userb: null,
     loadId: null,
+    orderData: {},
   };
 
   async componentDidMount() {
     this.connectToSkyNet();
+
+    let data = await getOrderDetail(
+      this.props.web3,
+      this.props.account,
+      this.props.match.params.orderContract
+    );
+
+    console.log(data.data);
+    this.setState({ orderData: data.data });
   }
 
   connectToSkyNet = async () => {
@@ -56,7 +66,7 @@ class ChatPage extends Component {
       to = addresses.client;
     }
 
-    const chat = new Chat(keys[0], keys[1], keys[2], "some-data", from, to);
+    const chat = new Chat(keys[0], keys[1], keys[2], "p2p-chat", from, to);
 
     this.setState({
       chat: chat,
@@ -87,16 +97,26 @@ class ChatPage extends Component {
     if (this.state.loadId) {
       clearInterval(this.state.loadId);
     }
-    let loadId = setInterval(async () => {
+
+    if (that.state.chat) {
       const msg = await that.state.chat.loadMessages();
       if (msg.chat != that.state.messages) {
         that.setState({
           messages: msg.chat,
         });
       }
-    }, 5000);
 
-    this.setState({ loadId: loadId });
+      let loadId = setInterval(async () => {
+        const msg = await that.state.chat.loadMessages();
+        if (msg.chat != that.state.messages) {
+          that.setState({
+            messages: msg.chat,
+          });
+        }
+      }, 5000);
+
+      this.setState({ loadId: loadId });
+    }
   };
 
   handleInput = (e) => {
@@ -110,9 +130,8 @@ class ChatPage extends Component {
       this.setState({
         msg: "",
       });
-      await this.state.chat.sendMessage(this.state.msg);
+      await this.state.chat.waitAndMessage(this.state.msg);
     }
-    await this.keepLoadingData();
   };
 
   scrollToBottom() {
@@ -120,72 +139,59 @@ class ChatPage extends Component {
     objDiv.scrollTop = objDiv.scrollHeight;
   }
 
-  toggleUser = () => {
-    this.setState({
-      usera: "user-2",
-      userb: "user-1",
-    });
-  };
-
   render() {
     return (
       <Container className="body-padding">
-        <div className="chat-feed">
-          {/* <div className="chat-title-container">
-              <div className="chat-title">
-                Me
+        <Row>
+          <Col md={4}>
+            {this.state.orderData.title && (
+              <>
+                <h3>{this.state.orderData.title}</h3>
+                <hr />
+                <h4>{this.state.orderData.price} Dai</h4>
+                <hr />
+                <p>{this.state.orderData.description.substring(0, 200)}..</p>
+              </>
+            )}
+          </Col>
+          <Col md={8}>
+            <div className="chat-feed">
+              <div className="chat-body" id="chat-body-div">
+                {this.state.messages.map((msg, inex) => (
+                  <div key={inex} className="message-block">
+                    <div className="message-row">
+                      <div
+                        className={
+                          msg.from == this.state.usera
+                            ? "chat-right message"
+                            : "chat-left message"
+                        }
+                      >
+                        {msg.msg}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                <br />
+                <br />
               </div>
-              <div className="chat-subtitle">
-                {this.state.userb}
-              </div>
-          </div> */}
-          <div className="chat-body" id="chat-body-div">
-            {this.state.messages.map((msg, inex) => (
-              <div key={inex} className="message-block">
-                <div className="message-row">
-                  {/* <div className="name">{msg.from}</div> */}
-                  <div
-                    className={
-                      msg.from == this.state.usera
-                        ? "chat-right message"
-                        : "chat-left message"
-                    }
-                  >
-                    {msg.msg}
-                    {/* {this.state.usera} */}
+              <div className="message-form-container">
+                <div className="message-form">
+                  <textarea
+                    className="message-input"
+                    onChange={this.handleInput}
+                    rows="3"
+                    placeholder="Send a message ..."
+                    value={this.state.msg}
+                  />
+                  <div className="send-msg-button" onClick={this.sendMessage}>
+                    Send
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
-          <div className="message-form-container">
-            <div className="message-form">
-              <textarea
-                className="message-input"
-                onChange={this.handleInput}
-                placeholder="Send a message ..."
-                value={this.state.msg}
-              />
-              <span className="image-button"></span>
-              {/* <button type="submit" className="send-button">
-              </button> */}
-              {/* <button type="submit" className="connect" title="Connect"  onClick={this.connectToSkyNet}>
-                <FiUploadCloud></FiUploadCloud>
-              </button>
-              <button type="submit" className="toggle" title="Toggle User"  onClick={this.toggleUser}>
-                <BsToggles></BsToggles>
-              </button> */}
-              <button
-                type="submit"
-                className="send-msg-button"
-                title="Send Message"
-                onClick={this.sendMessage}
-              >
-                <BsFileArrowUp></BsFileArrowUp>
-              </button>
             </div>
-          </div>
-        </div>
+          </Col>
+        </Row>
       </Container>
     );
   }

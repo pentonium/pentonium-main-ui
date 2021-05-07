@@ -1,14 +1,12 @@
 import React, { Component } from "react";
-import { connect } from 'react-redux';
-import {fetchCustomerData} from '../../actions/commonAction';
-import { withRouter } from 'react-router-dom';
-import { Row, Col , Badge, Container } from 'react-bootstrap'
+import { connect } from "react-redux";
+import { fetchCustomerData } from "../../actions/commonAction";
+import { withRouter } from "react-router-dom";
+import { Row, Col, Badge, Container } from "react-bootstrap";
 import { CollectionCard } from "../../controllers/CollectionCard";
 import { getUserGigs } from "../../actions/jobActions";
 import NewCollection from "../NewCollection";
 import CollectionItem from "../CollectionItem";
-
-
 
 class Customer extends Component {
     constructor(props){
@@ -32,7 +30,7 @@ class Customer extends Component {
             <>
                 <Container style={{'paddingTop':'13rem'}}>
                 <Row>
-                <Col md={4} lg={4} sm={12} xs={12}>
+                <Col md={3} lg={3} sm={12} xs={12}>
                     <Row className="top-profile-section">
                         <Col md={12} sm={12} lg={12} xs={12}>
                             <div className="profile-section">
@@ -70,7 +68,7 @@ class Customer extends Component {
                         </Col>
                     </Row> */}
                 </Col>
-                <Col lg={8} md={8} sm={12} xs={12} className="collections-seller">
+                <Col lg={9} md={9} sm={12} xs={12} className="collections-seller">
                         <h1>User Gigs</h1>
                         <Row className="collections">
                         {this.state.gigData && this.state.gigData.length > 0 && 
@@ -96,20 +94,26 @@ class Customer extends Component {
     }
 }
 
-function mapStateToProps(state){
-    console.log(state.common);
-    const { web3, accountConnection, account, contract } = state.common;
-    return {
-        // customerData: state.common.customerData,
-        // jobData: state.common.jobData,
-        web3,accountConnection,account,contract
-      };
-  }
-  
-function mapDispatchToProps(dispatch){
-    return{
-        fetchCustomerData: (id) => dispatch(fetchCustomerData(id))
-    }
+function mapStateToProps(state) {
+  console.log(state.common);
+  const { web3, accountConnection, account, contract } = state.common;
+  return {
+    // customerData: state.common.customerData,
+    // jobData: state.common.jobData,
+    web3,
+    accountConnection,
+    account,
+    contract,
+  };
 }
- 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Customer))
+
+function mapDispatchToProps(dispatch) {
+  return {
+    fetchCustomerData: (id) => dispatch(fetchCustomerData(id)),
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(Customer));
