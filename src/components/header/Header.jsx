@@ -91,25 +91,18 @@ class Header extends Component {
     this.props.history.push("/post-job");
   }
 
-  naviagteToUser = (type) => {
-    this.props.history.push(`/order/${type}`);
-  };
-
   render() {
     return (
       <>
-        <header className={"header " + (!this.state.showSub && "transparent")}>
+        <header className={"header " + (!this.state.showSub && "")}>
           <div className="header-core">
             <div className="container">
               <div className="nav-section">
                 <ul className="nav-items">
                   <li key="inr" className="nav-item">
-                    <button
-                      className="btn btn-secondary post-btn"
-                      onClick={this.navigateToPost.bind(this)}
-                    >
+                    <Link to="/post-job" className="btn btn-secondary post-btn">
                       Post
-                    </button>
+                    </Link>
                   </li>
                   <li key="connect" className="nav-item">
                     {this.props.account ? (
@@ -123,15 +116,11 @@ class Header extends Component {
                             />
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
-                            <Dropdown.Item
-                              onClick={() => this.naviagteToUser("buyer")}
-                            >
-                              Buyer
+                            <Dropdown.Item>
+                              <Link to="/order/buyer">Buyer</Link>
                             </Dropdown.Item>
-                            <Dropdown.Item
-                              onClick={() => this.naviagteToUser("seller")}
-                            >
-                              Seller
+                            <Dropdown.Item>
+                              <Link to="/order/seller">Seller</Link>
                             </Dropdown.Item>
                           </Dropdown.Menu>
                         </Dropdown>

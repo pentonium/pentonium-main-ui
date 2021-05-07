@@ -50,18 +50,25 @@ export const updateOrderStatus =  async (web3 , account ,orderContract , status)
 }
 
 export const getServiceProvider =  async (web3 , account , orderContract) =>  {
-    // console.log(orderContract);
     let contract = new web3.eth.Contract(ORDER_CONTRACT_ABI , orderContract);
     let data = await contract.methods.getServiceProviderRequirements().call({from: account});
     return data;
-    // await contract.methods.
-    // return await fetchDataFromHash(contract);
+
 }
 
 export const getClientProvider = async (web3 , account , orderContract) =>  {
     let contract = new web3.eth.Contract(ORDER_CONTRACT_ABI , orderContract);
-    let data = await contract.methods.getClientProviderRequirements().call({from: account});
+    let data = await contract.methods.getClientRequirements().call({from: account});
     return data;
-    // console.log('Contract' , contract);
-    // return await fetchDataFromHash(contract);
+}
+
+export const getAddresses = async (web3, orderContract) => {
+    let contract = new web3.eth.Contract(ORDER_CONTRACT_ABI , orderContract);
+    let client = await contract.methods.client().call();
+    let service_provider = await contract.methods.service_provider().call();
+
+    return {
+        client: client,
+        serviceProvider: service_provider
+    }
 }
