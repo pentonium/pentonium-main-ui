@@ -1,19 +1,20 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { Row, Col , Badge , InputGroup , Form , Button} from 'react-bootstrap';
+import { Row, Col , Badge , InputGroup , Form , Button , Container} from 'react-bootstrap';
 import {fetchParentCategories} from '../../actions/commonAction';
 import {fetchCategories} from '../../actions/categoryActions';
 import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
 import ipfs from '../../ipfs';
 import { withRouter } from 'react-router-dom';
-import {fetchData} from '../../actions/categoryActions';
+import {fetchData , createNewCategory} from '../../actions/categoryActions';
 import LazyImage from '../../controllers/LazyImage';
 import {updateJob} from '../../actions/jobActions';
 import {getJobDetail} from '../../actions/jobActions';
 import { getCategoriesList } from "../../actions/categoryListAction";
 import {connectIfAuthorized} from '../../actions/commonAction';
 import Spinner from 'react-bootstrap/Spinner';
+import { NewCategoryModal } from "../../controllers/NewCategoryModal";
 
 
 class JobEdit extends Component {
@@ -34,11 +35,16 @@ class JobEdit extends Component {
             dataHash:"",
             offerContract:'',
             price:0,
-            jobId:0
+            jobId:0,
+            modalShow: false,
+            newcat: "",
+            catFormValidated: false,
         }
         this.captureFile = this.captureFile.bind(this);
         this.uploadFormData = this.uploadFormData.bind(this);
         this.getFileData = this.getFileData.bind(this);
+        this.handleNewCategorySubmit = this.handleNewCategorySubmit.bind(this);
+        this.showModal = this.showModal.bind(this);
     }
 
     async componentDidMount(){
@@ -71,7 +77,7 @@ class JobEdit extends Component {
             return
           }
           this.setState({dataHash:result[0].hash});
-          await this.props.updateJob(this.props.web3 , this.state.offerContract , this.state.dataHash , this.state.imageHash[0] ,uploadData.price , this.state.jobId , this.props.account );
+          await this.props.updateJob(this.props.accountConnection , this.state.offerContract , this.state.dataHash , this.state.imageHash[0] ,uploadData.price , this.state.jobId , this.props.account , uploadData.duration );
           this.setState({successful:true});
           // this.getFileData();
         });
@@ -97,6 +103,10 @@ class JobEdit extends Component {
           }
           this.setState({validated:true});
     };
+
+    showModal(flag) {
+      this.setState({ modalShow: flag, catFormValidated: false });
+    }
 
     onSelectedOptionsChange(event){
         const value = event.currentTarget.value;
@@ -145,159 +155,409 @@ class JobEdit extends Component {
       }
     }
 
+    async handleNewCategorySubmit(event) {
+      const form = event.currentTarget;
+      event.preventDefault();
+      if (form.checkValidity() === false) {
+        event.preventDefault();
+        event.stopPropagation();
+      } else {
+        // this.setState({catFormValidated:true});
+        await this.props.createNewCategory(
+          this.state.newcat,
+          this.props.account,
+          this.props.contract
+        );
+        this.showModal(false);
+      }
+    }
+
     render() {
         return (
-            <div style = {{'width':'100%'}}>
-              {!this.props.loading ?
-              <>
-              {
-                !this.state.successful ?
-                this.state.hashedData && 
-                <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit.bind(this)}>
-                <Form.Row>
-                  <Form.Group as={Col} md="6" controlId="validationCustom01">
-                    <Form.Label>Gig Title</Form.Label>
-                    <Form.Control
-                      required
-                      type="text"
-                      name="title"
-                      placeholder="Enter title for your gig"
-                      value={this.state.title}
-                      onChange={this.myChangeHandler}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      Please provide a valid title.
-                    </Form.Control.Feedback>
-                  </Form.Group>
-                  <Form.Group as={Col} md="6" controlId="validationCustom02">
-                    <Form.Label>Duration (in months):</Form.Label>
-                    <Form.Control
-                      required
-                      type="number"
-                      name="duration"
-                      placeholder="Duration"
-                      value={this.state.duration}
-                      onChange={this.myChangeHandler}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      Please provide a valid duration.
-                    </Form.Control.Feedback>
-                  </Form.Group>
-                </Form.Row>
-                <Form.Row>
-                    <Form.Group as={Col} md="6" controlId="validationCustom03">
-                        <Form.Label>Select Parent Category</Form.Label>
-                        <Form.Control required as="select" size="sm" name="parentCategory" value={this.state.parentCategory}  custom onChange={this.onSelectedOptionsChange.bind(this)} >
-                        <option value={''}>Choose...</option>   
-                        {this.props.categoryList &&
-                          this.props.categoryList.map((parent) => {
-                          return <option key={parent.id} value={parent.id}>{parent.name}</option>
-                          })
-                        } 
-                        </Form.Control>
-                    </Form.Group>
-                    {/* <Form.Group as={Col} md="6" controlId="validationCustom04">
-                        <Form.Label>Select Category</Form.Label>
-                        <Form.Control required as="select" size="sm" name="category" value={this.state.category}  custom  onChange={this.myChangeHandler} >
-                        <option value={''}>Choose...</option>   
-                        {this.props.categories &&
-                          this.props.categories.categories.map((category) => {
-                          return <option key={category.id} value={category.id}>{category.name}</option>
-                          })
-                        } 
-                        </Form.Control>
-                    </Form.Group> */}
-                    <Form.Group as={Col} md="6" controlId="validationCustom04">
-                      <Form.Label>Price (in dollar):</Form.Label>
-                      <Form.Control
-                        required
-                        type="number"
-                        name="price"
-                        placeholder="Price"
-                        value={this.state.price}
-                        onChange={this.myChangeHandler}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        Please provide a valid price.
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                </Form.Row>
-                <Form.Group controlId="validationCustom05">
-                <Form.Label>Skills</Form.Label>  
-                <ReactTagInput 
-                    tags={this.state.tags.length > 0 ? this.state.tags : []} 
-                    placeholder="Type and press enter"
-                    maxTags={10}
-                    editable={true}
-                    readOnly={false}
-                    removeOnBackspace={true}
-                    onChange={(newTags) => this.handleTags(newTags , 'skills')}
-                  />
-                </Form.Group>
-                <Form.Group controlId="validationCustom08">
-                    <h6>Selected Images:</h6>  
-                    <div className="lazy-loaded-images">
-                    {this.state.imageHash && this.state.imageHash.map((preview , i) => {
-                      return <LazyImage
-                      key={i}
-                      src={`https://ipfs.io/ipfs/${preview}`}
-                      alt="EDdit image"
-                      />
-                      // <img className="edit-image" style={{'width':'200px','marginRight':'10px','marginBottom':'10px'}} src={`https://ipfs.io/ipfs/${preview}`} alt="" />
-                    })}  
-                    </div> 
-                </Form.Group>
-                <Form.Group controlId="validationCustom06">
-                        <h6>Upload New Image</h6>  
-                        <input type="file" multiple onChange={this.captureFile} />
-                </Form.Group>
-                <Form.Group controlId="validationCustom07">
-                    <Form.Label>Description</Form.Label>
-                    <Form.Control as="textarea" name="description" value={this.state.description} rows={3} onChange={this.myChangeHandler} required />
-                    <Form.Control.Feedback type="invalid">
-                      Description field is required.
-                    </Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group controlId="validationCustom09">
-                  <Form.Label>Package Content</Form.Label>
-                  <Form.Control as="textarea" name="package" value={this.state.package} rows={3} onChange={this.myChangeHandler} required/>
-                  <Form.Control.Feedback type="invalid">
-                    Package field is required.
-                  </Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group controlId="validationCustom10">
-                <Form.Label>Features</Form.Label>  
-                <ReactTagInput 
-                    tags={this.state.features && this.state.features.length > 0 ? this.state.features : []} 
-                    placeholder="Type and press enter"
-                    maxTags={15}
-                    editable={true}
-                    readOnly={false}
-                    removeOnBackspace={true}
-                    onChange={(newTags) => this.handleTags(newTags , 'features')}
-                  />
-                </Form.Group>
-                <Button type="submit">Submit form</Button>
-              </Form>:
-              !this.props.error ? 
-              <div>
-                <p className="text-center">You're job has been posted successfully</p>
-              </div>:
-                <div>
-                  <p className="text-center">Error posting the job</p>
-                </div>
-              }
-              </>:
-              !this.props.error ?
-              <Spinner animation="border" role="status">
-                <span className="sr-only">Loading...</span>
-              </Spinner>:
-              <div>
-              <p className="text-center">Error posting the job</p>
-              </div>
-              }
-            </div>
-            
+            // <div style = {{'width':'100%'}}>
+            //   {!this.props.loading ?
+            //   <>
+            //   {
+            //     !this.state.successful ?
+            //     this.state.hashedData && 
+            //     <Form noValidate validated={this.state.validated} onSubmit={this.handleSubmit.bind(this)}>
+            //     <Form.Row>
+            //       <Form.Group as={Col} md="6" controlId="validationCustom01">
+            //         <Form.Label>Gig Title</Form.Label>
+            //         <Form.Control
+            //           required
+            //           type="text"
+            //           name="title"
+            //           placeholder="Enter title for your gig"
+            //           value={this.state.title}
+            //           onChange={this.myChangeHandler}
+            //         />
+            //         <Form.Control.Feedback type="invalid">
+            //           Please provide a valid title.
+            //         </Form.Control.Feedback>
+            //       </Form.Group>
+            //       <Form.Group as={Col} md="6" controlId="validationCustom02">
+            //         <Form.Label>Duration (in months):</Form.Label>
+            //         <Form.Control
+            //           required
+            //           type="number"
+            //           name="duration"
+            //           placeholder="Duration"
+            //           value={this.state.duration}
+            //           onChange={this.myChangeHandler}
+            //         />
+            //         <Form.Control.Feedback type="invalid">
+            //           Please provide a valid duration.
+            //         </Form.Control.Feedback>
+            //       </Form.Group>
+            //     </Form.Row>
+            //     <Form.Row>
+            //         <Form.Group as={Col} md="6" controlId="validationCustom03">
+            //             <Form.Label>Select Parent Category</Form.Label>
+            //             <Form.Control required as="select" size="sm" name="parentCategory" value={this.state.parentCategory}  custom onChange={this.onSelectedOptionsChange.bind(this)} >
+            //             <option value={''}>Choose...</option>   
+            //             {this.props.categoryList &&
+            //               this.props.categoryList.map((parent) => {
+            //               return <option key={parent.id} value={parent.id}>{parent.name}</option>
+            //               })
+            //             } 
+            //             </Form.Control>
+            //         </Form.Group>
+            //         {/* <Form.Group as={Col} md="6" controlId="validationCustom04">
+            //             <Form.Label>Select Category</Form.Label>
+            //             <Form.Control required as="select" size="sm" name="category" value={this.state.category}  custom  onChange={this.myChangeHandler} >
+            //             <option value={''}>Choose...</option>   
+            //             {this.props.categories &&
+            //               this.props.categories.categories.map((category) => {
+            //               return <option key={category.id} value={category.id}>{category.name}</option>
+            //               })
+            //             } 
+            //             </Form.Control>
+            //         </Form.Group> */}
+            //         <Form.Group as={Col} md="6" controlId="validationCustom04">
+            //           <Form.Label>Price (in dollar):</Form.Label>
+            //           <Form.Control
+            //             required
+            //             type="number"
+            //             name="price"
+            //             placeholder="Price"
+            //             value={this.state.price}
+            //             onChange={this.myChangeHandler}
+            //           />
+            //           <Form.Control.Feedback type="invalid">
+            //             Please provide a valid price.
+            //           </Form.Control.Feedback>
+            //         </Form.Group>
+            //     </Form.Row>
+            //     <Form.Group controlId="validationCustom05">
+            //     <Form.Label>Skills</Form.Label>  
+            //     <ReactTagInput 
+            //         tags={this.state.tags.length > 0 ? this.state.tags : []} 
+            //         placeholder="Type and press enter"
+            //         maxTags={10}
+            //         editable={true}
+            //         readOnly={false}
+            //         removeOnBackspace={true}
+            //         onChange={(newTags) => this.handleTags(newTags , 'skills')}
+            //       />
+            //     </Form.Group>
+            //     <Form.Group controlId="validationCustom08">
+            //         <h6>Selected Images:</h6>  
+            //         <div className="lazy-loaded-images">
+            //         {this.state.imageHash && this.state.imageHash.map((preview , i) => {
+            //           return <LazyImage
+            //           key={i}
+            //           src={`https://ipfs.io/ipfs/${preview}`}
+            //           alt="EDdit image"
+            //           />
+            //           // <img className="edit-image" style={{'width':'200px','marginRight':'10px','marginBottom':'10px'}} src={`https://ipfs.io/ipfs/${preview}`} alt="" />
+            //         })}  
+            //         </div> 
+            //     </Form.Group>
+            //     <Form.Group controlId="validationCustom06">
+            //             <h6>Upload New Image</h6>  
+            //             <input type="file" multiple onChange={this.captureFile} />
+            //     </Form.Group>
+            //     <Form.Group controlId="validationCustom07">
+            //         <Form.Label>Description</Form.Label>
+            //         <Form.Control as="textarea" name="description" value={this.state.description} rows={3} onChange={this.myChangeHandler} required />
+            //         <Form.Control.Feedback type="invalid">
+            //           Description field is required.
+            //         </Form.Control.Feedback>
+            //     </Form.Group>
+            //     <Form.Group controlId="validationCustom09">
+            //       <Form.Label>Package Content</Form.Label>
+            //       <Form.Control as="textarea" name="package" value={this.state.package} rows={3} onChange={this.myChangeHandler} required/>
+            //       <Form.Control.Feedback type="invalid">
+            //         Package field is required.
+            //       </Form.Control.Feedback>
+            //     </Form.Group>
+            //     <Form.Group controlId="validationCustom10">
+            //     <Form.Label>Features</Form.Label>  
+            //     <ReactTagInput 
+            //         tags={this.state.features && this.state.features.length > 0 ? this.state.features : []} 
+            //         placeholder="Type and press enter"
+            //         maxTags={15}
+            //         editable={true}
+            //         readOnly={false}
+            //         removeOnBackspace={true}
+            //         onChange={(newTags) => this.handleTags(newTags , 'features')}
+            //       />
+            //     </Form.Group>
+            //     <Button type="submit">Submit form</Button>
+            //   </Form>:
+            //   !this.props.error ? 
+            //   <div>
+            //     <p className="text-center">You're job has been posted successfully</p>
+            //   </div>:
+            //     <div>
+            //       <p className="text-center">Error posting the job</p>
+            //     </div>
+            //   }
+            //   </>:
+            //   !this.props.error ?
+            //   <Spinner animation="border" role="status">
+            //     <span className="sr-only">Loading...</span>
+            //   </Spinner>:
+            //   <div>
+            //   <p className="text-center">Error posting the job</p>
+            //   </div>
+            //   }
+            // </div>
+            // Remove the above commented code if everythings work perfectly fine
+             <Container className="body-padding">
+             <div style={{ maxWidth: "640px", margin: "auto" }}>
+               {!this.props.loading ? (
+                 <>
+                   {!this.state.successful ? (
+                     <>
+                       <NewCategoryModal
+                         show={this.state.modalShow}
+                         onHide={() => this.showModal(false)}
+                         myChangeHandler={this.myChangeHandler}
+                         validation={this.state.catFormValidated}
+                         handleSubmit={this.handleNewCategorySubmit}
+                       ></NewCategoryModal>
+                       <Form
+                         noValidate
+                         validated={this.state.validated}
+                         onSubmit={this.handleSubmit.bind(this)}
+                       >
+                         <Form.Row>
+                           <Form.Group
+                             as={Col}
+                             lg="12"
+                             controlId="validationCustom01"
+                           >
+                             <Form.Label>Gig Title</Form.Label>
+                             <Form.Control
+                               required
+                               type="text"
+                               name="title"
+                               value={this.state.title}
+                               placeholder="A Nice Title"
+                               onChange={this.myChangeHandler}
+                               autoComplete="off"
+                             />
+                             <Form.Control.Feedback type="invalid">
+                               Please provide a valid title.
+                             </Form.Control.Feedback>
+                           </Form.Group>
+                         </Form.Row>
+     
+                         <Form.Row>
+                           <Form.Group
+                             as={Col}
+                             md="6"
+                             controlId="validationCustom02"
+                           >
+                             <Form.Label>Duration (In Days):</Form.Label>
+                             <Form.Control
+                               required
+                               type="number"
+                               name="duration"
+                               placeholder="Duration"
+                               value={this.state.duration}
+                               onChange={this.myChangeHandler}
+                             />
+                             <Form.Control.Feedback type="invalid">
+                               Please provide a valid duration.
+                             </Form.Control.Feedback>
+                           </Form.Group>
+                           <Form.Group
+                             as={Col}
+                             md="6"
+                             controlId="validationCustom04"
+                           >
+                             <Form.Label>Price (In Dai):</Form.Label>
+                             <Form.Control
+                               required
+                               type="number"
+                               name="price"
+                               placeholder="Price"
+                               value={this.state.price}
+                               onChange={this.myChangeHandler}
+                             />
+                             <Form.Control.Feedback type="invalid">
+                               Please provide a valid price.
+                             </Form.Control.Feedback>
+                           </Form.Group>
+                         </Form.Row>
+                         <Form.Row>
+                           <Form.Group
+                             as={Col}
+                             md="8"
+                             controlId="validationCustom03"
+                           >
+                             <Form.Label>
+                               <span>Select Parent Category</span>
+                             </Form.Label>
+                             <Form.Control
+                               required
+                               as="select"
+                               size="sm"
+                               value={this.state.parentCategory} 
+                               name="parentCategory"
+                               custom
+                               onChange={this.onSelectedOptionsChange.bind(this)}
+                             >
+                               <option value={""}>Choose...</option>
+                               {this.props.categoryList &&
+                                 this.props.categoryList.map((parent) => {
+                                   return (
+                                     <option
+                                       key={parent.name}
+                                       value={parent.name}
+                                       contract={parent.offer}
+                                     >
+                                       {parent.name}
+                                     </option>
+                                   );
+                                 })}
+                             </Form.Control>
+                           </Form.Group>
+                           <Form.Group
+                             as={Col}
+                             md="4"
+                             controlId="validationCustom03"
+                           >
+                             <Button
+                               className="new-category-button"
+                               onClick={() => this.showModal(true)}
+                               variant="primary"
+                               size="sm"
+                               block
+                             >
+                               New Category
+                             </Button>
+                           </Form.Group>
+                         </Form.Row>
+                         <Form.Row>
+                           <Form.Group
+                             as={Col}
+                             md="12"
+                             controlId="validationCustom05"
+                           >
+                             <Form.Label>Skills</Form.Label>
+                             <ReactTagInput
+                               tags={this.state.tags.length > 0 ? this.state.tags : []}
+                               placeholder="Type and press enter"
+                               maxTags={10}
+                               editable={true}
+                               readOnly={false}
+                               removeOnBackspace={true}
+                               onChange={(newTags) =>
+                                 this.handleTags(newTags, "skills")
+                               }
+                             />
+                           </Form.Group>
+                         </Form.Row>
+                         <Form.Group
+                           controlId="validationCustom08"
+                           className="image-selector"
+                         >
+                           <h6 cla>Selected Images:</h6>
+                           {this.state.imageHash && 
+                             this.state.imageHash.map((preview, i) => {
+                               return (
+                                 <div class="edit-image" key={i}>
+                                   <img src={preview} alt="" />
+                                 </div>
+                               );
+                             })}
+                         </Form.Group>
+                         <Form.Group controlId="validationCustom06">
+                           <input type="file" multiple onChange={this.captureFile} />
+                         </Form.Group>
+                         <Form.Group controlId="validationCustom07">
+                           <Form.Label>Description</Form.Label>
+                           <Form.Control
+                             as="textarea"
+                             name="description"
+                             value={this.state.description}
+                             rows={3}
+                             onChange={this.myChangeHandler}
+                             required
+                           />
+                           <Form.Control.Feedback type="invalid">
+                             Description field is required.
+                           </Form.Control.Feedback>
+                         </Form.Group>
+                         <Form.Group controlId="validationCustom09">
+                           <Form.Label>Package Content</Form.Label>
+                           <Form.Control
+                             as="textarea"
+                             name="package"
+                             value={this.state.package}
+                             rows={3}
+                             onChange={this.myChangeHandler}
+                             required
+                           />
+                           <Form.Control.Feedback type="invalid">
+                             Package field is required.
+                           </Form.Control.Feedback>
+                         </Form.Group>
+                         <Form.Group controlId="validationCustom10">
+                           <Form.Label>Features</Form.Label>
+                           <ReactTagInput
+                             tags={this.state.features && this.state.features.length > 0 ? this.state.features : []}
+                             placeholder="Type and press enter"
+                             maxTags={15}
+                             editable={true}
+                             readOnly={false}
+                             removeOnBackspace={true}
+                             onChange={(newTags) =>
+                               this.handleTags(newTags, "features")
+                             }
+                           />
+                         </Form.Group>
+                         <Button
+                           type="submit"
+                           className="submit btn btn-block btn-large"
+                         >
+                           Submit
+                         </Button>
+                       </Form>
+                     </>
+                   ) : !this.props.error ? (
+                     <div>
+                       <p className="text-center">
+                         You're job has been posted successfully
+                       </p>
+                     </div>
+                   ) : (
+                     <div>
+                       <p className="text-center">Error posting the job</p>
+                     </div>
+                   )}
+                 </>
+               ) : (
+                 <Spinner animation="border" role="status">
+                   <span className="sr-only">Loading...</span>
+                 </Spinner>
+               )}
+             </div>
+           </Container>
          );
     }
 }
@@ -305,7 +565,7 @@ class JobEdit extends Component {
 function mapStateToProps(state){
   let error = false;
   let loading = true;
-  const { web3, account , contract  } = state.common;
+  const { web3, account , contract , accountConnection  } = state.common;
   error = state.jobReducer.error;
   loading = state.jobReducer.loading;
   const {detailData} = state.jobReducer;
@@ -318,7 +578,8 @@ function mapStateToProps(state){
       account,
       loading,
       error,
-      contract,detailData,categoryList
+      contract,detailData,categoryList,
+      accountConnection
       };
   }
   
@@ -327,7 +588,9 @@ function mapDispatchToProps(dispatch){
       fetchParentCategories: () => dispatch(fetchParentCategories()),
       fetchCategories: (id) => dispatch(fetchCategories(id)),
       fetchHashJobData: (id) => dispatch(fetchData(id)),
-      updateJob:(web3 , contract , hash , thumbnail , price , id , account) => dispatch(updateJob(web3 , contract , hash , thumbnail , price , id , account)),
+      createNewCategory: (name, addr, contract) =>
+      dispatch(createNewCategory(name, addr, contract)),
+      updateJob:(web3 , contract , hash , thumbnail , price , id , account , duration) => dispatch(updateJob(web3 , contract , hash , thumbnail , price , id , account , duration)),
       connectIfAuthorized:() => dispatch(connectIfAuthorized()),
       getCategoriesList:(contract,account) => dispatch(getCategoriesList(contract,account)),
       getJobDetail:(web3 , id , offerContract) => dispatch(getJobDetail(web3 , id , offerContract))
