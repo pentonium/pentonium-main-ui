@@ -1,13 +1,11 @@
 import Home from "./components/pages/Home";
-import Categories from "./components/pages/Categories";
+import JobList from "./components/pages/JobList";
 import JobDescription from './components/pages/JobDescription';
-import Customer from "./components/pages/Customer";
+import CustomerJobList from "./components/pages/CustomerJobList";
 import JobPost from "./components/pages/JobPost";
 import JobEdit from "./components/pages/JobEdit";
-import IPFSChat from "./controllers/IPFSChat";
 import ChatPage from "./components/pages/ChatPage";
-import Category from "./components/pages/Category";
-import Dashboard from "./components/pages/Dashboard";
+import CategoryList from "./components/pages/CategoryList";
 import OrderList from "./components/pages/OrderList";
 import NotFound from "./components/pages/NotFound";
 
@@ -18,23 +16,23 @@ export const routes = [
         component: Home
     },
     {
-        path: "/categories/:id",
+        path: "/list/:id",
         exact: true,
-        component: Categories
+        component: JobList
     },
     {
-        path: "/category",
+        path: "/categories",
         exact: true,
-        component: Category
+        component: CategoryList
     },
     {
-        path: "/jobs/:jobId/:offerContract",
+        path: "/list/:jobId/:offerContract",
         exact: true,
         component: JobDescription
     },{
         path: "/customers/:customerId",
         exact: true,
-        component: Customer
+        component: CustomerJobList
     },{
         path: "/post-job",
         exact: true,
@@ -51,10 +49,6 @@ export const routes = [
         path: "/chatpage/seller/:orderContract",
         exact: true,
         component: ChatPage
-    },{
-        path:'/dashboard',
-        exact:true,
-        component:Dashboard
     },{
         path:'/order/seller',
         exact:true,

@@ -23,11 +23,6 @@ class Header extends Component {
   state = {
     showSub: true,
   };
-  async componentWillMount() {
-    // await this.props.connectWallet();
-    // await this.props.connectIfAuthorized();
-    // await this.props.getCategoriesList(this.props.contract, this.props.account);
-  }
 
   componentDidMount() {
     if (this.props.onScroll) {
@@ -50,46 +45,9 @@ class Header extends Component {
     }
   };
 
-  // async checkLoggedIn() {
-  //   if (window.web3 !== undefined) {
-  //     if (window.ethereum) {
-  //       const web3 = new Web3(window.ethereum);
-  //       try {
-  //         var loggedIn = await web3.eth.getAccounts();
-  //         if (loggedIn.length > 0) {
-  //           this.setState({ active: true });
-  //         }
-  //       } catch (e) {
-  //         console.error(e);
-  //       }
-  //     }
-  //   }
-  // }
-
-  // async connectWithMetaMask() {
-  //   if (window.web3 !== undefined) {
-  //     if (window.ethereum) {
-  //       const web3 = new Web3(window.ethereum);
-  //       try {
-  //         await window.ethereum.enable();
-  //         var accounts = await web3.eth.getAccounts();
-  //         var firstAcc = accounts[0];
-  //         this.setState({ active: true });
-  //       } catch (e) {
-  //         console.error(e);
-  //       }
-  //     }
-  //   }
-  // }
-
   connectToMetaMask = async () => {
     await this.props.connectWallet();
-    // await this.props.getCategoriesList(this.props.contract, this.props.account);
   };
-
-  navigateToPost() {
-    this.props.history.push("/post-job");
-  }
 
   render() {
     return (
@@ -138,7 +96,6 @@ class Header extends Component {
               </div>
               <div className="logo-section">
                 <Link to="/">
-                  {/* <span className="header-logo"></span> */}
                   <img src={logo} alt="" />
                 </Link>
               </div>
@@ -151,14 +108,14 @@ class Header extends Component {
                   {CATEGORY_LIST.map((value, index) => {
                     return (
                       <li key={index} className="li-nav-item">
-                        <Link to={`/categories/${value.address}`}>
+                        <Link to={`/list/${value.address}`}>
                           <span>{value.name}</span>
                         </Link>
                       </li>
                     );
                   })}
                   <li className="li-nav-item">
-                    <Link aria-controls={"view-all"} to={"/category"}>
+                    <Link aria-controls={"view-all"} to={"/categories"}>
                       <span>View All</span>
                     </Link>
                   </li>

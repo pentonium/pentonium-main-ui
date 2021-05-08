@@ -4,12 +4,10 @@ import { Link, withRouter } from "react-router-dom";
 import { Row, Col, Badge, Container } from "react-bootstrap";
 import { fetchData } from "../../actions/categoryActions";
 import Carousel from "react-bootstrap/Carousel";
-import { UserPriceDetail } from "../../controllers/UserPriceDetail";
 import { deleteJob, getJobDetail, placeOrder } from "../../actions/jobActions";
-import { getCategoriesList } from "../../actions/categoryListAction";
-import { connectIfAuthorized, connectWallet } from "../../actions/commonAction";
 import Spinner from "react-bootstrap/Spinner";
 import { genKeyPairFromSeed } from "skynet-js";
+import { UserPriceDetail } from "../UserPriceDetail.jsx";
 
 class JobDescription extends Component {
   constructor(props) {

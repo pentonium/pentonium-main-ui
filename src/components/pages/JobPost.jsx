@@ -1,14 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  Row,
-  Col,
-  Badge,
-  InputGroup,
-  Form,
-  Button,
-  Container,
-} from "react-bootstrap";
+import { Col, Form, Button, Container } from "react-bootstrap";
 import {
   fetchParentCategories,
   connectIfAuthorized,
@@ -25,7 +17,7 @@ import Web3 from "web3";
 import { postJob } from "../../actions/jobActions";
 import { getCategoriesList } from "../../actions/categoryListAction";
 import Spinner from "react-bootstrap/Spinner";
-import { NewCategoryModal } from "../../controllers/NewCategoryModal";
+import { NewCategoryModal } from "../modals/NewCategoryModal";
 
 class JobPost extends Component {
   constructor(props) {
@@ -211,7 +203,7 @@ class JobPost extends Component {
     return (
       <Container className="body-padding">
         <div style={{ maxWidth: "640px", margin: "auto" }}>
-          {(
+          {
             <>
               {!this.state.successful ? (
                 <>
@@ -333,9 +325,10 @@ class JobPost extends Component {
                           onClick={() => this.showModal(true)}
                           variant="primary"
                           size="sm"
-                          block disabled={this.props.loading}
+                          block
+                          disabled={this.props.loading}
                         >
-                          {this.props.loading ? 'Loading…' : 'New Category'}
+                          {this.props.loading ? "Loading…" : "New Category"}
                         </Button>
                       </Form.Group>
                     </Form.Row>
@@ -374,7 +367,12 @@ class JobPost extends Component {
                         })}
                     </Form.Group>
                     <Form.Group controlId="validationCustom06">
-                      <input type="file" disabled={this.props.loading} multiple onChange={this.captureFile} />
+                      <input
+                        type="file"
+                        disabled={this.props.loading}
+                        multiple
+                        onChange={this.captureFile}
+                      />
                     </Form.Group>
                     <Form.Group controlId="validationCustom07">
                       <Form.Label>Description</Form.Label>
@@ -424,7 +422,7 @@ class JobPost extends Component {
                       disabled={this.props.loading}
                       className="submit btn btn-block btn-large"
                     >
-                      {this.props.loading ? 'Loading…' : 'Submit'}
+                      {this.props.loading ? "Loading…" : "Submit"}
                     </Button>
                   </Form>
                 </>
@@ -440,12 +438,11 @@ class JobPost extends Component {
                 </div>
               )}
             </>
-          )  
-          // (
-          //   <Spinner animation="border" role="status">
-          //     <span className="sr-only">Loading...</span>
-          //   </Spinner>
-          // )
+            // (
+            //   <Spinner animation="border" role="status">
+            //     <span className="sr-only">Loading...</span>
+            //   </Spinner>
+            // )
           }
         </div>
       </Container>
@@ -454,7 +451,7 @@ class JobPost extends Component {
 }
 
 function mapStateToProps(state) {
-  const { contract, account, web3 , accountConnection } = state.common;
+  const { contract, account, web3, accountConnection } = state.common;
   const { id, category_name, loadingCat, errorCat } = state.category;
   const { categoryList } = state.categoryList;
   const { loading, error } = state.jobReducer;

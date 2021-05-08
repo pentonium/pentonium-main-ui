@@ -44,7 +44,7 @@ class Footer extends Component {
                 <h6>Categories</h6>
                 {/* <ul>
                                 {this.props.parentCategories.map((value, index) => {
-                                    return <li key={index}><a href={'/categories/'+value.id}>{value.name}</a></li>
+                                    return <li key={index}><a href={'/list/'+value.id}>{value.name}</a></li>
                                 })}
                                 </ul> */}
               </Col>

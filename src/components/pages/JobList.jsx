@@ -5,11 +5,9 @@ import { fetchCategories } from "../../actions/categoryActions";
 import { withRouter } from "react-router-dom";
 import { getJobsList } from "../../actions/jobListActions";
 import { connectIfAuthorized } from "../../actions/commonAction";
-import CollectionItem from "../CollectionItem";
-import { Row, Col, Badge, Container } from "react-bootstrap";
-import { BsFillCaretLeftFill, BsFillCaretRightFill } from "react-icons/bs";
+import { Row, Col, Container } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
-import { Link } from "react-router-dom";
+import JobCard from "../common/JobCard";
 
 class Categories extends Component {
   constructor(props) {
@@ -54,7 +52,6 @@ class Categories extends Component {
           <div className="row">
             <div className="col-md-12 parent-cateogory-title text-center">
               <h1>{this.props.categoryNane}</h1>
-              {/* <p>{this.props.categories.text}</p> */}
             </div>
             <div className="row col-md-12 categories-section">
               <div className="col-md-12">
@@ -64,13 +61,13 @@ class Categories extends Component {
                       return (
                         hash.ipfs_hash != "" &&
                         hash.ipfs_hash != "abhbi" && (
-                        <Col key={i} xs={12} sm={6} md={4} lg={3}>  
-                          <CollectionItem
-                            index={i}
-                            hash={hash}
-                            offerContract={this.props.match.params.id}
-                          ></CollectionItem>
-                        </Col>  
+                          <Col key={i} xs={12} sm={6} md={4} lg={3}>
+                            <JobCard
+                              index={i}
+                              hash={hash}
+                              offerContract={this.props.match.params.id}
+                            ></JobCard>
+                          </Col>
                         )
                       );
                     })}

@@ -1,14 +1,8 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { CollectionCard } from "../controllers/CollectionCard";
-import { fetchNewJobs } from "../actions/categoryActions";
-import CollectionItem from "./CollectionItem";
 import { Row, Col, Badge } from "react-bootstrap";
-import { getJobsList } from "../actions/jobListActions";
-import { getCategoriesList } from "../actions/categoryListAction";
-import { connectIfAuthorized } from "../actions/commonAction";
 import Spinner from "react-bootstrap/Spinner";
 import { withRouter } from "react-router";
+import JobCard from "./common/JobCard";
 
 class NewCollection extends Component {
   constructor(props) {
@@ -16,7 +10,7 @@ class NewCollection extends Component {
   }
 
   viewAllItems = () => {
-    this.props.history.push(`/categories/${this.props.categoryContract}`);
+    this.props.history.push(`/list/${this.props.categoryContract}`);
   };
 
   render() {
@@ -31,14 +25,13 @@ class NewCollection extends Component {
                   i <= 3 &&
                   hash.ipfs_hash != "" &&
                   hash.ipfs_hash != "abhbi" && (
-                    <Col 
-                    key={i} xs={12} sm={6} md={4} lg={3}>  
-                    <CollectionItem
-                      index={i}
-                      hash={hash}
-                      offerContract={this.props.categoryContract}
-                      column="3"
-                    ></CollectionItem>
+                    <Col key={i} xs={12} sm={6} md={4} lg={3}>
+                      <JobCard
+                        index={i}
+                        hash={hash}
+                        offerContract={this.props.categoryContract}
+                        column="3"
+                      ></JobCard>
                     </Col>
                   )
                 );

@@ -9,7 +9,7 @@ import {
 } from "../../actions/jobListActions";
 import { connectWallet } from "../../actions/commonAction";
 import { BUYER, SELLER } from "../../constants";
-import OrderItemList from "../../controllers/OrderItemList";
+import OrderItemList from "../OrderItemList";
 
 class OrderList extends Component {
   constructor(props) {
@@ -22,7 +22,6 @@ class OrderList extends Component {
   }
 
   async componentDidMount() {
-    // await this.props.connectWallet();
     this.getOrderData();
   }
 
@@ -74,12 +73,6 @@ class OrderList extends Component {
     return (
       <Container className="body-padding">
         <Row>
-          {/* <Col md={1}>    
-                        <Button variant="primary" className={this.state.currentTab == 'buyer' ? 'active':''} onClick={() => this.changeTab('buyer')}>Buyer</Button>
-                    </Col>
-                    <Col md={1}>
-                    <Button variant="primary" className={this.state.currentTab == 'seller' ? 'active':''} onClick={() => this.changeTab('seller')}>Seller</Button>
-                    </Col> */}
           <Col className="dashboard-menus" md={12}>
             <nav className="site-nav">
               <ul>
@@ -111,7 +104,7 @@ class OrderList extends Component {
             </nav>
           </Col>
         </Row>
-        {this.state.currentTab == "dashboard" && (
+        {/* {this.state.currentTab == "dashboard" && (
           <Row>
             <Col md={12} className="buyer">
               <p className="dashboard-header">Statistics</p>
@@ -139,7 +132,7 @@ class OrderList extends Component {
               </Row>
             </Col>
           </Row>
-        )}
+        )} */}
         {this.state.currentTab == "orderlist" && (
           <div className="order-list-page">
             {this.props.list &&

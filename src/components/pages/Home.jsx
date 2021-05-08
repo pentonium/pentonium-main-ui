@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { Col, Container, Row, Spinner } from "react-bootstrap";
 import { connect } from "react-redux";
-import NewCollection from "../NewCollection";
 import { getAllCategoryJobs } from "../../actions/jobListActions";
 import { connectIfAuthorized, connectWallet } from "../../actions/commonAction";
 import { home_contract_addresses } from "../../config";
-import Header from "../header/Header";
+import Header from "../common/Header";
+import CardList from "../CardList";
 
 class Home extends Component {
   constructor(props) {
@@ -59,12 +59,12 @@ class Home extends Component {
             {this.props.fulllist &&
               this.props.fulllist.map((job, i) => {
                 return (
-                  <NewCollection
+                  <CardList
                     key={i}
                     categoryName={job.name}
                     list={job.list}
                     categoryContract={job.offerContract}
-                  ></NewCollection>
+                  ></CardList>
                 );
               })}
           </Row>
