@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 import { Row, Col, Container } from "react-bootstrap";
 import { getUserGigs } from "../../actions/jobActions";
 import JobCard from "../common/JobCard";
-import {Helmet} from 'react-helmet';
+import { Helmet } from "react-helmet";
 
 class Customer extends Component {
   constructor(props) {
@@ -17,16 +17,28 @@ class Customer extends Component {
   }
 
   async componentDidMount() {
+    if (this.props.web3) {
+      await this.start();
+    }
+  }
+
+  async componentDidUpdate(props, state) {
+    if (this.props.web3 != props.web3) {
+      await this.start();
+    }
+  }
+
+  start = async () => {
     const customerId = this.props.match.params.customerId;
-    // this.props.fetchCustomerData(customerId);
+
     let data = await getUserGigs(
       this.props.contract,
       customerId,
-      this.props.accountConnection
+      this.props.web3
     );
     this.setState({ gigData: data, userAccount: customerId, loading: false });
     console.log("Gig", this.state.gigData);
-  }
+  };
 
   render() {
     return (
@@ -89,18 +101,14 @@ function mapStateToProps(state) {
   console.log(state.common);
   const { web3, accountConnection, account, contract } = state.common;
   return {
-    // customerData: state.common.customerData,
-    // jobData: state.common.jobData,
     web3,
-    accountConnection,
     account,
     contract,
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-  };
+  return {};
 }
 
 export default connect(
