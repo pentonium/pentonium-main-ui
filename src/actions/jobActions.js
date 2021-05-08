@@ -68,12 +68,12 @@ export const placeOrder = (account , web3 , id , offerContract , clientProvider 
 }
 
 export const getUserGigs = async (contract , account , web3)  => {
-    debugger;
     try{
         let gigArray = [];
         let gigData = await contract.methods.getUserGigs(account).call();
         for(let i = 0; i < gigData.length;i++){
             let specificGig = await getJobDetailUtil(web3 , gigData[i].id , gigData[i].offer_contract);
+            specificGig.offerContract = gigData[i].offer_contract;
             gigArray.push(specificGig);
         }
         return gigArray;

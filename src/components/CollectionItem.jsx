@@ -24,7 +24,6 @@ class CollectionItem extends Component {
     return (
       <>
         {
-          <Col xs={12} sm={6} md={4} lg={3}>
             <>
               <div className="card">
                 {isLoaded ? (
@@ -66,7 +65,6 @@ class CollectionItem extends Component {
                 )}
               </div>
             </>
-          </Col>
         }
       </>
     );

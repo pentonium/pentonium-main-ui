@@ -48,7 +48,7 @@ class JobEdit extends Component {
     }
 
     async componentDidMount(){
-        await this.props.connectIfAuthorized();
+        // await this.props.connectIfAuthorized();
         await this.props.getCategoriesList(this.props.contract , this.props.account);
         const jobId = this.props.match.params.jobId;
         const offerContract = this.props.match.params.offerContract;
@@ -327,7 +327,7 @@ class JobEdit extends Component {
             // Remove the above commented code if everythings work perfectly fine
              <Container className="body-padding">
              <div style={{ maxWidth: "640px", margin: "auto" }}>
-               {!this.props.loading ? (
+               {(
                  <>
                    {!this.state.successful ? (
                      <>
@@ -354,6 +354,7 @@ class JobEdit extends Component {
                                required
                                type="text"
                                name="title"
+                               disabled={this.props.loading}
                                value={this.state.title}
                                placeholder="A Nice Title"
                                onChange={this.myChangeHandler}
@@ -376,6 +377,7 @@ class JobEdit extends Component {
                                required
                                type="number"
                                name="duration"
+                               disabled={this.props.loading}
                                placeholder="Duration"
                                value={this.state.duration}
                                onChange={this.myChangeHandler}
@@ -394,6 +396,7 @@ class JobEdit extends Component {
                                required
                                type="number"
                                name="price"
+                               disabled={this.props.loading}
                                placeholder="Price"
                                value={this.state.price}
                                onChange={this.myChangeHandler}
@@ -418,6 +421,7 @@ class JobEdit extends Component {
                                size="sm"
                                value={this.state.parentCategory} 
                                name="parentCategory"
+                               disabled={this.props.loading}
                                custom
                                onChange={this.onSelectedOptionsChange.bind(this)}
                              >
@@ -446,9 +450,10 @@ class JobEdit extends Component {
                                onClick={() => this.showModal(true)}
                                variant="primary"
                                size="sm"
+                               disabled={this.props.loading}
                                block
                              >
-                               New Category
+                               {this.props.loading ? 'Loading…' : 'New Category'}
                              </Button>
                            </Form.Group>
                          </Form.Row>
@@ -464,7 +469,7 @@ class JobEdit extends Component {
                                placeholder="Type and press enter"
                                maxTags={10}
                                editable={true}
-                               readOnly={false}
+                               readOnly={!this.props.loading}
                                removeOnBackspace={true}
                                onChange={(newTags) =>
                                  this.handleTags(newTags, "skills")
@@ -487,7 +492,7 @@ class JobEdit extends Component {
                              })}
                          </Form.Group>
                          <Form.Group controlId="validationCustom06">
-                           <input type="file" multiple onChange={this.captureFile} />
+                           <input type="file" disabled={this.props.loading} multiple onChange={this.captureFile} />
                          </Form.Group>
                          <Form.Group controlId="validationCustom07">
                            <Form.Label>Description</Form.Label>
@@ -496,6 +501,7 @@ class JobEdit extends Component {
                              name="description"
                              value={this.state.description}
                              rows={3}
+                             disabled={this.props.loading}
                              onChange={this.myChangeHandler}
                              required
                            />
@@ -509,6 +515,7 @@ class JobEdit extends Component {
                              as="textarea"
                              name="package"
                              value={this.state.package}
+                             disabled={this.props.loading}
                              rows={3}
                              onChange={this.myChangeHandler}
                              required
@@ -524,7 +531,7 @@ class JobEdit extends Component {
                              placeholder="Type and press enter"
                              maxTags={15}
                              editable={true}
-                             readOnly={false}
+                             readOnly={this.props.loading}
                              removeOnBackspace={true}
                              onChange={(newTags) =>
                                this.handleTags(newTags, "features")
@@ -533,9 +540,10 @@ class JobEdit extends Component {
                          </Form.Group>
                          <Button
                            type="submit"
+                           disabled={this.props.loading}
                            className="submit btn btn-block btn-large"
                          >
-                           Submit
+                           {this.props.loading ? 'Loading…' : 'Submit'}
                          </Button>
                        </Form>
                      </>
@@ -551,11 +559,13 @@ class JobEdit extends Component {
                      </div>
                    )}
                  </>
-               ) : (
-                 <Spinner animation="border" role="status">
-                   <span className="sr-only">Loading...</span>
-                 </Spinner>
-               )}
+               )  
+              //  (
+              //    <Spinner animation="border" role="status">
+              //      <span className="sr-only">Loading...</span>
+              //    </Spinner>
+              //  )
+               }
              </div>
            </Container>
          );
@@ -563,11 +573,9 @@ class JobEdit extends Component {
 }
 
 function mapStateToProps(state){
-  let error = false;
-  let loading = true;
   const { web3, account , contract , accountConnection  } = state.common;
-  error = state.jobReducer.error;
-  loading = state.jobReducer.loading;
+  let error = state.jobReducer.error;
+  let loading = state.jobReducer.loading;
   const {detailData} = state.jobReducer;
   const {categoryList} = state.categoryList;
     return {
