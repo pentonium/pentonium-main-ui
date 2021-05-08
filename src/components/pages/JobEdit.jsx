@@ -81,8 +81,6 @@ class JobEdit extends Component {
       package: this.state.package,
       features: this.state.features,
     };
-    console.log(uploadData.imageHash.length);
-    debugger;
     ipfs.files.add(
       Buffer.from(JSON.stringify(uploadData)),
       async (error, result) => {
@@ -135,10 +133,9 @@ class JobEdit extends Component {
           requestToMake.push(api);
       }
       Promise.all(requestToMake).then((results) => {  
-        debugger;
         this.uploadFormData();
       },(error) => {
-        // this.setState({loading:false});
+        
       });
     }
     this.setState({ validated: true });
