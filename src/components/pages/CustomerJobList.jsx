@@ -6,6 +6,7 @@ import { Row, Col, Container } from "react-bootstrap";
 import { getUserGigs } from "../../actions/jobActions";
 import JobCard from "../common/JobCard";
 import { Helmet } from "react-helmet";
+import Spinner from "react-bootstrap/Spinner";
 
 class Customer extends Component {
   constructor(props) {
@@ -42,12 +43,12 @@ class Customer extends Component {
 
   render() {
     return (
-      <>
+      <div className="customer-list">
         <Helmet>
           <meta charSet="utf-8" />
           <title>User Job List</title>
         </Helmet>
-        <Container style={{ paddingTop: "13rem" }}>
+        {!this.state.loading ? <Container style={{ paddingTop: "13rem" }}>
           <Row>
             <Col md={3} lg={3} sm={12} xs={12}>
               <Row className="top-profile-section">
@@ -71,7 +72,7 @@ class Customer extends Component {
                   this.state.gigData.length > 0 &&
                   this.state.gigData.map((job, i) => {
                     return (
-                      <Col
+                      job.ipfs_hash && <Col
                         key={i}
                         xs={12}
                         sm={6}
@@ -92,7 +93,12 @@ class Customer extends Component {
             </Col>
           </Row>
         </Container>
-      </>
+        :
+        <Spinner animation="border" role="status">
+        <span className="sr-only">Loading...</span>
+        </Spinner>
+        }
+      </div>
     );
   }
 }
