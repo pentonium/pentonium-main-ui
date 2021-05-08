@@ -20,6 +20,14 @@
     margin-bottom: 1rem;
 }
 
+.customer-list{
+    min-height: 50rem;
+    .spinner-border{
+        margin-top: 30%;
+        margin-left: 50%;
+    }
+}
+
 .top-profile-section , .low-profile-section{
     border: 1px solid #cccccc;
     padding: 2rem 0rem;
