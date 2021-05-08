@@ -8,6 +8,7 @@ import { deleteJob, getJobDetail, placeOrder } from "../../actions/jobActions";
 import Spinner from "react-bootstrap/Spinner";
 import { genKeyPairFromSeed } from "skynet-js";
 import { UserPriceDetail } from "../UserPriceDetail.jsx";
+import {Helmet} from 'react-helmet';
 
 class JobDescription extends Component {
   constructor(props) {
@@ -76,6 +77,11 @@ class JobDescription extends Component {
 
   render() {
     return (
+      <>
+      <Helmet>
+          <meta charSet="utf-8" />
+          <title>{`Description of Job:${this.state.hashedData.title}`}</title>
+        </Helmet>
       <Container className="body-padding">
         {!this.props.loading &&
         this.state.hashedData &&
@@ -158,6 +164,7 @@ class JobDescription extends Component {
           </div>
         )}
       </Container>
+      </>
     );
   }
 }

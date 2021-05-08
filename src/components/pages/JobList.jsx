@@ -8,6 +8,7 @@ import { connectIfAuthorized } from "../../actions/commonAction";
 import { Row, Col, Container } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
 import JobCard from "../common/JobCard";
+import { Helmet } from "react-helmet";
 
 class Categories extends Component {
   constructor(props) {
@@ -47,6 +48,11 @@ class Categories extends Component {
     const nextId = this.props.list.length > 0 ? last_item.next : 0;
 
     return (
+      <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>List of Jobs</title>
+      </Helmet>
       <Container className="body-padding">
         {!this.props.loading && this.props.list ? (
           <div className="row">
@@ -94,6 +100,7 @@ class Categories extends Component {
           </div>
         )}
       </Container>
+      </>
     );
   }
 }

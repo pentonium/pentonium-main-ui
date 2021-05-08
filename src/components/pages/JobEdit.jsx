@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Col, Form, Button, Container } from "react-bootstrap";
-import { fetchParentCategories } from "../../actions/commonAction";
 import { fetchCategories } from "../../actions/categoryActions";
 import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
@@ -12,8 +11,8 @@ import { updateJob } from "../../actions/jobActions";
 import { getJobDetail } from "../../actions/jobActions";
 import { getCategoriesList } from "../../actions/categoryListAction";
 import { connectIfAuthorized } from "../../actions/commonAction";
-import Spinner from "react-bootstrap/Spinner";
 import { NewCategoryModal } from "../modals/NewCategoryModal";
+import { Helmet } from "react-helmet";
 
 class JobEdit extends Component {
   constructor(props) {
@@ -189,6 +188,11 @@ class JobEdit extends Component {
 
   render() {
     return (
+      <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>{`Edit the Job : ${this.state.title}`}</title>
+      </Helmet>
       <Container className="body-padding">
         <div style={{ maxWidth: "640px", margin: "auto" }}>
           {
@@ -442,6 +446,7 @@ class JobEdit extends Component {
           }
         </div>
       </Container>
+      </>
     );
   }
 }
@@ -469,7 +474,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchParentCategories: () => dispatch(fetchParentCategories()),
     fetchCategories: (id) => dispatch(fetchCategories(id)),
     fetchHashJobData: (id) => dispatch(fetchData(id)),
     createNewCategory: (name, addr, contract) =>

@@ -12,6 +12,7 @@ import {
   getOrderDetail,
   getServiceProvider,
 } from "../../actions/orderActions";
+import {Helmet} from 'react-helmet';
 
 class ChatPage extends Component {
   state = {
@@ -141,6 +142,11 @@ class ChatPage extends Component {
 
   render() {
     return (
+      <>
+      <Helmet>
+          <meta charSet="utf-8" />
+          <title>{`Chat Page for Order:${this.state.orderData.title}`}</title>
+      </Helmet>
       <Container className="body-padding">
         <Row>
           <Col md={4}>
@@ -193,6 +199,7 @@ class ChatPage extends Component {
           </Col>
         </Row>
       </Container>
+      </>
     );
   }
 }

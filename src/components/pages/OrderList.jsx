@@ -10,6 +10,7 @@ import {
 import { connectWallet } from "../../actions/commonAction";
 import { BUYER, SELLER } from "../../constants";
 import OrderItemList from "../OrderItemList";
+import {Helmet} from 'react-helmet';
 
 class OrderList extends Component {
   constructor(props) {
@@ -71,6 +72,11 @@ class OrderList extends Component {
   render() {
     const type = this.getUserTpe(this.props.match.url);
     return (
+      <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>List the Orders</title>
+      </Helmet>
       <Container className="body-padding">
         <Row>
           <Col className="dashboard-menus" md={12}>
@@ -154,6 +160,7 @@ class OrderList extends Component {
           </div>
         )}
       </Container>
+      </>
     );
   }
 }

@@ -7,6 +7,7 @@ import { getJobsList } from "../../actions/jobListActions";
 import { connectIfAuthorized } from "../../actions/commonAction";
 import { getCategoriesList } from "../../actions/categoryListAction";
 import { Container } from "react-bootstrap";
+import {Helmet} from 'react-helmet';
 
 class Category extends Component {
   constructor(props) {
@@ -25,6 +26,11 @@ class Category extends Component {
 
   render() {
     return (
+      <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Category Listing</title>
+      </Helmet>
       <Container className="body-padding">
         <div className="row">
           {this.props.categoryList && this.props.categoryList.length > 0 ? (
@@ -46,6 +52,7 @@ class Category extends Component {
           )}
         </div>
       </Container>
+      </>
     );
   }
 }

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Web3 from "web3";
-import { fetchParentCategories } from "../../actions/commonAction";
 import { Row, Col, Badge } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 
@@ -11,7 +10,7 @@ class Footer extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchParentCategories();
+    // this.props.fetchParentCategories();
   }
 
   async connectWithMetaMask() {
@@ -133,7 +132,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchParentCategories: () => dispatch(fetchParentCategories()),
   };
 }
 
