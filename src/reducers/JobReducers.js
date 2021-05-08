@@ -2,7 +2,8 @@ import {POST_JOB_REQUEST , POST_JOB_SUCCESS , POST_JOB_ERROR , POST_UPDATE_JOB_R
 
 const initialState = {
   loading: false,
-  error: false
+  error: false,
+  jobloader:false
 };
 
 export default function(state = initialState, action) {
@@ -46,18 +47,18 @@ export default function(state = initialState, action) {
         return {
             ...state,
             error: false,
-            loading: true
+            jobloader: true
         }
         case DELETE_JOB_SUCCESS:
           return {
             ...state,
             error: false,
-            loading: false
+            jobloader: false
           }
         case DELETE_JOB_ERROR:
           return {
             ...state,
-            error:true
+            jobloader:false
           }
         case JOB_DETAIL_REQUEST:
           return{
@@ -81,18 +82,18 @@ export default function(state = initialState, action) {
           return{
             ...state,
             error:false,
-            loading:true
+            jobloader:true
           } 
           case PLACE_ORDER_SUCCESS:
             return {
               ...state,
               error: false,
-              loading: false
+              jobloader: false
             }
           case PLACE_ORDER_ERROR:
             return {
               ...state,
-              error:true
+              jobloader:false
             }  
         default:
             return state;

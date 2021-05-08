@@ -36,6 +36,9 @@ class JobEdit extends Component {
       modalShow: false,
       newcat: "",
       catFormValidated: false,
+      imageArray:[],
+      previewImage: [],
+      imageHashBegin:[]
     };
     this.captureFile = this.captureFile.bind(this);
     this.uploadFormData = this.uploadFormData.bind(this);
@@ -58,7 +61,7 @@ class JobEdit extends Component {
       description: jobData.description,
       duration: jobData.duration,
       parentCategory: jobData.parentCategory,
-      imageHash: jobData.imageHash,
+      imageHashBegin: jobData.imageHash,
       tags: jobData.tags,
       price: jobData.price,
       package: jobData.package,
@@ -73,11 +76,13 @@ class JobEdit extends Component {
       parentCategory: this.state.parentCategory,
       description: this.state.description,
       tags: this.state.tags,
-      imageHash: this.state.imageHash,
+      imageHash: [...this.state.imageHash , ...this.state.imageHashBegin],
       price: Number(this.state.price),
       package: this.state.package,
       features: this.state.features,
     };
+    console.log(uploadData.imageHash.length);
+    debugger;
     ipfs.files.add(
       Buffer.from(JSON.stringify(uploadData)),
       async (error, result) => {
@@ -114,7 +119,27 @@ class JobEdit extends Component {
       event.preventDefault();
       event.stopPropagation();
     } else {
-      this.uploadFormData();
+      let requestToMake = [];
+      for(let i= 0; i < this.state.imageArray.length ; i++){
+          let api =  new Promise((resolve,reject) => {
+                ipfs.files.add(this.state.imageArray[i], (error, result) => {
+                if (error) {
+                  reject(error)
+                }
+                this.setState({
+                  imageHash: [...this.state.imageHash,result[0].hash],
+                });
+                resolve('success');
+            });
+          });
+          requestToMake.push(api);
+      }
+      Promise.all(requestToMake).then((results) => {  
+        debugger;
+        this.uploadFormData();
+      },(error) => {
+        // this.setState({loading:false});
+      });
     }
     this.setState({ validated: true });
   }
@@ -142,20 +167,36 @@ class JobEdit extends Component {
     }
   };
 
+  // captureFile(event) {
+  //   for (let i = 0; i < event.target.files.length; i++) {
+  //     const file = event.target.files[0];
+  //     const reader = new window.FileReader();
+  //     reader.readAsArrayBuffer(file);
+  //     reader.onloadend = () => {
+  //       const buffer = Buffer(reader.result);
+  //       ipfs.files.add(buffer, (error, result) => {
+  //         if (error) {
+  //           return;
+  //         }
+  //         this.setState({
+  //           imageHash: [...this.state.imageHash, result[0].hash],
+  //         });
+  //       });
+  //     };
+  //   }
+  // }
+
   captureFile(event) {
     for (let i = 0; i < event.target.files.length; i++) {
-      const file = event.target.files[0];
+      const file = event.target.files[i];
       const reader = new window.FileReader();
       reader.readAsArrayBuffer(file);
       reader.onloadend = () => {
-        const buffer = Buffer(reader.result);
-        ipfs.files.add(buffer, (error, result) => {
-          if (error) {
-            return;
-          }
-          this.setState({
-            imageHash: [...this.state.imageHash, result[0].hash],
-          });
+        this.setState({
+          imageArray: [...this.state.imageArray, Buffer(reader.result)],
+        });
+        this.setState({
+          previewImage: [...this.state.previewImage, URL.createObjectURL(file)],
         });
       };
     }
@@ -339,7 +380,7 @@ class JobEdit extends Component {
                           placeholder="Type and press enter"
                           maxTags={10}
                           editable={true}
-                          readOnly={!this.props.loading}
+                          readOnly={this.props.loading}
                           removeOnBackspace={true}
                           onChange={(newTags) =>
                             this.handleTags(newTags, "skills")
@@ -352,14 +393,22 @@ class JobEdit extends Component {
                       className="image-selector"
                     >
                       <h6 cla>Selected Images:</h6>
-                      {this.state.imageHash &&
-                        this.state.imageHash.map((preview, i) => {
+                      {this.state.imageHashBegin &&
+                        this.state.imageHashBegin.map((preview, i) => {
+                          return (
+                            <div class="edit-image" key={i}>
+                              <img src={`https://ipfs.io/ipfs/${preview}`} alt="" />
+                            </div>
+                          );
+                        })}
+                      {this.state.previewImage &&
+                        this.state.previewImage.map((preview, i) => {
                           return (
                             <div class="edit-image" key={i}>
                               <img src={preview} alt="" />
                             </div>
                           );
-                        })}
+                      })}
                     </Form.Group>
                     <Form.Group controlId="validationCustom06">
                       <input

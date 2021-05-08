@@ -26,18 +26,18 @@ export const UserPriceDetail = (props) => {
                         })}
                     </ul>
                     <br />
-                    <Button variant="primary" size="md" onClick={props.placeOrderHandler} block>
-                        Place Order
+                    <Button variant="primary" disabled={props.loader} size="md" onClick={props.placeOrderHandler} block>
+                        {props.loader ? "Loading…" : "Place Order"}
                     </Button>
                 </div>
             </Tab>
         </Tabs>
         <div className="description-action-buttons">
-            <Button onClick={props.navigateToUpdate} variant="secondary" size="sm" block>
-                Edit Job
+            <Button onClick={props.navigateToUpdate} disabled={props.loader} variant="secondary" size="sm" block>
+                {props.loader ? "Loading…" : "Edit Job"}
             </Button>
-            <Button className="delete-job" onClick={props.deleteHandler} variant="primary"  size="sm" block>
-                Delete Job
+            <Button className="delete-job" disabled={props.loader} onClick={props.deleteHandler} variant="primary"  size="sm" block>
+                {props.loader ? "Loading…" : "Delete Job"}
             </Button>
         </div>
         </>
