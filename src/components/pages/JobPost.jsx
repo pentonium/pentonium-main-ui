@@ -46,6 +46,7 @@ class JobPost extends Component {
       catFormValidated: false,
       loadingCat: false,
       errorCat: false,
+      loading:false
     };
     this.captureFile = this.captureFile.bind(this);
     this.uploadFormData = this.uploadFormData.bind(this);
@@ -90,10 +91,9 @@ class JobPost extends Component {
         if (error) {
           return;
         }
-        this.setState({ dataHash: result[0].hash });
         await this.props.postJob(
           this.props.accountConnection,
-          this.state.dataHash,
+          result[0].hash,
           this.state.imageHash,
           this.props.account,
           this.props.account,
@@ -101,7 +101,7 @@ class JobPost extends Component {
           uploadData.price,
           uploadData.duration
         );
-        this.setState({ successful: true });
+        this.setState({ successful: true , loading:false });
       }
     );
   }
@@ -119,16 +119,26 @@ class JobPost extends Component {
       event.preventDefault();
       event.stopPropagation();
     } else {
-      this.state.imageArray.map((hash) => {
-        ipfs.files.add(hash, (error, result) => {
-          if (error) {
-            return;
-          }
-          this.setState({
-            imageHash: [...this.state.imageHash, result[0].hash],
+      this.setState({loading:true});
+      let requestToMake = [];
+      for(let i= 0; i < this.state.imageArray.length ; i++){
+          let api =  new Promise((resolve,reject) => {
+                ipfs.files.add(this.state.imageArray[i], (error, result) => {
+                if (error) {
+                  reject(error)
+                }
+                this.setState({
+                  imageHash: [...this.state.imageHash, result[0].hash],
+                });
+                resolve('success');
+            });
           });
-          this.uploadFormData();
-        });
+          requestToMake.push(api);
+      }
+      Promise.all(requestToMake).then((results) => {  
+        this.uploadFormData();
+      },(error) => {
+        this.setState({loading:false});
       });
     }
     this.setState({ validated: true });
@@ -237,7 +247,7 @@ class JobPost extends Component {
                           name="title"
                           placeholder="A Nice Title"
                           onChange={this.myChangeHandler}
-                          disabled={this.props.loading}
+                          disabled={this.state.loading}
                           autoComplete="off"
                         />
                         <Form.Control.Feedback type="invalid">
@@ -258,7 +268,7 @@ class JobPost extends Component {
                           type="number"
                           name="duration"
                           placeholder="Duration"
-                          disabled={this.props.loading}
+                          disabled={this.state.loading}
                           value={this.state.duration}
                           onChange={this.myChangeHandler}
                         />
@@ -276,7 +286,7 @@ class JobPost extends Component {
                           required
                           type="number"
                           name="price"
-                          disabled={this.props.loading}
+                          disabled={this.state.loading}
                           placeholder="Price"
                           value={this.state.price}
                           onChange={this.myChangeHandler}
@@ -300,7 +310,7 @@ class JobPost extends Component {
                           as="select"
                           size="sm"
                           name="parentCategory"
-                          disabled={this.props.loading}
+                          disabled={this.state.loading}
                           defaultValue="{''}"
                           custom
                           onChange={this.onSelectedOptionsChange.bind(this)}
@@ -331,9 +341,9 @@ class JobPost extends Component {
                           variant="primary"
                           size="sm"
                           block
-                          disabled={this.props.loading}
+                          disabled={this.state.loading}
                         >
-                          {this.props.loading ? "Loading…" : "New Category"}
+                          {this.state.loading ? "Loading…" : "New Category"}
                         </Button>
                       </Form.Group>
                     </Form.Row>
@@ -349,7 +359,7 @@ class JobPost extends Component {
                           placeholder="Type and press enter"
                           maxTags={10}
                           editable={true}
-                          readOnly={this.props.loading}
+                          readOnly={this.state.loading}
                           removeOnBackspace={true}
                           onChange={(newTags) =>
                             this.handleTags(newTags, "skills")
@@ -374,7 +384,7 @@ class JobPost extends Component {
                     <Form.Group controlId="validationCustom06">
                       <input
                         type="file"
-                        disabled={this.props.loading}
+                        disabled={this.state.loading}
                         multiple
                         onChange={this.captureFile}
                       />
@@ -385,7 +395,7 @@ class JobPost extends Component {
                         as="textarea"
                         name="description"
                         rows={3}
-                        disabled={this.props.loading}
+                        disabled={this.state.loading}
                         onChange={this.myChangeHandler}
                         required
                       />
@@ -399,7 +409,7 @@ class JobPost extends Component {
                         as="textarea"
                         name="package"
                         rows={3}
-                        disabled={this.props.loading}
+                        disabled={this.state.loading}
                         onChange={this.myChangeHandler}
                         required
                       />
@@ -415,7 +425,7 @@ class JobPost extends Component {
                         maxTags={15}
                         editable={true}
                         readOnly={false}
-                        readOnly={this.props.loading}
+                        readOnly={this.state.loading}
                         removeOnBackspace={true}
                         onChange={(newTags) =>
                           this.handleTags(newTags, "features")
@@ -424,10 +434,10 @@ class JobPost extends Component {
                     </Form.Group>
                     <Button
                       type="submit"
-                      disabled={this.props.loading}
+                      disabled={this.state.loading}
                       className="submit btn btn-block btn-large"
                     >
-                      {this.props.loading ? "Loading…" : "Submit"}
+                      {this.state.loading ? "Loading…" : "Submit"}
                     </Button>
                   </Form>
                 </>

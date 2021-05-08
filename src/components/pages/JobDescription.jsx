@@ -34,11 +34,12 @@ class JobDescription extends Component {
     const jobId = this.props.match.params.jobId;
     const offerContract = this.props.match.params.offerContract;
     await this.props.deleteJob(
-      this.props.web3,
+      this.props.accountConnection,
       offerContract,
       this.props.account,
       jobId
     );
+    this.props.history.push('/');
   };
 
   makeid = (length) => {
@@ -150,6 +151,7 @@ class JobDescription extends Component {
                   offerContract={this.state.offerContract}
                   data={this.state.hashedData}
                   deleteHandler={this.deleteJob}
+                  loader={this.props.jobloader}
                   navigateToUpdate={this.naviageToUpdate}
                   placeOrderHandler={this.placeOrder}
                 ></UserPriceDetail>
@@ -173,7 +175,7 @@ function mapStateToProps(state) {
   let loading = true;
   loading = state.jobReducer.loading;
   const { web3, accountConnection, account, contract } = state.common;
-  const { detailData, error } = state.jobReducer;
+  const { detailData, error , jobloader } = state.jobReducer;
   return {
     jobDescription: state.fetchJobs.jobDescription[0],
     hashedData: state.fetchJobs.hashedData,
@@ -184,6 +186,7 @@ function mapStateToProps(state) {
     error,
     contract,
     detailData,
+    jobloader
   };
 }
 
