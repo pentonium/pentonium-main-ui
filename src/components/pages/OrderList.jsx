@@ -10,7 +10,7 @@ import {
 import { connectWallet } from "../../actions/commonAction";
 import { BUYER, SELLER } from "../../constants";
 import OrderItemList from "../OrderItemList";
-import {Helmet} from 'react-helmet';
+import { Helmet } from "react-helmet";
 
 class OrderList extends Component {
   constructor(props) {
@@ -73,16 +73,16 @@ class OrderList extends Component {
     const type = this.getUserTpe(this.props.match.url);
     return (
       <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>List the Orders</title>
-      </Helmet>
-      <Container className="body-padding">
-        <Row>
-          <Col className="dashboard-menus" md={12}>
-            <nav className="site-nav">
-              <ul>
-                {/* <li
+        <Helmet>
+          <meta charSet="utf-8" />
+          <title>List the Orders</title>
+        </Helmet>
+        <Container className="body-padding">
+          <Row>
+            <Col className="dashboard-menus" md={12}>
+              <nav className="site-nav">
+                <ul>
+                  {/* <li
                     className={
                       this.state.currentTab == "dashboard" ? "active" : ""
                     }
@@ -94,23 +94,23 @@ class OrderList extends Component {
                       DashBorad
                     </a>
                   </li> */}
-                <li
-                  className={
-                    this.state.currentTab == "orderlist" ? "active" : ""
-                  }
-                >
-                  <a
-                    href="javaScript:void(0)"
-                    onClick={() => this.changeTab("orderlist")}
+                  <li
+                    className={
+                      this.state.currentTab == "orderlist" ? "active" : ""
+                    }
                   >
-                    OrderList
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </Col>
-        </Row>
-        {/* {this.state.currentTab == "dashboard" && (
+                    <a
+                      href="javaScript:void(0)"
+                      onClick={() => this.changeTab("orderlist")}
+                    >
+                      OrderList
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </Col>
+          </Row>
+          {/* {this.state.currentTab == "dashboard" && (
           <Row>
             <Col md={12} className="buyer">
               <p className="dashboard-header">Statistics</p>
@@ -139,27 +139,27 @@ class OrderList extends Component {
             </Col>
           </Row>
         )} */}
-        {this.state.currentTab == "orderlist" && (
-          <div className="order-list-page">
-            {this.props.list &&
-              !this.props.loading &&
-              this.props.list.map((value, i) => {
-                return (
-                  <Row key={i} className="order-list-items">
-                    <OrderItemList
-                      orderContract={value}
-                      web3={this.props.accountConnection}
-                      history={this.props.history}
-                      account={this.props.account}
-                      column="3"
-                      type={type}
-                    ></OrderItemList>
-                  </Row>
-                );
-              })}
-          </div>
-        )}
-      </Container>
+          {this.state.currentTab == "orderlist" && (
+            <div className="order-list-page">
+              {this.props.list &&
+                !this.props.loading &&
+                this.props.list.map((value, i) => {
+                  return (
+                    <Row key={i} className="order-list-items">
+                      <OrderItemList
+                        orderContract={value}
+                        web3={this.props.accountConnection}
+                        history={this.props.history}
+                        account={this.props.account}
+                        column="3"
+                        type={type}
+                      ></OrderItemList>
+                    </Row>
+                  );
+                })}
+            </div>
+          )}
+        </Container>
       </>
     );
   }

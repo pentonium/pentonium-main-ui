@@ -2,8 +2,6 @@ import { Component } from "react";
 import { connect } from "react-redux";
 import { Chat } from "../../controllers/Chat";
 import { Row, Col, Badge, Container } from "react-bootstrap";
-import { BsToggles, BsFileArrowUp } from "react-icons/bs";
-import { FiUploadCloud } from "react-icons/fi";
 import { withRouter } from "react-router-dom";
 import { BUYER, SELLER } from "../../constants";
 import {
@@ -12,7 +10,7 @@ import {
   getOrderDetail,
   getServiceProvider,
 } from "../../actions/orderActions";
-import {Helmet} from 'react-helmet';
+import { Helmet } from "react-helmet";
 
 class ChatPage extends Component {
   state = {
@@ -26,6 +24,18 @@ class ChatPage extends Component {
   };
 
   async componentDidMount() {
+    if (this.props.accountConnection) {
+      await this.start();
+    }
+  }
+
+  async componentDidUpdate(props, state) {
+    if (this.props.accountConnection != props.accountConnection) {
+      await this.start();
+    }
+  }
+
+  start = async () => {
     this.connectToSkyNet();
 
     let data = await getOrderDetail(
@@ -34,9 +44,8 @@ class ChatPage extends Component {
       this.props.match.params.orderContract
     );
 
-    console.log(data.data);
     this.setState({ orderData: data.data });
-  }
+  };
 
   connectToSkyNet = async () => {
     const userType = this.getUserTpe(this.props.match.url);
@@ -83,10 +92,6 @@ class ChatPage extends Component {
     return param;
   };
 
-  componentDidUpdate() {
-    this.scrollToBottom();
-  }
-
   componentWillUnmount() {
     if (this.state.loadId) {
       clearInterval(this.state.loadId);
@@ -109,10 +114,11 @@ class ChatPage extends Component {
 
       let loadId = setInterval(async () => {
         const msg = await that.state.chat.loadMessages();
-        if (msg.chat != that.state.messages) {
+        if (msg.chat.toString() != that.state.messages.toString()) {
           that.setState({
             messages: msg.chat,
           });
+          this.scrollToBottom();
         }
       }, 5000);
 
@@ -143,62 +149,62 @@ class ChatPage extends Component {
   render() {
     return (
       <>
-      <Helmet>
+        <Helmet>
           <meta charSet="utf-8" />
           <title>{`Chat Page for Order:${this.state.orderData.title}`}</title>
-      </Helmet>
-      <Container className="body-padding">
-        <Row>
-          <Col md={4}>
-            {this.state.orderData.title && (
-              <>
-                <h3>{this.state.orderData.title}</h3>
-                <hr />
-                <h4>{this.state.orderData.price} Dai</h4>
-                <hr />
-                <p>{this.state.orderData.description.substring(0, 200)}..</p>
-              </>
-            )}
-          </Col>
-          <Col md={8}>
-            <div className="chat-feed">
-              <div className="chat-body" id="chat-body-div">
-                {this.state.messages.map((msg, inex) => (
-                  <div key={inex} className="message-block">
-                    <div className="message-row">
-                      <div
-                        className={
-                          msg.from == this.state.usera
-                            ? "chat-right message"
-                            : "chat-left message"
-                        }
-                      >
-                        {msg.msg}
+        </Helmet>
+        <Container className="body-padding">
+          <Row>
+            <Col md={4}>
+              {this.state.orderData.title && (
+                <>
+                  <h3>{this.state.orderData.title}</h3>
+                  <hr />
+                  <h4>{this.state.orderData.price} Dai</h4>
+                  <hr />
+                  <p>{this.state.orderData.description.substring(0, 200)}..</p>
+                </>
+              )}
+            </Col>
+            <Col md={8}>
+              <div className="chat-feed">
+                <div className="chat-body" id="chat-body-div">
+                  {this.state.messages.map((msg, inex) => (
+                    <div key={inex} className="message-block">
+                      <div className="message-row">
+                        <div
+                          className={
+                            msg.from == this.state.usera
+                              ? "chat-right message"
+                              : "chat-left message"
+                          }
+                        >
+                          {msg.msg}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-                <br />
-                <br />
-              </div>
-              <div className="message-form-container">
-                <div className="message-form">
-                  <textarea
-                    className="message-input"
-                    onChange={this.handleInput}
-                    rows="3"
-                    placeholder="Send a message ..."
-                    value={this.state.msg}
-                  />
-                  <div className="send-msg-button" onClick={this.sendMessage}>
-                    Send
+                  ))}
+                  <br />
+                  <br />
+                </div>
+                <div className="message-form-container">
+                  <div className="message-form">
+                    <textarea
+                      className="message-input"
+                      onChange={this.handleInput}
+                      rows="3"
+                      placeholder="Send a message ..."
+                      value={this.state.msg}
+                    />
+                    <div className="send-msg-button" onClick={this.sendMessage}>
+                      Send
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </Col>
-        </Row>
-      </Container>
+            </Col>
+          </Row>
+        </Container>
       </>
     );
   }

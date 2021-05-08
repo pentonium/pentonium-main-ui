@@ -64,7 +64,9 @@ class OrderItemList extends Component {
 
   navigateToChatPage = () => {
     if (this.state.orderData.status == ORDER_MESSAGES[ORDER_ACCEPTED]) {
-      this.props.history.push(`/chatpage/${this.props.type}/${this.props.orderContract}`);
+      this.props.history.push(
+        `/chatpage/${this.props.type}/${this.props.orderContract}`
+      );
     }
   };
 
