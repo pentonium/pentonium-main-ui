@@ -6,6 +6,7 @@ import { connectIfAuthorized, connectWallet } from "../../actions/commonAction";
 import { home_contract_addresses } from "../../config";
 import Header from "../common/Header";
 import CardList from "../CardList";
+import {Helmet} from 'react-helmet';
 
 class Home extends Component {
   constructor(props) {
@@ -27,6 +28,10 @@ class Home extends Component {
   render() {
     return (
       <>
+        <Helmet>
+          <meta charSet="utf-8" />
+          <title>Home</title>
+        </Helmet>
         <Header onScroll={true} />
         <div className="poster">
           <Container>

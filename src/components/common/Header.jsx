@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import Web3 from "web3";
 import logo from "../../assets/BLACK-04.png";
 import {
-  fetchParentCategories,
   connectWallet,
   connectIfAuthorized,
 } from "../../actions/commonAction";
@@ -150,7 +149,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchParentCategories: () => dispatch(fetchParentCategories()),
     fetchCategories: (id) => dispatch(fetchCategories(id)),
     connectWallet: () => dispatch(connectWallet()),
     connectIfAuthorized: () => dispatch(connectIfAuthorized()),

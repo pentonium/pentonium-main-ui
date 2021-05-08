@@ -5,6 +5,7 @@ import { withRouter } from "react-router-dom";
 import { Row, Col, Container } from "react-bootstrap";
 import { getUserGigs } from "../../actions/jobActions";
 import JobCard from "../common/JobCard";
+import {Helmet} from 'react-helmet';
 
 class Customer extends Component {
   constructor(props) {
@@ -30,6 +31,10 @@ class Customer extends Component {
   render() {
     return (
       <>
+        <Helmet>
+          <meta charSet="utf-8" />
+          <title>User Job List</title>
+        </Helmet>
         <Container style={{ paddingTop: "13rem" }}>
           <Row>
             <Col md={3} lg={3} sm={12} xs={12}>
@@ -95,7 +100,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchCustomerData: (id) => dispatch(fetchCustomerData(id)),
   };
 }
 

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Col, Form, Button, Container } from "react-bootstrap";
 import {
-  fetchParentCategories,
   connectIfAuthorized,
   connectWallet,
 } from "../../actions/commonAction";
@@ -10,6 +9,7 @@ import {
   createNewCategory,
   fetchCategories,
 } from "../../actions/categoryActions";
+import { Helmet } from "react-helmet";
 import ReactTagInput from "@pathofdev/react-tag-input";
 import "@pathofdev/react-tag-input/build/index.css";
 import ipfs from "../../ipfs";
@@ -201,6 +201,11 @@ class JobPost extends Component {
 
   render() {
     return (
+      <>
+       <Helmet>
+          <meta charSet="utf-8" />
+          <title>Post a Job</title>
+        </Helmet>
       <Container className="body-padding">
         <div style={{ maxWidth: "640px", margin: "auto" }}>
           {
@@ -446,6 +451,7 @@ class JobPost extends Component {
           }
         </div>
       </Container>
+      </>
     );
   }
 }
@@ -474,7 +480,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchParentCategories: () => dispatch(fetchParentCategories()),
     fetchCategories: (id) => dispatch(fetchCategories(id)),
     postJob: (
       contract,
