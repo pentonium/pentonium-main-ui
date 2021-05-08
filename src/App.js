@@ -12,6 +12,7 @@ import { connect } from "react-redux";
 import { connectIfAuthorized } from "./actions/commonAction";
 import Header from "./components/common/Header";
 import Footer from "./components/common/Footer";
+import { Spinner } from "react-bootstrap";
 
 class App extends Component {
 
@@ -34,7 +35,11 @@ class App extends Component {
           </Switch>
          <Footer />
          </>
-         : <div>Loading....</div>}
+         : <div className="text-center">
+           <Spinner animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+            </Spinner>
+           </div>}
       </div>
     );
   }
