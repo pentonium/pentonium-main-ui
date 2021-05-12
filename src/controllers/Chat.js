@@ -63,13 +63,13 @@ export class Chat{
         return this.messages;
     }
 
-    async waitAndMessage (msg){
+    async waitAndMessage (msg, type){
         const that = this;
         if(this.loadMessage){
             const i = setInterval(async() => {
                 if(!that.loadMessage){
                     clearInterval(i);
-                    await that.sendMessage(msg);
+                    await that.sendMessage(msg, type);
                 }
             }, 500);
         }else{
@@ -77,7 +77,7 @@ export class Chat{
         }
     }
 
-    async sendMessage(msg){
+    async sendMessage(msg, type){
 
         if(!this.messages){
             this.messages = { chat: []}
@@ -85,13 +85,14 @@ export class Chat{
 
         this.messages.chat[this.messages.chat.length] = {
             msg: msg,
+            type: type,
             from: this.from,
             to: this.to,
         };
 
 
         try{
-        await this.client.db.setJSON(this.privateKey, this.topic, this.messages);
+            await this.client.db.setJSON(this.privateKey, this.topic, this.messages);
         }catch(error){
             console.log(error);
         }

@@ -1,11 +1,6 @@
 import React, { Component, createRef } from "react";
 import { connect } from "react-redux";
-import Web3 from "web3";
-import logo from "../../assets/BLACK-04.png";
-import {
-  connectWallet,
-  connectIfAuthorized,
-} from "../../actions/commonAction";
+import { connectWallet, connectIfAuthorized } from "../../actions/commonAction";
 import {
   fetchCategories,
   createNewCategory,
@@ -95,7 +90,7 @@ class Header extends Component {
               </div>
               <div className="logo-section">
                 <Link to="/">
-                  <img src={logo} alt="" />
+                  <img src="/assets/img/logo.png" alt="" />
                 </Link>
               </div>
             </div>

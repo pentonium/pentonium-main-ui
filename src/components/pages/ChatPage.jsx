@@ -11,8 +11,7 @@ import {
   getServiceProvider,
 } from "../../actions/orderActions";
 import { Helmet } from "react-helmet";
-import {GrAttachment} from 'react-icons/gr';
-
+import { GrAttachment } from "react-icons/gr";
 
 class ChatPage extends Component {
   state = {
@@ -139,7 +138,7 @@ class ChatPage extends Component {
       this.setState({
         msg: "",
       });
-      await this.state.chat.waitAndMessage(this.state.msg);
+      await this.state.chat.waitAndMessage(this.state.msg, "txt");
     }
   };
 
@@ -149,8 +148,11 @@ class ChatPage extends Component {
   }
 
   attachFile = (event) => {
-    console.log(event)
-  }
+    console.log(event);
+    let ipfs_hash = await upload_file_to_ipfs();
+    let message = "Link_TO_IPFS" + ipfs_hash;
+    await this.state.chat.waitAndMessage(message, "file");
+  };
 
   render() {
     return (
@@ -202,10 +204,12 @@ class ChatPage extends Component {
                       placeholder="Send a message ..."
                       value={this.state.msg}
                     />
-                    <div className="attachment-btn" > 
-                        <input type="file" />
-                        <GrAttachment size='25px' onClick={this.attachFile}>
-                        </GrAttachment>
+                    <div className="attachment-btn">
+                      <input type="file" />
+                      <GrAttachment
+                        size="25px"
+                        onClick={this.attachFile}
+                      ></GrAttachment>
                     </div>
                     <div className="send-msg-button" onClick={this.sendMessage}>
                       Send

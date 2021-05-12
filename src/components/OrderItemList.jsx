@@ -1,9 +1,6 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { fetchData } from "../actions/categoryActions";
 import { Row, Col, Button } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
-import { Link } from "react-router-dom";
 import { getOrderDetail, updateOrderStatus } from "../actions/orderActions";
 import {
   BUYER,

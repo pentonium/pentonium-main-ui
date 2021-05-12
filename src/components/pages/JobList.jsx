@@ -16,6 +16,7 @@ class Categories extends Component {
   }
 
   getJobs = async (start, list) => {
+    console.log(start);
     const categoryId = this.props.match.params.id;
 
     await this.props.getJobsList(
@@ -49,57 +50,57 @@ class Categories extends Component {
 
     return (
       <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>List of Jobs</title>
-      </Helmet>
-      <Container className="body-padding">
-        {!this.props.loading && this.props.list ? (
-          <div className="row">
-            <div className="col-md-12 parent-cateogory-title text-center">
-              <h1>{this.props.categoryNane}</h1>
-            </div>
-            <div className="row col-md-12 categories-section">
-              <div className="col-md-12">
-                <Row className="collections">
-                  {this.props.list &&
-                    this.props.list.map((hash, i) => {
-                      return (
-                        hash.ipfs_hash != "" &&
-                        hash.ipfs_hash != "abhbi" && (
-                          <Col key={i} xs={12} sm={6} md={4} lg={3}>
-                            <JobCard
-                              index={i}
-                              hash={hash}
-                              offerContract={this.props.match.params.id}
-                            ></JobCard>
-                          </Col>
-                        )
-                      );
-                    })}
-                </Row>
+        <Helmet>
+          <meta charSet="utf-8" />
+          <title>List of Jobs</title>
+        </Helmet>
+        <Container className="body-padding">
+          {!this.props.loading && this.props.list ? (
+            <div className="row">
+              <div className="col-md-12 parent-cateogory-title text-center">
+                <h1>{this.props.categoryNane}</h1>
+              </div>
+              <div className="row col-md-12 categories-section">
+                <div className="col-md-12">
+                  <Row className="collections">
+                    {this.props.list &&
+                      this.props.list.map((hash, i) => {
+                        return (
+                          hash.ipfs_hash != "" &&
+                          hash.ipfs_hash != "abhbi" && (
+                            <Col key={i} xs={12} sm={6} md={4} lg={3}>
+                              <JobCard
+                                index={i}
+                                hash={hash}
+                                offerContract={this.props.match.params.id}
+                              ></JobCard>
+                            </Col>
+                          )
+                        );
+                      })}
+                  </Row>
 
-                <div className="text-center">
-                  {Number(this.props.end) > Number(page_end) && (
-                    <div
-                      className="btn btn-primary"
-                      onClick={() => this.getJobs(nextId, this.props.list)}
-                    >
-                      Load More
-                    </div>
-                  )}
+                  <div className="text-center">
+                    {Number(this.props.end) > Number(page_end) && (
+                      <div
+                        className="btn btn-primary"
+                        onClick={() => this.getJobs(nextId, this.props.list)}
+                      >
+                        Load More
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ) : (
-          <div className="text-center">
-            <Spinner animation="border" role="status">
-              <span className="sr-only">Loading...</span>
-            </Spinner>
-          </div>
-        )}
-      </Container>
+          ) : (
+            <div className="text-center">
+              <Spinner animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+            </div>
+          )}
+        </Container>
       </>
     );
   }
