@@ -11,6 +11,8 @@ import {
   getServiceProvider,
 } from "../../actions/orderActions";
 import { Helmet } from "react-helmet";
+import {GrAttachment} from 'react-icons/gr';
+
 
 class ChatPage extends Component {
   state = {
@@ -146,6 +148,10 @@ class ChatPage extends Component {
     objDiv.scrollTop = objDiv.scrollHeight;
   }
 
+  attachFile = (event) => {
+    console.log(event)
+  }
+
   render() {
     return (
       <>
@@ -196,6 +202,11 @@ class ChatPage extends Component {
                       placeholder="Send a message ..."
                       value={this.state.msg}
                     />
+                    <div className="attachment-btn" > 
+                        <input type="file" />
+                        <GrAttachment size='25px' onClick={this.attachFile}>
+                        </GrAttachment>
+                    </div>
                     <div className="send-msg-button" onClick={this.sendMessage}>
                       Send
                     </div>

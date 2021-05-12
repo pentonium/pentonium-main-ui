@@ -48,7 +48,7 @@
 
 .message-input {
   height: 60px;
-  width: calc(100% - 100px);
+  width: calc(100% - 130px);
   background-color: white;
   border: 1px solid white;
   padding: 8px 12px;
@@ -115,6 +115,20 @@ textarea {
 
 textarea.message-input {
   white-space: normal;
+}
+
+.attachment-btn{
+  width: 30px;
+  padding-top: 1rem;
+  cursor: pointer;
+  input{
+    width: 30px;
+    position: absolute;
+    right: 104px;
+    z-index: 5;
+    cursor: pointer;
+    opacity: 0;
+  }
 }
 
 .send-msg-button {
