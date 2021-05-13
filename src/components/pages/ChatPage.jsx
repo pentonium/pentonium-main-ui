@@ -12,6 +12,8 @@ import {
 } from "../../actions/orderActions";
 import { Helmet } from "react-helmet";
 import { GrAttachment } from "react-icons/gr";
+import ipfs from "../../ipfs";
+
 
 class ChatPage extends Component {
   state = {
@@ -134,12 +136,12 @@ class ChatPage extends Component {
   };
 
   sendMessage = async () => {
-    if (this.state.msg != "") {
-      this.setState({
-        msg: "",
-      });
-      await this.state.chat.waitAndMessage(this.state.msg, "txt");
-    }
+      if (this.state.msg != "") {
+        await this.state.chat.waitAndMessage(this.state.msg, "txt");
+        this.setState({
+          msg: "",
+        });
+      }
   };
 
   scrollToBottom() {
@@ -147,12 +149,33 @@ class ChatPage extends Component {
     objDiv.scrollTop = objDiv.scrollHeight;
   }
 
-  attachFile = (event) => {
-    console.log(event);
-    let ipfs_hash = await upload_file_to_ipfs();
-    let message = "Link_TO_IPFS" + ipfs_hash;
-    await this.state.chat.waitAndMessage(message, "file");
+  upload_file_to_ipfs = (data) => {
+    return new Promise((resolve,reject)=>{
+      ipfs.files.add(data, (error, result) => {
+        if (error) {
+          reject(error)
+        }
+        resolve(result[0].hash);
+      });
+    });
+  }
+
+  attachFile = async (event) => {
+    const file = event.target.files[0];
+    const reader = new window.FileReader();
+    reader.readAsArrayBuffer(file);
+    reader.onloadend = async() => {
+      let ipfs_hash = await this.upload_file_to_ipfs(Buffer(reader.result));
+      let message = `LINK TO IPFS_HASH : <a href=https://ipfs.io/ipfs/${ipfs_hash} class="" target='_blank'>${ipfs_hash}</a>`;
+      await this.state.chat.waitAndMessage(message, "file");
+    };
+    
   };
+
+  createHtml = (msg) => {
+    return {
+      __html: msg.msg};
+  }
 
   render() {
     return (
@@ -187,7 +210,8 @@ class ChatPage extends Component {
                               : "chat-left message"
                           }
                         >
-                          {msg.msg}
+                          
+                          <span dangerouslySetInnerHTML={{ __html: msg.msg }}></span>
                         </div>
                       </div>
                     </div>
@@ -205,10 +229,9 @@ class ChatPage extends Component {
                       value={this.state.msg}
                     />
                     <div className="attachment-btn">
-                      <input type="file" />
+                      <input type="file" onChange={this.attachFile} />
                       <GrAttachment
                         size="25px"
-                        onClick={this.attachFile}
                       ></GrAttachment>
                     </div>
                     <div className="send-msg-button" onClick={this.sendMessage}>
