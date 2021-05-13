@@ -1,7 +1,7 @@
 import { Component } from "react";
 import { connect } from "react-redux";
 import { Chat } from "../../controllers/Chat";
-import { Row, Col, Badge, Container } from "react-bootstrap";
+import { Row, Col, Badge, Container, Spinner } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
 import { BUYER, SELLER } from "../../constants";
 import {
@@ -24,6 +24,7 @@ class ChatPage extends Component {
     userb: null,
     loadId: null,
     orderData: {},
+    loading:false
   };
 
   async componentDidMount() {
@@ -111,7 +112,7 @@ class ChatPage extends Component {
       const msg = await that.state.chat.loadMessages();
       if (msg.chat != that.state.messages) {
         that.setState({
-          messages: msg.chat,
+          messages: msg.chat
         });
       }
 
@@ -120,6 +121,7 @@ class ChatPage extends Component {
         if (msg.chat.toString() != that.state.messages.toString()) {
           that.setState({
             messages: msg.chat,
+            loading:false
           });
           this.scrollToBottom();
         }
@@ -161,10 +163,12 @@ class ChatPage extends Component {
   }
 
   attachFile = async (event) => {
+    this.setState({loading:true});
     const file = event.target.files[0];
     const reader = new window.FileReader();
     reader.readAsArrayBuffer(file);
     reader.onloadend = async() => {
+      this.scrollToBottom();
       let ipfs_hash = await this.upload_file_to_ipfs(Buffer(reader.result));
       let message = `LINK TO IPFS_HASH : <a href=https://ipfs.io/ipfs/${ipfs_hash} class="" target='_blank'>${ipfs_hash}</a>`;
       await this.state.chat.waitAndMessage(message, "file");
@@ -200,25 +204,33 @@ class ChatPage extends Component {
             <Col md={8}>
               <div className="chat-feed">
                 <div className="chat-body" id="chat-body-div">
-                  {this.state.messages.map((msg, inex) => (
-                    <div key={inex} className="message-block">
-                      <div className="message-row">
-                        <div
-                          className={
-                            msg.from == this.state.usera
-                              ? "chat-right message"
-                              : "chat-left message"
-                          }
-                        >
-                          
-                          <span dangerouslySetInnerHTML={{ __html: msg.msg }}></span>
+                    {this.state.messages.map((msg, inex) => (
+                      <div key={inex} className="message-block">
+                        <div className="message-row">
+                          <div
+                            className={
+                              msg.from == this.state.usera
+                                ? "chat-right message"
+                                : "chat-left message"
+                            }
+                          >
+                            
+                            <span dangerouslySetInnerHTML={{ __html: msg.msg }}></span>
+                          </div>
                         </div>
                       </div>
+                    ))}
+                    {this.state.loading &&
+                    <div className="chat-loader">
+                          <Spinner animation="border" role="status">
+                            <span className="sr-only">Loading...</span>
+                          </Spinner>
                     </div>
-                  ))}
-                  <br />
-                  <br />
+                    }
+                    <br />
+                    <br />
                 </div>
+                
                 <div className="message-form-container">
                   <div className="message-form">
                     <textarea
@@ -229,8 +241,8 @@ class ChatPage extends Component {
                       value={this.state.msg}
                     />
                     <div className="attachment-btn">
-                      <input type="file" onChange={this.attachFile} />
-                      <GrAttachment
+                      <input type="file" onChange={this.attachFile} disabled={this.state.loading} />
+                      <GrAttachment disabled={this.state.loading}
                         size="25px"
                       ></GrAttachment>
                     </div>
