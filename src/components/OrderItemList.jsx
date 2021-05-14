@@ -17,6 +17,7 @@ class OrderItemList extends Component {
     this.state = {
       orderData: {},
       loading: true,
+      buttonLoader:false
     };
   }
 
@@ -30,33 +31,36 @@ class OrderItemList extends Component {
   }
 
   acceptOrder = async () => {
+    this.setState({buttonLoader:true});
     let data = await updateOrderStatus(
       this.props.web3,
       this.props.account,
       this.props.orderContract,
       ORDER_ACCEPTED
     );
-    this.setState({ orderData: data, loading: false });
+    this.setState({ orderData: data, loading: false , buttonLoader:false });
   };
 
   rejectOrder = async () => {
+    this.setState({buttonLoader:true});
     let data = await updateOrderStatus(
       this.props.web3,
       this.props.account,
       this.props.orderContract,
       ORDER_REJECTED
     );
-    this.setState({ orderData: data, loading: false });
+    this.setState({ orderData: data, loading: false , buttonLoader:false });
   };
 
   cancelOrder = async () => {
+    this.setState({buttonLoader:true})
     let data = await updateOrderStatus(
       this.props.web3,
       this.props.account,
       this.props.orderContract,
       ORDER_CANCELLED
     );
-    this.setState({ orderData: data, loading: false });
+    this.setState({ orderData: data, loading: false , buttonLoader:false });
   };
 
   navigateToChatPage = () => {
@@ -107,8 +111,9 @@ class OrderItemList extends Component {
                             variant="secondary"
                             size="sm"
                             onClick={this.cancelOrder}
+                            disabled={this.state.buttonLoader}
                           >
-                            Cancel
+                            {this.state.buttonLoader ? "Loading…" : "Cancel"}
                           </Button>
                         </>
                       ) : (
@@ -118,16 +123,18 @@ class OrderItemList extends Component {
                             size="sm"
                             onClick={this.acceptOrder}
                             block
+                            disabled={this.state.buttonLoader}
                           >
-                            Accept
+                            {this.state.buttonLoader ? "Loading…" : "Accept"}
                           </Button>
                           <Button
                             variant="secondary"
                             size="sm"
                             onClick={this.rejectOrder}
                             block
+                            disabled={this.state.buttonLoader}
                           >
-                            Reject
+                            {this.state.buttonLoader ? "Loading…" : "Reject"}
                           </Button>
                         </>
                       )
