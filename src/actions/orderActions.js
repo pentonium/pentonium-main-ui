@@ -31,7 +31,7 @@ export const getOrderDetail =  async (web3 , account , orderContract) =>  {
     return await fetchDataFromHash(contract);
 }
 
-export const updateOrderStatus =  async (web3 , account ,orderContract , status) =>  {
+export const updateOrderStatus =  async (web3 , account ,orderContract , status) =>  {  
     let contract = new web3.eth.Contract(ORDER_CONTRACT_ABI , orderContract);
     try{
         if(status === ORDER_ACCEPTED){
@@ -39,13 +39,13 @@ export const updateOrderStatus =  async (web3 , account ,orderContract , status)
             let { publicKey, privateKey } = genKeyPairFromSeed(serviceProvider);
             await contract.methods.acceptOrder(publicKey , privateKey).send({from:account});
         }else if (status === ORDER_REJECTED){
-            await contract.methods.rejectOrder()
+            await contract.methods.rejectOrder().send({from:account});
         } else if (status === ORDER_CANCELLED){
-            await contract.methods.cancelOrder();
+                await contract.methods.cancelOrder().send({from:account});
         }
         return await fetchDataFromHash(contract)
     } catch(e){
-        console.log(e);
+        return await fetchDataFromHash(contract);
     }
 }
 
