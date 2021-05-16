@@ -5,6 +5,7 @@
             margin-bottom: 1rem;
             a{
                 color: $footerFontColor;
+                font-weight: lighter;
                 &:hover{
                     color:$footerLinkHover;
                     text-decoration: none;

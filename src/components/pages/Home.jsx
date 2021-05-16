@@ -6,7 +6,7 @@ import { connectIfAuthorized, connectWallet } from "../../actions/commonAction";
 import { home_contract_addresses } from "../../config";
 import Header from "../common/Header";
 import CardList from "../CardList";
-import {Helmet} from 'react-helmet';
+import { Helmet } from "react-helmet";
 
 class Home extends Component {
   constructor(props) {
@@ -38,12 +38,13 @@ class Home extends Component {
             {/* <img src="/assets/img/banner.png" alt="" /> */}
             <Row className="align-center">
               <Col md={5}>
-                <h1>Work From Home</h1>
+                <h1>
+                  Welcome to the <b>Work-Sphere</b>
+                </h1>
                 <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Voluptate sequi sed minus a aspernatur, quo quidem architecto
-                  consequatur iusto suscipit quae hic sit, repudiandae nihil
-                  atque cumque mollitia at similique!
+                  Post your gig or get your Job done with 360 degree freedom in
+                  your work-space with complete data security, ensured by fully
+                  transparent Governance.
                 </p>
               </Col>
               <Col md={7}>

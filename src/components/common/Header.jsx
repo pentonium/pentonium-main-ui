@@ -91,6 +91,7 @@ class Header extends Component {
               <div className="logo-section">
                 <Link to="/">
                   <img src="/assets/img/logo.png" alt="" />
+                  {/* Pentonium */}
                 </Link>
               </div>
             </div>

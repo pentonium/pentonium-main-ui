@@ -14,23 +14,23 @@ class Footer extends Component {
   }
 
   async connectWithMetaMask() {
-    if (window.web3 !== undefined) {
-      if (window.ethereum) {
-        const web3 = new Web3(window.ethereum);
-        try {
-          await window.ethereum.enable();
-          var accounts = await web3.eth.getAccounts();
-          var firstAcc = accounts[0];
-          this.setState({ active: true });
-        } catch (e) {
-          console.error(e);
-        }
-      }
-    }
+    // if (window.web3 !== undefined) {
+    //   if (window.ethereum) {
+    //     const web3 = new Web3(window.ethereum);
+    //     try {
+    //       await window.ethereum.enable();
+    //       var accounts = await web3.eth.getAccounts();
+    //       var firstAcc = accounts[0];
+    //       this.setState({ active: true });
+    //     } catch (e) {
+    //       console.error(e);
+    //     }
+    //   }
+    // }
   }
 
   onClick() {
-    this.connectWithMetaMask();
+    // this.connectWithMetaMask();
   }
 
   render() {
@@ -39,34 +39,23 @@ class Footer extends Component {
         <Col md={12} sm={12} className="footer-outer">
           <Container className="footer-top-section">
             <Row className="Footer">
-              <Col md={3} sm={12}>
-                <h6>Categories</h6>
-                {/* <ul>
-                                {this.props.parentCategories.map((value, index) => {
-                                    return <li key={index}><a href={'/list/'+value.id}>{value.name}</a></li>
-                                })}
-                                </ul> */}
+              <Col md={3} sm={12} className="text-center">
+                <img src="/assets/img/white.png" className="foot-img" alt="" />
+                <h3>Pentonium</h3>
               </Col>
               <Col md={3} sm={12}>
-                <h6>About</h6>
+                <h6>General</h6>
                 <ul>
                   <li>
-                    <a href="/">Careers</a>
+                    <a href="https://pentonium.com" target="_blank">
+                      Home
+                    </a>
                   </li>
+
                   <li>
-                    <a href="/">Press & News</a>
-                  </li>
-                  <li>
-                    <a href="/">Paternship</a>
-                  </li>
-                  <li>
-                    <a href="/">Privacy Policy</a>
-                  </li>
-                  <li>
-                    <a href="/">Terms of Service</a>
-                  </li>
-                  <li>
-                    <a href="/">Investor Relationship</a>
+                    <a href="https://pentonium.com/about.html" target="_blank">
+                      About
+                    </a>
                   </li>
                 </ul>
               </Col>
@@ -74,16 +63,36 @@ class Footer extends Component {
                 <h6>Support</h6>
                 <ul>
                   <li>
-                    <a href="/">Help & Support</a>
+                    <a
+                      href="https://docs.pentonium.com/contact-us/customer-support"
+                      target="_blank"
+                    >
+                      Help & Support
+                    </a>
                   </li>
                   <li>
-                    <a href="/">Trust & Safety</a>
+                    <a
+                      href="https://docs.pentonium.com/general/marshal"
+                      target="_blank"
+                    >
+                      Marshal
+                    </a>
                   </li>
                   <li>
-                    <a href="/">Selling</a>
+                    <a
+                      href="https://docs.pentonium.com/general/service-provider"
+                      target="_blank"
+                    >
+                      Service Provider
+                    </a>
                   </li>
                   <li>
-                    <a href="/">Buying</a>
+                    <a
+                      href="https://docs.pentonium.com/general/client"
+                      target="_blank"
+                    >
+                      Client
+                    </a>
                   </li>
                 </ul>
               </Col>
@@ -91,31 +100,22 @@ class Footer extends Component {
                 <h6>Community</h6>
                 <ul>
                   <li>
-                    <a href="/">Events</a>
+                    <a href="https://t.me/pentonium" target="_blank">
+                      Telegram
+                    </a>
                   </li>
                   <li>
-                    <a href="/">Blog</a>
+                    <a href="https://pentonium.medium.com/" target="_blank">
+                      Blog
+                    </a>
                   </li>
                   <li>
-                    <a href="/">Become a Seller</a>
-                  </li>
-                  <li>
-                    <a href="/">Podcast</a>
+                    <a href="https://github.com/pentonium" target="_blank">
+                      Github
+                    </a>
                   </li>
                 </ul>
               </Col>
-            </Row>
-          </Container>
-          <Container>
-            <Row>
-              <hr />
-              <div className="footer-bottom-section">
-                <div className="logo-section">
-                  <a href="/">
-                    <span className="header-logo"></span>
-                  </a>
-                </div>
-              </div>
             </Row>
           </Container>
         </Col>
@@ -131,8 +131,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-  };
+  return {};
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Footer);

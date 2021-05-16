@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Row, Col, Badge } from "react-bootstrap";
 import Spinner from "react-bootstrap/Spinner";
-import { withRouter } from "react-router";
+import { Link, withRouter } from "react-router-dom";
 import JobCard from "./common/JobCard";
 
 class NewCollection extends Component {
@@ -17,6 +17,11 @@ class NewCollection extends Component {
     return (
       <>
         <div className="collections-content" style={{ width: "100%" }}>
+          <div className="float-right link">
+            <Link to={"/list/" + this.props.categoryContract}>
+              View All <i class="arrow right"></i>
+            </Link>
+          </div>
           <h2 className="collection-title">{this.props.categoryName}</h2>
           <Row className="collections">
             {this.props.list ? (
@@ -42,13 +47,13 @@ class NewCollection extends Component {
               </Spinner>
             )}
           </Row>
-          <div className="button-center-container">
+          {/* <div className="button-center-container">
             {this.props.list && this.props.list.length > 4 && (
               <button className="btn btn-secondary" onClick={this.viewAllItems}>
                 View All
               </button>
             )}
-          </div>
+          </div> */}
         </div>
       </>
     );

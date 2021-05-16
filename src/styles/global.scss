@@ -10,6 +10,29 @@ img {
   align-items: center;
 }
 
+.foot-img{
+  width: 72px;
+  margin-bottom: 12px;
+}
+
+.arrow {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 4px;
+}
+
+.right {
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+}
+
+
+.float-right.link a{
+  line-height: 2.5rem;
+  font-size: 18px;
+}
+
 .poster {
   width: 100%;
   padding-top: 140px;
