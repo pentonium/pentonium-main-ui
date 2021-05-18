@@ -1,13 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import "../../styles/Category.scss";
-import { fecthJobByCategory } from "../../actions/categoryActions";
 import { Link, withRouter } from "react-router-dom";
-import { getJobsList } from "../../actions/jobListActions";
-import { connectIfAuthorized } from "../../actions/commonAction";
 import { getCategoriesList } from "../../actions/categoryListAction";
 import { Container } from "react-bootstrap";
-import {Helmet} from 'react-helmet';
+import { Helmet } from "react-helmet";
 
 class Category extends Component {
   constructor(props) {
@@ -15,8 +12,7 @@ class Category extends Component {
   }
 
   async componentDidMount() {
-    await this.props.connectIfAuthorized();
-    if (this.props.account) {
+    if (this.props.contract) {
       await this.props.getCategoriesList(
         this.props.contract,
         this.props.account
@@ -27,31 +23,31 @@ class Category extends Component {
   render() {
     return (
       <>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>Category Listing</title>
-      </Helmet>
-      <Container className="body-padding">
-        <div className="row">
-          {this.props.categoryList && this.props.categoryList.length > 0 ? (
-            <>
-              <ul className="category-items">
-                {this.props.categoryList.map((value, index) => {
-                  return (
-                    <li key={index}>
-                      <Link to={"/list/" + value.offer_contract}>
-                        <span>{value.name}</span>
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            </>
-          ) : (
-            <div>No Items found</div>
-          )}
-        </div>
-      </Container>
+        <Helmet>
+          <meta charSet="utf-8" />
+          <title>Category Listing</title>
+        </Helmet>
+        <Container className="body-padding">
+          <div className="row">
+            {this.props.categoryList && this.props.categoryList.length > 0 ? (
+              <>
+                <ul className="category-items">
+                  {this.props.categoryList.map((value, index) => {
+                    return (
+                      <li key={index}>
+                        <Link to={"/list/" + value.offer_contract}>
+                          <span>{value.name}</span>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </>
+            ) : (
+              <div>No Items found</div>
+            )}
+          </div>
+        </Container>
       </>
     );
   }
@@ -73,10 +69,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fecthJobByCategory: (id) => dispatch(fecthJobByCategory(id)),
-    connectIfAuthorized: () => dispatch(connectIfAuthorized()),
-    getJobsList: (contract, account, web3, offerContract) =>
-      dispatch(getJobsList(contract, account, web3, offerContract)),
     getCategoriesList: (contract, account) =>
       dispatch(getCategoriesList(contract, account)),
   };

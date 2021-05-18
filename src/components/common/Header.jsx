@@ -28,11 +28,11 @@ class Header extends Component {
   }
 
   showBar = () => {
-    if (window.pageYOffset > 200 && !this.state.showSub) {
+    if (window.pageYOffset > 140 && !this.state.showSub) {
       this.setState({
         showSub: true,
       });
-    } else if (window.pageYOffset < 200 && this.state.showSub) {
+    } else if (window.pageYOffset < 140 && this.state.showSub) {
       this.setState({
         showSub: false,
       });

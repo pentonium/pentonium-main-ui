@@ -8,7 +8,7 @@ import { deleteJob, getJobDetail, placeOrder } from "../../actions/jobActions";
 import Spinner from "react-bootstrap/Spinner";
 import { genKeyPairFromSeed } from "skynet-js";
 import { UserPriceDetail } from "../UserPriceDetail.jsx";
-import {Helmet} from 'react-helmet';
+import { Helmet } from "react-helmet";
 
 class JobDescription extends Component {
   constructor(props) {
@@ -39,7 +39,7 @@ class JobDescription extends Component {
       this.props.account,
       jobId
     );
-    this.props.history.push('/');
+    this.props.history.push("/");
   };
 
   makeid = (length) => {
@@ -79,93 +79,93 @@ class JobDescription extends Component {
   render() {
     return (
       <>
-      <Helmet>
+        <Helmet>
           <meta charSet="utf-8" />
           <title>{`Description of Job:${this.state.hashedData.title}`}</title>
         </Helmet>
-      <Container className="body-padding">
-        {!this.props.loading &&
-        this.state.hashedData &&
-        this.state.hashedData.imageHash ? (
-          <Row className="job-desctiption-page">
-            <Col md={8} xs={12}>
-              <h1>{this.state.hashedData.title}</h1>
-              <div className="customer-data">
-                <a>
-                  <span className="customer-image">
-                    <img src="https://t3.ftcdn.net/jpg/01/83/55/76/360_F_183557656_DRcvOesmfDl5BIyhPKrcWANFKy2964i9.jpg" />
-                  </span>
-                </a>
-                <Link
-                  to={"/customers/" + this.props.detailData.service_provider}
-                >
-                  <span className="customer-name">
-                    {this.props.detailData.service_provider}
-                  </span>
-                </Link>
-              </div>
-              <div className="job-details">
-                <div className="job-image">
-                  <Carousel
-                    controls={this.state.hashedData.imageHash.length > 1}
-                    indicators={false}
+        <Container className="body-padding">
+          {!this.props.loading &&
+          this.state.hashedData &&
+          this.state.hashedData.imageHash ? (
+            <Row className="job-desctiption-page">
+              <Col md={8} xs={12}>
+                <h1>{this.state.hashedData.title}</h1>
+                <div className="customer-data">
+                  <a>
+                    <span className="customer-image">
+                      <img src="https://t3.ftcdn.net/jpg/01/83/55/76/360_F_183557656_DRcvOesmfDl5BIyhPKrcWANFKy2964i9.jpg" />
+                    </span>
+                  </a>
+                  <Link
+                    to={"/customers/" + this.props.detailData.service_provider}
                   >
-                    {this.state.hashedData.imageHash &&
-                      this.state.hashedData.imageHash.map((preview, i) => {
+                    <span className="customer-name">
+                      {this.props.detailData.service_provider}
+                    </span>
+                  </Link>
+                </div>
+                <div className="job-details">
+                  <div className="job-image">
+                    <Carousel
+                      controls={this.state.hashedData.imageHash.length > 1}
+                      indicators={false}
+                    >
+                      {this.state.hashedData.imageHash &&
+                        this.state.hashedData.imageHash.map((preview, i) => {
+                          return (
+                            <Carousel.Item key={i}>
+                              <img
+                                src={`https://ipfs.io/ipfs/${preview}`}
+                                alt="Description Card image"
+                              />
+                            </Carousel.Item>
+                          );
+                        })}
+                    </Carousel>
+                    <img src={this.state.hashedData.image} />
+                  </div>
+                  <br />
+                  <div>
+                    <h4>About Job:</h4>
+                    <p className="ws-pl">{this.state.hashedData.description}</p>
+                  </div>
+                  <br />
+                  <div>
+                    <h5>Skills:</h5>
+                    {this.state.hashedData.tags &&
+                      this.state.hashedData.tags.map((skill, i) => {
                         return (
-                          <Carousel.Item key={i}>
-                            <img
-                              src={`https://ipfs.io/ipfs/${preview}`}
-                              alt="Description Card image"
-                            />
-                          </Carousel.Item>
+                          <Badge key={i} pill variant="secondary">
+                            {skill}
+                          </Badge>
                         );
                       })}
-                  </Carousel>
-                  <img src={this.state.hashedData.image} />
+                  </div>
+                  <br />
                 </div>
-                <br />
-                <div>
-                  <h4>About Job:</h4>
-                  <p>{this.state.hashedData.description}</p>
-                </div>
-                <br />
-                <div>
-                  <h5>Skills:</h5>
-                  {this.state.hashedData.tags &&
-                    this.state.hashedData.tags.map((skill, i) => {
-                      return (
-                        <Badge key={i} pill variant="secondary">
-                          {skill}
-                        </Badge>
-                      );
-                    })}
-                </div>
-                <br />
-              </div>
-            </Col>
-            <Col md={4} xs={12}>
-              {this.state.hashedData && (
-                <UserPriceDetail
-                  hashId={this.state.jobId}
-                  offerContract={this.state.offerContract}
-                  data={this.state.hashedData}
-                  deleteHandler={this.deleteJob}
-                  loader={this.props.jobloader}
-                  navigateToUpdate={this.naviageToUpdate}
-                  placeOrderHandler={this.placeOrder}
-                ></UserPriceDetail>
-              )}
-            </Col>
-          </Row>
-        ) : (
-          <div className="text-center">
-            <Spinner animation="border" role="status">
-              <span className="sr-only">Loading...</span>
-            </Spinner>
-          </div>
-        )}
-      </Container>
+              </Col>
+              <Col md={4} xs={12}>
+                {this.state.hashedData && (
+                  <UserPriceDetail
+                    hashId={this.state.jobId}
+                    offerContract={this.state.offerContract}
+                    data={this.state.hashedData}
+                    deleteHandler={this.deleteJob}
+                    loader={this.props.jobloader}
+                    navigateToUpdate={this.naviageToUpdate}
+                    placeOrderHandler={this.placeOrder}
+                  ></UserPriceDetail>
+                )}
+              </Col>
+            </Row>
+          ) : (
+            <div className="text-center">
+              <Spinner animation="border" role="status">
+                <span className="sr-only">Loading...</span>
+              </Spinner>
+            </div>
+          )}
+        </Container>
       </>
     );
   }
@@ -175,7 +175,7 @@ function mapStateToProps(state) {
   let loading = true;
   loading = state.jobReducer.loading;
   const { web3, accountConnection, account, contract } = state.common;
-  const { detailData, error , jobloader } = state.jobReducer;
+  const { detailData, error, jobloader } = state.jobReducer;
   return {
     jobDescription: state.fetchJobs.jobDescription[0],
     hashedData: state.fetchJobs.hashedData,
@@ -186,7 +186,7 @@ function mapStateToProps(state) {
     error,
     contract,
     detailData,
-    jobloader
+    jobloader,
   };
 }
 

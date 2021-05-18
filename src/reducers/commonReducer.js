@@ -60,6 +60,7 @@ export default function(state = initialState, action) {
         error: true
       } 
     case ACCOUNT_CONNECTION:
+      alert("called");
       return {
         ...state,
         accountConnection: action.accountConnection,

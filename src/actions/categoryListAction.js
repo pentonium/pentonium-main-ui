@@ -11,6 +11,7 @@ export const getCategoriesList = (contract , account) => async dispatch => {
         let categories = await contract.methods.getAllCategpries().call();
         dispatch({type: CATEGORY_LIST_SUCCESS, list: categories});
     }catch(e){
+        console.log(e);
         dispatch({type: CATEGORY_LIST_ERROR});
     }
 }
