@@ -66,7 +66,6 @@ export const connectIfAuthorized = () => async dispatch =>  {
 
     let contract = new web3.eth.Contract(CATEGORY_CONTRACT_ABI, CATEGORY_CONTRACT_ADDRESS);
 
-    console.log("Contract", contract)
     dispatch({type: WALLET_CONNECT_SUCCESS, web3: web3, contract: contract});
     
     if (window.ethereum) {
