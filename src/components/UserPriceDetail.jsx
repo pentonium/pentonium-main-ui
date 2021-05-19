@@ -39,7 +39,7 @@ export const UserPriceDetail = (props) => {
           </div>
         </Tab>
       </Tabs>
-      {this.props.account == this.props.provider && (
+      {props.account == props.provider && (
         <div className="description-action-buttons">
           <Button
             onClick={props.navigateToUpdate}
