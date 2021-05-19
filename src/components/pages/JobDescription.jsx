@@ -154,6 +154,8 @@ class JobDescription extends Component {
                     loader={this.props.jobloader}
                     navigateToUpdate={this.naviageToUpdate}
                     placeOrderHandler={this.placeOrder}
+                    account={this.props.account}
+                    provider={this.props.detailData.service_provider}
                   ></UserPriceDetail>
                 )}
               </Col>
