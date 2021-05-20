@@ -12,8 +12,6 @@ import { CATEGORY_CONTRACT_ABI } from '../config/abi/categoryContract';
  */
 export const connectWallet = () => async dispatch =>  {
 
-    dispatch({type: WALLET_CONNECT_REQUEST});
-
     if (window.ethereum) {
 
         const web3 = new Web3(window.ethereum);
@@ -22,6 +20,7 @@ export const connectWallet = () => async dispatch =>  {
         try {
             var chainId = parseInt(window.ethereum.chainId, 16);
             if(chainId != 3){
+                alert("Please change your network to Ropsten")
                 throw Error;
             }
             // Request account access if needed
@@ -33,7 +32,6 @@ export const connectWallet = () => async dispatch =>  {
             hookInWalletChange();
             dispatch({type: ACCOUNT_CONNECTION, ...data});
         } catch (error) {
-            dispatch({type: WALLET_CONNECT_ERROR});
             console.error(error);
         }
     }else if (window.web3) {
@@ -43,7 +41,7 @@ export const connectWallet = () => async dispatch =>  {
         let data = await initialize(web3);
 
         hookInWalletChange();
-        dispatch({type: WALLET_CONNECT_SUCCESS, ...data});
+        dispatch({type: ACCOUNT_CONNECTION, ...data});
     }else {
         dispatch({type: WALLET_CONNECT_ERROR});
     }
@@ -73,11 +71,16 @@ export const connectIfAuthorized = () => async dispatch =>  {
             const web3 = new Web3(window.ethereum);
 
             let data = await initialize(web3);
-
-
             hookInWalletChange();
-            if(data.account){
-                dispatch({type: ACCOUNT_CONNECTION, ...data});
+
+            var chainId = parseInt(window.ethereum.chainId, 16);
+            if(chainId != 3){
+                alert("Please change your network to Ropsten");
+            }else{
+
+                if(data.account){
+                    dispatch({type: ACCOUNT_CONNECTION, ...data});
+                }
             }
             
         }catch (error) {

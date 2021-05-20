@@ -65,6 +65,7 @@ export default function(state = initialState, action) {
         accountConnection: action.accountConnection,
         contract: action.contract,
         account: action.account,
+        loading: false
       }
     default:
       return state;

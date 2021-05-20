@@ -36,6 +36,7 @@ class App extends Component {
          <Footer />
          </>
          : <div className="text-center">
+           oooo
            <Spinner animation="border" role="status">
                 <span className="sr-only">Loading...</span>
             </Spinner>
