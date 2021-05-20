@@ -42,24 +42,9 @@ class Footer extends Component {
               <Col md={3} sm={12} className="text-center">
                 <img src="/assets/img/white.png" className="foot-img" alt="" />
                 <h3>Pentonium</h3>
+                <br />
               </Col>
-              <Col md={3} sm={12}>
-                <h6>General</h6>
-                <ul>
-                  <li>
-                    <a href="https://pentonium.com" target="_blank">
-                      Home
-                    </a>
-                  </li>
-
-                  <li>
-                    <a href="https://pentonium.com/about.html" target="_blank">
-                      About
-                    </a>
-                  </li>
-                </ul>
-              </Col>
-              <Col md={3} sm={12}>
+              <Col md={3} sm={6} xs={6}>
                 <h6>Support</h6>
                 <ul>
                   <li>
@@ -95,8 +80,9 @@ class Footer extends Component {
                     </a>
                   </li>
                 </ul>
+                <br />
               </Col>
-              <Col md={3} sm={12}>
+              <Col md={3} sm={6} xs={6}>
                 <h6>Community</h6>
                 <ul>
                   <li>
@@ -115,6 +101,45 @@ class Footer extends Component {
                     </a>
                   </li>
                 </ul>
+                <br />
+              </Col>
+              <Col md={3} sm={12} xs={12}>
+                <div className="text-center">
+                  <a
+                    href="https://t.me/pentonium"
+                    target="_blank"
+                    className="f-social"
+                  >
+                    <img
+                      src="https://pentonium.com/assets/img/social/telegram.png"
+                      alt=""
+                    />
+                  </a>
+                  <a
+                    href="https://pentonium.medium.com/"
+                    target="_blank"
+                    className="f-social"
+                  >
+                    <img
+                      src="https://pentonium.com/assets/img/social/medium.png"
+                      alt=""
+                    />
+                  </a>
+                  <a
+                    href="https://github.com/pentonium"
+                    target="_blank"
+                    className="f-social"
+                  >
+                    <img
+                      src="https://pentonium.com/assets/img/social/github.png"
+                      alt=""
+                    />
+                  </a>
+                </div>
+
+                <br />
+                <br />
+                <br />
               </Col>
             </Row>
           </Container>

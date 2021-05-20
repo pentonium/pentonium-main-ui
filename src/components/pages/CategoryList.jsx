@@ -28,7 +28,7 @@ class Category extends Component {
           <title>Category Listing</title>
         </Helmet>
         <Container className="body-padding">
-          <div className="row">
+          <div>
             {this.props.categoryList && this.props.categoryList.length > 0 ? (
               <>
                 <ul className="category-items">

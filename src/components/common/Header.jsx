@@ -16,6 +16,7 @@ import { CATEGORY_LIST } from "../../config/categoryList";
 class Header extends Component {
   state = {
     showSub: true,
+    showCategories: false,
   };
 
   componentDidMount() {
@@ -37,6 +38,10 @@ class Header extends Component {
         showSub: false,
       });
     }
+  };
+
+  showCategories = () => {
+    this.setState({ showCategories: !this.state.showCategories });
   };
 
   connectToMetaMask = async () => {
@@ -99,7 +104,15 @@ class Header extends Component {
           {this.state.showSub && CATEGORY_LIST ? (
             <div className="parent-nav-section">
               <div className="container">
-                <ul className="nav-items nav-category-list">
+                <div className="btn menu" onClick={this.showCategories}>
+                  Categories <i class="arrow down"></i>
+                </div>
+                <ul
+                  className={
+                    "nav-items nav-category-list " +
+                    (this.state.showCategories && "active")
+                  }
+                >
                   {CATEGORY_LIST.map((value, index) => {
                     return (
                       <li key={index} className="li-nav-item">

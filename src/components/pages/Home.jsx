@@ -75,6 +75,10 @@ class Home extends Component {
               })}
           </Row>
         </Container>
+        <br />
+        <br />
+        <br />
+        <br />
       </>
     );
   }

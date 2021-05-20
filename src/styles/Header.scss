@@ -139,6 +139,7 @@
     position: relative;
     .li-nav-item {
       //   flex-basis: 14.28%;
+      float: none;
       position: relative;
     }
     .li-nav-item + .li-nav-item {

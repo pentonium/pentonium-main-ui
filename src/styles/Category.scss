@@ -50,11 +50,15 @@
 }
 
 .category-items {
-  display: flex;
+  // display: flex;
   flex-wrap: wrap;
   width: 100%;
   li {
     flex-basis: 20%;
+    padding: 20px 0;
+    a{
+      padding: 20px 0;
+    }
   }
 }
 

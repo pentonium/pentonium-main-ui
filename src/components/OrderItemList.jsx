@@ -17,7 +17,7 @@ class OrderItemList extends Component {
     this.state = {
       orderData: {},
       loading: true,
-      buttonLoader:false
+      buttonLoader: false,
     };
   }
 
@@ -31,36 +31,36 @@ class OrderItemList extends Component {
   }
 
   acceptOrder = async () => {
-    this.setState({buttonLoader:true});
+    this.setState({ buttonLoader: true });
     let data = await updateOrderStatus(
       this.props.web3,
       this.props.account,
       this.props.orderContract,
       ORDER_ACCEPTED
     );
-    this.setState({ orderData: data, loading: false , buttonLoader:false });
+    this.setState({ orderData: data, loading: false, buttonLoader: false });
   };
 
   rejectOrder = async () => {
-    this.setState({buttonLoader:true});
+    this.setState({ buttonLoader: true });
     let data = await updateOrderStatus(
       this.props.web3,
       this.props.account,
       this.props.orderContract,
       ORDER_REJECTED
     );
-    this.setState({ orderData: data, loading: false , buttonLoader:false });
+    this.setState({ orderData: data, loading: false, buttonLoader: false });
   };
 
   cancelOrder = async () => {
-    this.setState({buttonLoader:true})
+    this.setState({ buttonLoader: true });
     let data = await updateOrderStatus(
       this.props.web3,
       this.props.account,
       this.props.orderContract,
       ORDER_CANCELLED
     );
-    this.setState({ orderData: data, loading: false , buttonLoader:false });
+    this.setState({ orderData: data, loading: false, buttonLoader: false });
   };
 
   navigateToChatPage = () => {
@@ -151,9 +151,9 @@ class OrderItemList extends Component {
               </Col>
               <Col md={2} sm={2}>
                 <p className="order-item-price">
-                  {this.state.orderData.data.price}
+                  {this.state.orderData.data.price} DAI
                 </p>
-                <p className="order-subtext">Per Hour</p>
+                {/* <p className="order-subtext">DAI</p> */}
               </Col>
             </Row>
           </Col>

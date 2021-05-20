@@ -72,6 +72,10 @@
     color: $primaryColor;
     font-weight: $fontWeight700;
     margin-bottom: 2rem;
+    width: calc(100% - 86px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
