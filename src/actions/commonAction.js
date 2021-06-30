@@ -60,7 +60,7 @@ export const connectIfAuthorized = () => async dispatch =>  {
 
     dispatch({type: WALLET_CONNECT_REQUEST});
 
-    let web3 = new Web3('wss://ropsten.infura.io/ws/v3/5a0874c0f5464a0b8e4050e5528bf94d');
+    let web3 = new Web3('wss://eth-ropsten.ws.alchemyapi.io/v2/IAJOqK7caMnaucMGgxiiNAKNulAil2Ey');
 
     let contract = new web3.eth.Contract(CATEGORY_CONTRACT_ABI, CATEGORY_CONTRACT_ADDRESS);
 
