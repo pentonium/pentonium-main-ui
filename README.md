@@ -6,5 +6,6 @@ based projects. We have taken an extra step to secure the system and make the pa
 seamless.
 
 # MVP is Live
-https://polygon.pentonium.com/
-https://beta.pentonium.com/
+[https://polygon.pentonium.com/](https://polygon.pentonium.com/)
+
+[https://beta.pentonium.com/](https://beta.pentonium.com/)
